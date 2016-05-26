@@ -1,118 +1,86 @@
 package com.twirlingvr.www.activity;
 
-import android.app.ListActivity;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.GridLayoutManager;
 
+import com.jcodecraeer.xrecyclerview.ProgressStyle;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.twirlingvr.www.R;
+import com.twirlingvr.www.adapter.MainAdapter;
+import com.twirlingvr.www.model.DataArray;
+import com.twirlingvr.www.net.Api;
+import com.twirlingvr.www.net.RequestCallback;
 
-public class MainActivity extends ListActivity {
-    private ListView mListView;
-    private CustomAdapter mAdapter;
-    private int mScrollState;
-    private View mFooter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+public class MainActivity extends ActionBarActivity {
+    private MainAdapter mAdapter = null;
+    //    @Bind(R.id.mRecyclerview)
+    XRecyclerView mRecyclerView;
+    private int page = 1;
+    private List<List<String>> datas = new ArrayList<>();
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        //获取ListView
-        mListView = getListView();
-        //根据footer.xml描述创建View
-        mFooter = getLayoutInflater().inflate(R.layout.footer, null);
-        // 在ListView底部添加正在加载视图
-        //注意：addFooterView方法需要在调用setListAdapter方法前调用！
-        mListView.addFooterView(mFooter);
-        mAdapter = new CustomAdapter();
-        setListAdapter(mAdapter);
-        //给ListView添加滚动监听器
-        mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+        //
+        mRecyclerView = (XRecyclerView) findViewById(R.id.mRecyclerview);
+        GridLayoutManager layoutManager = new GridLayoutManager(getBaseContext(), 1);
+//        mRecyclerView.addItemDecoration(new DividerGridItemDecoration(getBaseContext()));
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
+        mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.Pacman);
+        mRecyclerView.setArrowImageView(R.mipmap.iconfont_downgrey);
+//        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                //记录当前状态
-                mScrollState = scrollState;
+            public void onRefresh() {
+                mRecyclerView.refreshComplete();
+                page = 1;
+                loadData(page);
             }
 
             @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                // 可视的最后一个列表项的索引
-                int lastVisibleItem = firstVisibleItem + visibleItemCount - 1;
-                //当列表正处于滑动状态且滑动到列表底部时，执行
-                if (mScrollState != AbsListView.OnScrollListener.SCROLL_STATE_IDLE
-                        && lastVisibleItem == totalItemCount - 1) {
-                    // 执行线程，模拟睡眠5秒钟后添加10个列表项
-                    new Thread() {
-                        private Handler handler = new Handler() {
-                            @Override
-                            public void handleMessage(Message msg) {
-                                super.handleMessage(msg);
-                                //增加Item数量
-                                mAdapter.count += 10;
-                                //通知数据集变化
-                                mAdapter.notify();
-                                mAdapter.notifyDataSetChanged();
-                            }
-                        };
+            public void onLoadMore() {
+                mRecyclerView.loadMoreComplete();
+//                page += 1;
+//                loadData(page);
+            }
+        });
+        mAdapter = new MainAdapter(datas);
+        mRecyclerView.setAdapter(mAdapter);
+    }
 
-                        @Override
-                        public void run() {
-                            super.run();
-                            try {
-                                sleep(5000);
-                                handler.sendEmptyMessage(0);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }.start();
+    private void loadData(final int page) {
+        HashMap<String, Object> params = new HashMap<>();
+        //HttpParamsHelper.createParams();
+        params.put("id", 0);
+        params.put("group", "pub");
+        params.put("top", 100);
+        Api.getRetrofit().getVideoList(params).enqueue(new RequestCallback<DataArray>() {
+            @Override
+            public void onSuccess(DataArray dataArray) {
+//                if (response == null || !TextUtil.isValidate(response.data)) {
+//                    return;
+//                }
+                datas.clear();
+//                DataArray dataArray = response.getDataFrist();
+                List<List<String>> movieList = dataArray.getContent();
+                datas.addAll(movieList);
+                mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFinish() {
+                if (page == 1) {
+                    mRecyclerView.refreshComplete();
+                } else {
+                    mRecyclerView.loadMoreComplete();
                 }
             }
         });
     }
-
-    class CustomAdapter extends BaseAdapter {
-        // 初始列表项数量
-        int count = 20;
-
-        @Override
-        public int getCount() {
-            return count;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return position;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            TextView result = (TextView) convertView;
-
-            //动态创建TextView添加早ListView中
-            if (result == null) {
-                //result = new TextView(MainActivity.this);
-                // result.setTextAppearance(MainActivity.this, android.R.style.TextAppearance_Large);
-                AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams
-                        (AbsListView.LayoutParams.FILL_PARENT,
-                                AbsListView.LayoutParams.WRAP_CONTENT);
-                result.setLayoutParams(layoutParams);
-                result.setGravity(Gravity.CENTER);
-            }
-            result.setText("第 " + (position + 1) + "行");
-            return result;
-        }
-    }
 }
-
