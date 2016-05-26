@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/main_layout"
+        android:padding="10dip"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <com.google.vr.sdk.widgets.video.VrVideoView
+          android:id="@+id/video_view"
+          android:layout_width="match_parent"
+          android:scrollbars="@null"
+          android:layout_height="500dp"
+            android:layout_weight="11.05" />
+
+      <!-- Seeking UI & progress indicator.-->
+      <SeekBar
+        android:id="@+id/seek_bar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_height="32dp"
+        android:layout_width="fill_parent"/>
+      <TextView
+          android:id="@+id/status_text"
+          android:text="@string/loading_video"
+          android:layout_height="wrap_content"
+          android:layout_width="fill_parent"
+          android:textSize="@dimen/caption_text_size"
+          android:paddingStart="32dp"
+          android:paddingEnd="32dp"/>
+
+    </LinearLayout>
+</ScrollView>
