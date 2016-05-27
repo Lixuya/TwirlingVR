@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:weightSum="1">
 
     <TabHost
@@ -19,14 +20,13 @@
                 android:id="@android:id/tabcontent"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:background="#f9f9fc"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:background="#f9f9fc">
 
                 <FrameLayout
                     android:id="@+id/tab2_txt"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                  >
+                    android:layout_height="200dp">
 
                 </FrameLayout>
 
@@ -34,20 +34,14 @@
                     android:id="@+id/tab1_txt"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:text=""
-                    android:background="@drawable/jiaoyu" />
-
-
+                    android:background="@drawable/jiaoyu"
+                    android:text="" />
             </FrameLayout>
 
             <TabWidget
                 android:id="@android:id/tabs"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
-
         </LinearLayout>
-
     </TabHost>
-
 </LinearLayout>
-

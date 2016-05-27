@@ -1,5 +1,7 @@
 package com.twirlingvr.www.adapter;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.twirlingvr.www.R;
-import com.twirlingvr.www.activity.ListShowActivity;
+import com.twirlingvr.www.activity.PlayLoadActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     // 初始列表项数量
     private int count = 20;
     private String imagePath = "http://www.twirlingvr.com/App_Media/videos/";
+    private String videoPath = "http://www.twirlingvr.com/App_Media/videos/";
+
     //
     private List<List<String>> datas = new ArrayList<List<String>>();
 
@@ -40,14 +44,26 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(final MainAdapter.ViewHolder holder, int position) {
         final List<String> item = datas.get(position);
-        String imageName = item.get(6);
+        final String imageName = item.get(6);
         String title = item.get(2);
+        final String videoUri = item.get(4);
         Glide.with(holder.itemView.getContext()).load(imagePath + imageName).into(holder.iv_background);
         holder.tv_title.setText(title);
         holder.cv_card.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                holder.itemView.getContext().startActivity(new Intent(holder.itemView.getContext(), ListShowActivity.class));
+            public void onClick(View v) {//
+                Intent intent = new Intent(holder.itemView.getContext(), PlayLoadActivity.class);
+                intent.putExtra("uri", videoPath + videoUri);
+                intent.putExtra("imageUri", imagePath + imageName);
+                //
+                ActivityOptions transitionActivityOptions = null;
+                String ti = holder.itemView.getContext().getString(R.string.ti);
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation((Activity) holder.itemView.getContext(), holder.iv_background, ti);
+                    holder.itemView.getContext().startActivity(intent, transitionActivityOptions.toBundle());
+                } else {
+                    holder.itemView.getContext().startActivity(intent);
+                }
             }
         });
     }

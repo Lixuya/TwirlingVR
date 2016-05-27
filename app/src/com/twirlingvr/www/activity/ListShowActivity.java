@@ -15,7 +15,8 @@ import java.io.File;
 
 public class ListShowActivity extends Activity {
 
-    public static String playuri;
+    public String playuri;
+    private String path = "http://www.twirlingvr.com/App_Media/videos/";
     public static int id = 0;
     private Button line;
     FrameLayout.LayoutParams lp1;
@@ -28,7 +29,7 @@ public class ListShowActivity extends Activity {
         tabhost.addTab(tabhost.newTabSpec("tab1")
                 .setIndicator("在线")
                 .setContent(
-                R.id.tab1_txt));
+                        R.id.tab1_txt));
         tabhost.addTab(tabhost.newTabSpec("tab2")
                 .setIndicator("本地")
                 .setContent(R.id.tab2_txt));
@@ -47,7 +48,6 @@ public class ListShowActivity extends Activity {
 
         final File file = new File("sdcard/test.mp4");
         if (file.exists()) {
-
             localLayout.addView(local);
             localLayout.addView(dele);
             dele.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +62,8 @@ public class ListShowActivity extends Activity {
 
             public void onClick(View v) {
                 Intent intent = new Intent();
-                playuri = "http://www.twirlingvr.com/App_Media/videos/_tianjin_jiaoyu_1920x1080_5mb_a.mp4";
+                playuri = "_tianjin_jiaoyu_1920x1080_5mb_a.mp4";
+                intent.putExtra("uri", path + playuri);
                 intent.setClass(ListShowActivity.this, PlayLoadActivity.class);
                 startActivity(intent);
                 id = 0;

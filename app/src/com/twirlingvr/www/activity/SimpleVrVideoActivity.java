@@ -58,7 +58,7 @@ public class SimpleVrVideoActivity extends Activity {
         Intent videoIntent = new Intent(Intent.ACTION_VIEW);
         videoIntent.setDataAndType(fileUri, "video/*");
         onNewIntent(videoIntent);
-        //handleIntent(getIntent());
+        // handleIntent(getIntent());
     }
 
     @Override

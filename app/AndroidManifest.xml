@@ -16,7 +16,8 @@
         <!-- This demo is singleTask since it makes launching via custom adb intents easier. -->
         <activity
             android:name=".activity.MainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.MyDesign">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

@@ -1,8 +1,12 @@
 package com.twirlingvr.www.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -16,16 +20,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
     private MainAdapter mAdapter = null;
     //    @Bind(R.id.mRecyclerview)
     XRecyclerView mRecyclerView;
     private int page = 1;
     private List<List<String>> datas = new ArrayList<>();
 
+    //
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        //
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                startActivity(new Intent(MainActivity.this, ListShowActivity.class));
+                return false;
+            }
+        });
         //
         mRecyclerView = (XRecyclerView) findViewById(R.id.mRecyclerview);
         GridLayoutManager layoutManager = new GridLayoutManager(getBaseContext(), 1);
@@ -83,4 +98,12 @@ public class MainActivity extends ActionBarActivity {
             }
         });
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
 }

@@ -11,3 +11,5 @@ app/.idea/libraries/common_.xml
 app/.idea/.name
 app/.idea/
 .idea/
+app/app-release.apk
+keystoreVR.jks

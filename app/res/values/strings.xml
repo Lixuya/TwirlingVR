@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-  <string name="title">Gorillas</string>
-  <string name="subtitle">The great apes from Central Africa</string>
+    <string name="title">Gorillas</string>
+    <string name="subtitle">The great apes from Central Africa</string>
   <string name="paragraph1">Gorillas are ground-dwelling, predominantly
     herbivorous apes that inhabit the forests of central Africa.
 
@@ -27,6 +27,8 @@
     gorillas living in the Democratic Republic of the Congo near its border with Rwanda
   </string>
 
-  <string name="source">Source &lt;a href="https://en.wikipedia.org/wiki/Gorilla">Wikipedia&lt;/a></string>
+    <string name="source">Source &lt;a href="https://en.wikipedia.org/wiki/Gorilla">Wikipedia&lt;/a></string>
     <string name="loading_video">Loading Video...</string>
+
+    <string name="ti">transition_image</string>
 </resources>
