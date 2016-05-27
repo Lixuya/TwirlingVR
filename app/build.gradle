@@ -48,6 +48,6 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     //
     compile 'com.jaeger.statusbaruitl:library:1.0.0'
-    compile 'cn.edu.zafu:coreprogress:0.0.3'
-    compile 'com.squareup.okhttp3:okhttp:3.3.0'
+//    compile 'cn.edu.zafu:coreprogress:0.0.3'
+//    compile 'com.squareup.okhttp3:okhttp:3.3.0'
 }

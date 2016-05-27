@@ -38,6 +38,13 @@
         <activity
             android:name=".activity.PlayLoadActivity"
             android:screenOrientation="portrait" />
+        <service android:name=".utils.DownloadService" />
+        <receiver android:name=".utils.DownloadReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+                <action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED" />
+            </intent-filter>
+        </receiver>
     </application>
 
     <!-- These permissions are used by Google VR SDK to get the best Google VR headset profiles. !-->

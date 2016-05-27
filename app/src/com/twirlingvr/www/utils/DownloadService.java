@@ -18,9 +18,7 @@ import com.twirlingvr.www.App;
 public class DownloadService extends IntentService {
     private DownloadManager dm;
     private long enqueue;
-    public static final Uri CONTENT_URI = Uri.parse("content://downloads/my_downloads");
     private DownloadChangeObserver downloadObserver;
-    int i = 0;
 
     public DownloadService() {
         super("DownloadService");
@@ -36,24 +34,24 @@ public class DownloadService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         String url = intent.getStringExtra("url");
-        startDownload(url);
+        String videoName = intent.getStringExtra("videoName");
+        startDownload(url, videoName);
     }
 
-    private void startDownload(String url) {
+    private void startDownload(String url, String videoName) {
         if (!TextUtil.isValidate(url)) return;
         dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-        request.setMimeType("application/vnd.android.package-archive");
-        request.setDescription("软件新版本下载");
+        request.setMimeType(Constants.MIME_TYPE);
+        request.setDescription("下载..");
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "video" + i);
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, videoName);
         request.setVisibleInDownloadsUi(true);
         request.allowScanningByMediaScanner();
         enqueue = dm.enqueue(request);
         App.downloadId = enqueue;
-        i++;
-//        getContentResolver().registerContentObserver(DownloadManager.COLUMN_URI,true,downloadObserver);
+//      getContentResolver().registerContentObserver(DownloadManager.COLUMN_URI,true,downloadObserver);
     }
 
     @Override
@@ -63,13 +61,10 @@ public class DownloadService extends IntentService {
     }
 
     class DownloadChangeObserver extends ContentObserver {
-
-
         public DownloadChangeObserver(Handler handler) {
             super(handler);
             // TODO Auto-generated constructor stub
         }
-
 
         @Override
         public void onChange(boolean selfChange) {
@@ -100,6 +95,7 @@ public class DownloadService extends IntentService {
         return bytesAndStatus;
     }
 
+    // 查询下载状态
     private void queryDownloadStatus() {
         DownloadManager.Query query = new DownloadManager.Query();
         query.setFilterById(enqueue);

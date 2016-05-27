@@ -55,7 +55,7 @@ public class Api {
                         return true;
                     }
                 })
-                .sslSocketFactory(SSLContextUtil.getUnsafeSLLContext().getSocketFactory())
+//                .sslSocketFactory(SSLContextUtil.getUnsafeSLLContext().getSocketFactory())
                 .build();
         base_url = getServerUrl();
         mRetrofit = new Retrofit.Builder()

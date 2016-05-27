@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 import com.bumptech.glide.Glide;
 import com.jaeger.library.StatusBarUtil;
 import com.twirlingvr.www.R;
+import com.twirlingvr.www.utils.DownloadService;
 import com.twirlingvr.www.utils.FileUtil;
 
 public class PlayLoadActivity extends Activity {
@@ -41,7 +42,13 @@ public class PlayLoadActivity extends Activity {
         load = (Button) findViewById(R.id.button);
         load.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                new Thread(networkTask).start();
+                //
+                Intent intent = new Intent(PlayLoadActivity.this, DownloadService.class);
+                intent.putExtra("url", videoUrl);
+                intent.putExtra("videoName", videoName);
+                startService(intent);
+                //
+//                new Thread(networkTask).start();
             }
         });
         play = (Button) findViewById(R.id.button2);
