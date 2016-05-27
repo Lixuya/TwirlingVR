@@ -10,4 +10,9 @@
     <style name="Theme.AppCompat.MyDesign" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>
     </style>
+
+    <style name="Theme.AppCompat.MyDesign2" parent="Theme.AppCompat.MyDesign">
+        <item name="android:fitsSystemWindows" tools:targetApi="lollipop">true</item>
+    </style>
+
 </resources>

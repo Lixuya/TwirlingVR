@@ -12,7 +12,8 @@
         android:label="拓灵VR"
         android:largeHeap="true"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Design.Light">
+        android:theme="@style/Theme.AppCompat.Light"
+        tools:replace="android:label">
         <!-- This demo is singleTask since it makes launching via custom adb intents easier. -->
         <activity
             android:name=".activity.MainActivity"

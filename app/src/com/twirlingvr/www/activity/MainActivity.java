@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 if (pageIndex == 0) {
                     toolbar.getMenu().getItem(0).setTitle("在线");
                 } else if (pageIndex == 1) {
-                    toolbar.getMenu().getItem(0).setTitle("本地");
+                    toolbar.getMenu().getItem(0).setTitle("下载");
                 }
             }
 

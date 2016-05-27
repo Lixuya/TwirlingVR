@@ -1,5 +1,6 @@
 package com.twirlingvr.www.utils;
 
+import android.os.Environment;
 import android.widget.ProgressBar;
 
 import java.io.File;
@@ -15,21 +16,27 @@ public class FileUtil {
     public int contentLength;
     public File file;
 
-    public void down(String _urlStr, String _filePath, ProgressBar mPbLoading) {
-        file = new File(_filePath);
+    private String getPath() {
+        String savepath = Environment.getDownloadCacheDirectory().getPath();
+        return savepath;
+    }
+
+    public void down(String videoUrl, String name, ProgressBar mPbLoading) {
+        file = new File(getPath() + name);
         //如果目标文件已经存在，则删除。产生覆盖旧文件的效果
         if (file.exists()) {
             file.delete();
         }
         try {
             // 构造URL
-            URL url = new URL(_urlStr);
+            URL url = new URL(videoUrl);
             // 打开连接
             URLConnection con = url.openConnection();
             //获得文件的长度
             contentLength = con.getContentLength();
-            mPbLoading.setMax(contentLength);
-            System.out.println("长度 :" + contentLength);
+            if (mPbLoading != null) {
+                mPbLoading.setMax(contentLength);
+            }
             // 输入流
             InputStream is = con.getInputStream();
             // 1K的数据缓冲
@@ -37,11 +44,13 @@ public class FileUtil {
             // 读取到的数据长度
             int len;
             // 输出的文件流
-            FileOutputStream os = new FileOutputStream(_filePath);
+            FileOutputStream os = new FileOutputStream(getPath() + name);
             // 开始读取
             while ((len = is.read(bs)) != -1) {
                 os.write(bs, 0, len);
-                mPbLoading.setProgress((int) file.length());
+                if (mPbLoading != null) {
+                    mPbLoading.setProgress((int) file.length());
+                }
             }
             // 完毕，关闭所有链接
             os.close();

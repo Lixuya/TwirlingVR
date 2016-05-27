@@ -15,7 +15,8 @@ import java.lang.ref.WeakReference;
  */
 public class App extends Application {
     public static App INS;
-//    private static User user;
+    public static long downloadId = 0;
+    //    private static User user;
     private WeakReference<Activity> mCurrentActivity;
 
     @Override

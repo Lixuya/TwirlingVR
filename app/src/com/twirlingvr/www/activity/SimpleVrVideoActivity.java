@@ -52,7 +52,7 @@ public class SimpleVrVideoActivity extends Activity {
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        String uri = bundle.getString("uri");
+        String uri = bundle.getString("videoUrl");
         fileUri = Uri.parse(uri);
 
         Intent videoIntent = new Intent(Intent.ACTION_VIEW);

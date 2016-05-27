@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
+import com.jaeger.library.StatusBarUtil;
 import com.twirlingvr.www.R;
 import com.twirlingvr.www.utils.FileUtil;
 
@@ -16,22 +17,26 @@ public class PlayLoadActivity extends Activity {
     private Button load,
             play;
     private ProgressBar mPbLoading;
-    private String imageUri,
-            loadurl;
-    private String savepath = "sdcard/test.mp4";
+    private String imageUrl,
+            videoUrl,
+            videoName;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.playpanel);
-        loadurl = getIntent().getStringExtra("uri");
-        imageUri = getIntent().getStringExtra("imageUri");
+        //
+        StatusBarUtil.setTranslucent(PlayLoadActivity.this, 112);
+        //
+        videoUrl = getIntent().getStringExtra("videoUrl");
+        imageUrl = getIntent().getStringExtra("imageUrl");
+        videoName = getIntent().getStringExtra("videoName");
         //
 //        String title = getIntent().getStringExtra("title");
 //        TextView tv_title = (TextView) findViewById(R.id.tv_title);
 //        tv_title.setText(title);
         //
         ImageView iv_video_image = (ImageView) findViewById(R.id.iv_video_image);
-        Glide.with(getBaseContext()).load(imageUri).into(iv_video_image);
+        Glide.with(getBaseContext()).load(imageUrl).into(iv_video_image);
         //
         load = (Button) findViewById(R.id.button);
         load.setOnClickListener(new View.OnClickListener() {
@@ -43,7 +48,7 @@ public class PlayLoadActivity extends Activity {
         play.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.putExtra("uri", loadurl);
+                intent.putExtra("videoUrl", videoUrl);
                 //设置跳转新的activity，参数（当前对象，跳转到的class）
                 intent.setClass(PlayLoadActivity.this, SimpleVrVideoActivity.class);
                 //启动Activity 没有返回
@@ -56,7 +61,7 @@ public class PlayLoadActivity extends Activity {
     Runnable networkTask = new Runnable() {
         @Override
         public void run() {
-            new FileUtil().down(loadurl, savepath, mPbLoading);
+            new FileUtil().down(videoUrl, videoName, mPbLoading);
         }
     };
 }
