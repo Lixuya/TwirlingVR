@@ -1,13 +1,10 @@
 package com.twirlingvr.www.fragment;
 
-
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -24,17 +21,16 @@ import java.util.List;
 /**
  * Created by 谢秋鹏 on 2016/5/27.
  */
-public class FragmentOnline extends Fragment {
+public class FragmentDownload extends Fragment {
     private MainAdapter mAdapter = null;
-    private XRecyclerView mRecyclerView = null;
+    XRecyclerView mRecyclerView;
     private List<List<String>> datas = new ArrayList<>();
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_online, container, false);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        View rootView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_download, null);
         initView(rootView);
-        return rootView;
     }
 
     private void initView(View view) {

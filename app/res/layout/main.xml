@@ -13,10 +13,8 @@
         toolbar:navigationIcon="@mipmap/logo_image"
         toolbar:title="拓灵VR" />
 
-    <com.jcodecraeer.xrecyclerview.XRecyclerView
-        android:id="@+id/mRecyclerview"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="#E5E5E5" />
+        android:layout_height="match_parent" />
 </LinearLayout>
