@@ -61,6 +61,7 @@ public class FragmentOnline extends Fragment {
 //                loadData(page);
             }
         });
+        loadData(1);
         mAdapter = new MainAdapter(datas);
         mRecyclerView.setAdapter(mAdapter);
     }

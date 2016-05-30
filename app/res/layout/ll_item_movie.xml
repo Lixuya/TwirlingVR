@@ -21,6 +21,14 @@
         android:scaleType="centerCrop"
         android:transitionName="@string/ti" />
 
+    <ImageView
+        android:id="@+id/iv_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|right"
+        android:src="@drawable/delete"
+        android:visibility="invisible" />
+
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

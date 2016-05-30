@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class FragmentDownload extends Fragment {
     private MainAdapter mAdapter = null;
-    XRecyclerView mRecyclerView;
+    private XRecyclerView mRecyclerView = null;
     private List<VideoItem> datas = new ArrayList<>();
 
     @Nullable
@@ -60,15 +60,15 @@ public class FragmentDownload extends Fragment {
             public void onLoadMore() {
                 mRecyclerView.loadMoreComplete();
 //                page += 1;
-//
             }
         });
-        mAdapter = new MainAdapter(datas);
+        mAdapter = new MainAdapter(datas, true);
         mRecyclerView.setAdapter(mAdapter);
     }
 
     private void loadData() {
-        datas = RealmHelper.getIns().selectVideoList();
+        datas.clear();
+        datas.addAll(RealmHelper.getIns().selectVideoList());
         mAdapter.notifyDataSetChanged();
     }
 }

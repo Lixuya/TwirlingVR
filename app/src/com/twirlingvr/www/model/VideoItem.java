@@ -14,6 +14,15 @@ public class VideoItem extends RealmObject implements Serializable {
     private String title;
     private String imageName,
             videoName;
+    private long updateTime;
+
+    public long getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(long updateTime) {
+        this.updateTime = updateTime;
+    }
 
     public VideoItem() {
     }
@@ -22,6 +31,7 @@ public class VideoItem extends RealmObject implements Serializable {
         title = item.get(2);
         videoName = item.get(4);
         imageName = item.get(6);
+        updateTime = System.currentTimeMillis();
     }
 
     public String getTitle() {

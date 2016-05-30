@@ -1,14 +1,15 @@
 package com.twirlingvr.www.data;
 
-import android.util.Log;
-
 import com.twirlingvr.www.App;
 import com.twirlingvr.www.model.VideoItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import io.realm.RealmResults;
+import io.realm.Sort;
 
 /**
  * Created by 谢秋鹏 on 2016/5/30.
@@ -36,8 +37,16 @@ public class RealmHelper {
     }
 
     public List<VideoItem> selectVideoList() {
-        List<VideoItem> puppies = Realm.getDefaultInstance().where(VideoItem.class).findAll();
-        Log.v("dataList", puppies.size() + "");
+        RealmResults<VideoItem> puppies = Realm.getDefaultInstance().where(VideoItem.class).findAll().sort("updateTime", Sort.DESCENDING);
+        List<VideoItem> list = new ArrayList<VideoItem>();
+        for (VideoItem item : puppies) {
+            VideoItem obj = new VideoItem();
+            obj.setTitle(item.getTitle());
+            obj.setImageName(item.getImageName());
+            obj.setVideoName(item.getVideoName());
+            obj.setUpdateTime(item.getUpdateTime());
+            list.add(obj);
+        }
         return puppies;
     }
 }

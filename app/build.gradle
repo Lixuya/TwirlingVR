@@ -24,10 +24,19 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
-}
-repositories {
-    flatDir {
-        dirs 'libs'
+    signingConfigs {
+        debug {
+            keyAlias '谢秋鹏'
+            keyPassword '123456'
+            storeFile file('../keystoreVR.jks')
+            storePassword '123456'
+        }
+        release {
+            keyAlias '谢秋鹏'
+            keyPassword '123456'
+            storeFile file('../keystoreVR.jks')
+            storePassword '123456'
+        }
     }
 }
 dependencies {

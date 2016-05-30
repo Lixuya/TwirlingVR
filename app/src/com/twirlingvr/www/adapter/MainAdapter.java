@@ -29,9 +29,17 @@ import java.util.List;
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     //
     private List<VideoItem> datas = new ArrayList<VideoItem>();
+    // true 有删除按钮
+    private boolean flag = false;
 
     public MainAdapter(List<VideoItem> datas) {
         this.datas = datas;
+        this.flag = false;
+    }
+
+    public MainAdapter(List<VideoItem> datas, boolean flag) {
+        this.datas = datas;
+        this.flag = flag;
     }
 
     @Override
@@ -48,6 +56,11 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         String title = item.getTitle();
         Glide.with(holder.itemView.getContext()).load(Constants.PAPH_IMAGE + imageName).into(holder.iv_background);
         holder.tv_title.setText(title);
+        if (flag == true) {
+            holder.iv_delete.setVisibility(View.VISIBLE);
+        } else if ((flag == false)) {
+            holder.iv_delete.setVisibility(View.GONE);
+        }
         holder.cv_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {//
@@ -85,14 +98,16 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView iv_background;
-        private final CardView cv_card;
-        private final TextView tv_title;
-        private final Button btn_down;
+        private ImageView iv_background,
+                iv_delete;
+        private CardView cv_card = null;
+        private TextView tv_title = null;
+        private Button btn_down = null;
 
         public ViewHolder(View view) {
             super(view);
             iv_background = (ImageView) view.findViewById(R.id.iv_background);
+            iv_delete = (ImageView) view.findViewById(R.id.iv_delete);
             cv_card = (CardView) view.findViewById(R.id.cv_card);
 //            cv_card.setOnLongClickListener(new View.OnLongClickListener() {
 //                @Override
@@ -104,6 +119,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 //            });
             tv_title = (TextView) view.findViewById(R.id.tv_title);
             btn_down = (Button) view.findViewById(R.id.btn_down);
+
         }
     }
 }

@@ -11,6 +11,7 @@
         android:padding="10dip"
         android:weightSum="1">
 
+        <!--suppress AndroidDomInspection -->
         <com.google.vr.sdk.widgets.video.VrVideoView
             android:id="@+id/video_view"
             android:layout_width="match_parent"
