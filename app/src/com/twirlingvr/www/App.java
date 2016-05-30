@@ -8,6 +8,8 @@ import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -15,9 +17,9 @@ import java.lang.ref.WeakReference;
  */
 public class App extends Application {
     public static App INS;
-    public static long downloadId = 0;
     //    private static User user;
     private WeakReference<Activity> mCurrentActivity;
+    public static Map<String, Long> services = new HashMap<String, Long>();
 
     @Override
     public void onCreate() {

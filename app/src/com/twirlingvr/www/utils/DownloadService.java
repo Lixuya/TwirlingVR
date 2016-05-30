@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
+import android.util.Log;
 
 import com.orhanobut.logger.Logger;
 import com.twirlingvr.www.App;
@@ -17,8 +18,8 @@ import com.twirlingvr.www.App;
  */
 public class DownloadService extends IntentService {
     private DownloadManager dm;
-    private long enqueue;
     private DownloadChangeObserver downloadObserver;
+    private long enqueue = 0;
 
     public DownloadService() {
         super("DownloadService");
@@ -33,13 +34,21 @@ public class DownloadService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        Log.i("thread", "IntentService 线程：" + Thread.currentThread().getId());
         String url = intent.getStringExtra("url");
         String videoName = intent.getStringExtra("videoName");
-        startDownload(url, videoName);
+        long downloadId = startDownload(url, videoName);
+        intent.putExtra("downloadId", downloadId);
+        //
+        App.services.put(videoName, intent.getLongExtra("downloadId", 0));
+//        Message message = new Message();
+//        message.obj = intent;
+//        message.what = 0;
+//        App.getInst().getHandler().sendMessage(message);
     }
 
-    private void startDownload(String url, String videoName) {
-        if (!TextUtil.isValidate(url)) return;
+    private long startDownload(String url, String videoName) {
+        if (!TextUtil.isValidate(url)) return 0;
         dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
         request.setMimeType(Constants.MIME_TYPE);
@@ -50,7 +59,7 @@ public class DownloadService extends IntentService {
         request.setVisibleInDownloadsUi(true);
         request.allowScanningByMediaScanner();
         enqueue = dm.enqueue(request);
-        App.downloadId = enqueue;
+        return dm.enqueue(request);
 //      getContentResolver().registerContentObserver(DownloadManager.COLUMN_URI,true,downloadObserver);
     }
 
@@ -96,7 +105,7 @@ public class DownloadService extends IntentService {
     }
 
     // 查询下载状态
-    private void queryDownloadStatus() {
+    private void queryDownloadStatus(long enqueue) {
         DownloadManager.Query query = new DownloadManager.Query();
         query.setFilterById(enqueue);
         Cursor c = dm.query(query);

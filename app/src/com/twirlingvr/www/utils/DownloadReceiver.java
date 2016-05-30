@@ -11,7 +11,6 @@ import android.provider.MediaStore;
 import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
-import com.twirlingvr.www.App;
 
 import java.io.File;
 
@@ -51,19 +50,19 @@ public class DownloadReceiver extends BroadcastReceiver {
             }
             cursor.close();
             // 如果sdcard不可用时下载下来的文件，那么这里将是一个内容提供者的路径，这里打印出来，有什么需求就怎么样处理  if(path.startsWith("content:")) {
-            if (path.startsWith("content:")) {
-                Logger.i("-----------------------CompleteReceiver 下载完了----路径path = " + path.toString());
-            }
+//            if (path.startsWith("content:")) {
+//                Logger.i("-----------------------CompleteReceiver 下载完了----路径path = " + path.toString());
+//            }
             //TODO 判断这个id与之前的id是否相等，如果相等说明是之前的那个要下载的文件
-            if (id == App.downloadId) {
-                Intent install = new Intent(Intent.ACTION_VIEW);
-                //TODO 转换path路径 否则报解析包错误
-                String uriString = getFilePathFromUri(context, Uri.parse(path));
-                Logger.i("-----------------------CompleteReceiver 转换后----路径uriString = " + uriString);
-                install.setDataAndType(Uri.fromFile(new File(uriString)), Constants.MIME_TYPE);
-                install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(install);
-            }
+//            if (id == App.downloadId) {
+//                Intent install = new Intent(Intent.ACTION_VIEW);
+//                //TODO 转换path路径 否则报解析包错误
+//                String uriString = getFilePathFromUri(context, Uri.parse(path));
+//                Logger.i("-----------------------CompleteReceiver 转换后----路径uriString = " + uriString);
+//                install.setDataAndType(Uri.fromFile(new File(uriString)), Constants.MIME_TYPE);
+//                install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                context.startActivity(install);
+//            }
         } else if (action.equals(DownloadManager.ACTION_NOTIFICATION_CLICKED)) {
             Toast.makeText(context, "点击通知了....", Toast.LENGTH_LONG).show();
             Intent install = new Intent(Intent.ACTION_VIEW);

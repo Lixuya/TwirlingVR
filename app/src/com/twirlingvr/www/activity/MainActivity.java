@@ -40,16 +40,16 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new FragmentDownload());
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(0);
-//        viewPager.setOffscreenPageLimit(0);
+//      viewPager.setOffscreenPageLimit(0);
         //
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 pageIndex = position;
                 if (pageIndex == 0) {
-                    toolbar.getMenu().getItem(0).setTitle("在线");
-                } else if (pageIndex == 1) {
                     toolbar.getMenu().getItem(0).setTitle("下载");
+                } else if (pageIndex == 1) {
+                    toolbar.getMenu().getItem(0).setTitle("本地");
                 }
             }
 

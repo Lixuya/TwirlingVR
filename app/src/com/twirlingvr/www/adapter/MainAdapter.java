@@ -2,6 +2,7 @@ package com.twirlingvr.www.adapter;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.app.DownloadManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.twirlingvr.www.App;
 import com.twirlingvr.www.R;
 import com.twirlingvr.www.activity.PlayLoadActivity;
 import com.twirlingvr.www.data.RealmHelper;
@@ -63,6 +65,17 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             holder.iv_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //
+//                    Message message = new Message();
+//                    Intent intent = new Intent();
+//                    intent.putExtra("videoName", item.getVideoName());
+//                    message.obj = intent;
+//                    message.what = 1;
+//                    App.getInst().getHandler().sendMessage(message);
+                    DownloadManager dm = (DownloadManager) App.getInst().getApplicationContext().getSystemService(
+                            App.getInst().getApplicationContext().DOWNLOAD_SERVICE);
+                    dm.remove(App.services.get(item.getVideoName()));
+                    //
                     RealmHelper.getIns().deleteVideoItem(item);
                     datas.clear();
                     datas.addAll(RealmHelper.getIns().selectVideoList());

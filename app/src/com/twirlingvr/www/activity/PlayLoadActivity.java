@@ -53,8 +53,6 @@ public class PlayLoadActivity extends Activity {
                 intent.putExtra("url", videoUrl);
                 intent.putExtra("videoName", videoName);
                 startService(intent);
-                //
-
             }
         });
         play = (Button) findViewById(R.id.button2);
