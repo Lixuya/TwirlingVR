@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new FragmentDownload());
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(0);
+//        viewPager.setOffscreenPageLimit(0);
         //
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

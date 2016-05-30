@@ -1,5 +1,6 @@
 package com.twirlingvr.www.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import io.realm.RealmObject;
@@ -8,11 +9,14 @@ import io.realm.annotations.PrimaryKey;
 /**
  * Created by 谢秋鹏 on 2016/5/30.
  */
-public class VideoItem extends RealmObject {
+public class VideoItem extends RealmObject implements Serializable {
     @PrimaryKey
     private String title;
     private String imageName,
             videoName;
+
+    public VideoItem() {
+    }
 
     public VideoItem(List<String> item) {
         title = item.get(2);

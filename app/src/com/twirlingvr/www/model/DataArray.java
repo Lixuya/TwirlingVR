@@ -9,6 +9,7 @@ import java.util.List;
 public class DataArray {
     private String result = "";
     private List<List<String>> content = new ArrayList<List<String>>();
+    private List<String> list = new ArrayList<String>();
 
     public List<List<String>> getContent() {
         return content;

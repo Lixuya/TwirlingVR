@@ -14,6 +14,7 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.twirlingvr.www.R;
 import com.twirlingvr.www.adapter.MainAdapter;
 import com.twirlingvr.www.model.DataArray;
+import com.twirlingvr.www.model.VideoItem;
 import com.twirlingvr.www.net.Api;
 import com.twirlingvr.www.net.RequestCallback;
 
@@ -27,7 +28,7 @@ import java.util.List;
 public class FragmentOnline extends Fragment {
     private MainAdapter mAdapter = null;
     private XRecyclerView mRecyclerView = null;
-    private List<List<String>> datas = new ArrayList<>();
+    private List<VideoItem> datas = new ArrayList<>();
 
     @Nullable
     @Override
@@ -75,7 +76,10 @@ public class FragmentOnline extends Fragment {
             public void onSuccess(DataArray dataArray) {
                 datas.clear();
                 List<List<String>> movieList = dataArray.getContent();
-                datas.addAll(movieList);
+                for (List<String> item : movieList) {
+                    VideoItem videoItem = new VideoItem(item);
+                    datas.add(videoItem);
+                }
                 mAdapter.notifyDataSetChanged();
             }
 

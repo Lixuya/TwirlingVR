@@ -11,9 +11,10 @@ import android.widget.ProgressBar;
 import com.bumptech.glide.Glide;
 import com.jaeger.library.StatusBarUtil;
 import com.twirlingvr.www.R;
+import com.twirlingvr.www.data.RealmHelper;
+import com.twirlingvr.www.model.VideoItem;
+import com.twirlingvr.www.utils.Constants;
 import com.twirlingvr.www.utils.DownloadService;
-
-import java.util.List;
 
 public class PlayLoadActivity extends Activity {
     private Button load,
@@ -27,26 +28,25 @@ public class PlayLoadActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.playpanel);
         //
-        StatusBarUtil.setTranslucent(PlayLoadActivity.this, 112);
+        StatusBarUtil.setTranslucent(PlayLoadActivity.this, 60);
         //
-        final List<String> videoItem = (List<String>) getIntent().getSerializableExtra("videoItem");
-        videoUrl = getIntent().getStringExtra("videoUrl");
-        imageUrl = getIntent().getStringExtra("imageUrl");
-        videoName = getIntent().getStringExtra("videoName");
-
+        final VideoItem videoItem = (VideoItem) getIntent().getExtras().getSerializable("videoItem");
+        videoName = videoItem.getVideoName();
+        videoUrl = Constants.PAPH_VIDEO + videoName;
+        imageUrl = Constants.PAPH_IMAGE + videoItem.getImageName();
         //
 //        String title = getIntent().getStringExtra("title");
 //        TextView tv_title = (TextView) findViewById(R.id.tv_title);
 //        tv_title.setText(title);
         //
-        ImageView iv_video_image = (ImageView) findViewById(R.id.iv_video_image);
+        final ImageView iv_video_image = (ImageView) findViewById(R.id.iv_video_image);
         Glide.with(getBaseContext()).load(imageUrl).into(iv_video_image);
         //
         load = (Button) findViewById(R.id.button);
         load.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //
-//                SharePreHelper.getIns().saveVideoItem(JsonParser.serializeToJson(videoItem));
+                RealmHelper.getIns().insertVideoItem(videoItem);
                 //
                 Intent intent = new Intent(PlayLoadActivity.this, DownloadService.class);
                 intent.putExtra("url", videoUrl);

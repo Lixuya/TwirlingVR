@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.twirlingvr.www.R;
 import com.twirlingvr.www.activity.PlayLoadActivity;
 import com.twirlingvr.www.model.VideoItem;
+import com.twirlingvr.www.utils.Constants;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,15 +27,10 @@ import java.util.List;
  * Created by 谢秋鹏 on 2016/5/26.
  */
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
-    // 初始列表项数量
-    private int count = 20;
-    private String imagePath = "http://www.twirlingvr.com/App_Media/videos/";
-    private String videoPath = "http://www.twirlingvr.com/App_Media/videos/";
-
     //
-    private List<List<String>> datas = new ArrayList<List<String>>();
+    private List<VideoItem> datas = new ArrayList<VideoItem>();
 
-    public MainAdapter(List<List<String>> datas) {
+    public MainAdapter(List<VideoItem> datas) {
         this.datas = datas;
     }
 
@@ -47,10 +43,10 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(final MainAdapter.ViewHolder holder, int position) {
-        final VideoItem item = new VideoItem(datas.get(position));
+        final VideoItem item = datas.get(position);
         String imageName = item.getImageName();
         String title = item.getTitle();
-        Glide.with(holder.itemView.getContext()).load(imagePath + imageName).into(holder.iv_background);
+        Glide.with(holder.itemView.getContext()).load(Constants.PAPH_IMAGE + imageName).into(holder.iv_background);
         holder.tv_title.setText(title);
         holder.cv_card.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,7 +54,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                 Intent intent = new Intent(holder.itemView.getContext(), PlayLoadActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("videoItem", (Serializable) item);
-                intent.putExtra("videoItem", bundle);
+                intent.putExtras(bundle);
                 //
                 ActivityOptions transitionActivityOptions = null;
                 String ti = holder.itemView.getContext().getString(R.string.ti);
