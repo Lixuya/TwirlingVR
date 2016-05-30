@@ -30,7 +30,7 @@ public class PlayLoadActivity extends Activity {
         //
         StatusBarUtil.setTranslucent(PlayLoadActivity.this, 60);
         //
-        final VideoItem videoItem = (VideoItem) getIntent().getExtras().getSerializable("videoItem");
+        final VideoItem videoItem = (VideoItem) getIntent().getExtras().getParcelable("videoItem");
         videoName = videoItem.getVideoName();
         videoUrl = Constants.PAPH_VIDEO + videoName;
         imageUrl = Constants.PAPH_IMAGE + videoItem.getImageName();
@@ -46,6 +46,7 @@ public class PlayLoadActivity extends Activity {
         load.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //
+                videoItem.setUpdateTime(System.currentTimeMillis());
                 RealmHelper.getIns().insertVideoItem(videoItem);
                 //
                 Intent intent = new Intent(PlayLoadActivity.this, DownloadService.class);

@@ -49,4 +49,10 @@ public class RealmHelper {
         }
         return puppies;
     }
+
+    public void deleteVideoItem(VideoItem item) {
+        Realm.getDefaultInstance().beginTransaction();
+        item.deleteFromRealm();
+        Realm.getDefaultInstance().commitTransaction();
+    }
 }

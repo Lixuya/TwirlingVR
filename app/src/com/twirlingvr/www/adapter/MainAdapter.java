@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.twirlingvr.www.R;
 import com.twirlingvr.www.activity.PlayLoadActivity;
+import com.twirlingvr.www.data.RealmHelper;
 import com.twirlingvr.www.model.VideoItem;
 import com.twirlingvr.www.utils.Constants;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,12 +53,22 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(final MainAdapter.ViewHolder holder, int position) {
         final VideoItem item = datas.get(position);
+        Log.w("item", item + "");
         String imageName = item.getImageName();
         String title = item.getTitle();
         Glide.with(holder.itemView.getContext()).load(Constants.PAPH_IMAGE + imageName).into(holder.iv_background);
         holder.tv_title.setText(title);
         if (flag == true) {
             holder.iv_delete.setVisibility(View.VISIBLE);
+            holder.iv_delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    RealmHelper.getIns().deleteVideoItem(item);
+                    datas.clear();
+                    datas.addAll(RealmHelper.getIns().selectVideoList());
+                    notifyDataSetChanged();
+                }
+            });
         } else if ((flag == false)) {
             holder.iv_delete.setVisibility(View.GONE);
         }
@@ -66,7 +77,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             public void onClick(View v) {//
                 Intent intent = new Intent(holder.itemView.getContext(), PlayLoadActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("videoItem", (Serializable) item);
+                bundle.putParcelable("videoItem", item);
                 intent.putExtras(bundle);
                 //
                 ActivityOptions transitionActivityOptions = null;
@@ -119,7 +130,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 //            });
             tv_title = (TextView) view.findViewById(R.id.tv_title);
             btn_down = (Button) view.findViewById(R.id.btn_down);
-
         }
     }
 }
