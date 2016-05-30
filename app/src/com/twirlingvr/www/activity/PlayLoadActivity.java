@@ -12,7 +12,8 @@ import com.bumptech.glide.Glide;
 import com.jaeger.library.StatusBarUtil;
 import com.twirlingvr.www.R;
 import com.twirlingvr.www.utils.DownloadService;
-import com.twirlingvr.www.utils.FileUtil;
+
+import java.util.List;
 
 public class PlayLoadActivity extends Activity {
     private Button load,
@@ -28,9 +29,11 @@ public class PlayLoadActivity extends Activity {
         //
         StatusBarUtil.setTranslucent(PlayLoadActivity.this, 112);
         //
+        final List<String> videoItem = (List<String>) getIntent().getSerializableExtra("videoItem");
         videoUrl = getIntent().getStringExtra("videoUrl");
         imageUrl = getIntent().getStringExtra("imageUrl");
         videoName = getIntent().getStringExtra("videoName");
+
         //
 //        String title = getIntent().getStringExtra("title");
 //        TextView tv_title = (TextView) findViewById(R.id.tv_title);
@@ -43,12 +46,14 @@ public class PlayLoadActivity extends Activity {
         load.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //
+//                SharePreHelper.getIns().saveVideoItem(JsonParser.serializeToJson(videoItem));
+                //
                 Intent intent = new Intent(PlayLoadActivity.this, DownloadService.class);
                 intent.putExtra("url", videoUrl);
                 intent.putExtra("videoName", videoName);
                 startService(intent);
                 //
-//                new Thread(networkTask).start();
+
             }
         });
         play = (Button) findViewById(R.id.button2);
@@ -64,11 +69,4 @@ public class PlayLoadActivity extends Activity {
         });
         mPbLoading = (ProgressBar) findViewById(R.id.pb_loading);
     }
-
-    Runnable networkTask = new Runnable() {
-        @Override
-        public void run() {
-            new FileUtil().down(videoUrl, videoName, mPbLoading);
-        }
-    };
 }

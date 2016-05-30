@@ -3,6 +3,7 @@ package com.twirlingvr.www.adapter;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,7 +16,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.twirlingvr.www.R;
 import com.twirlingvr.www.activity.PlayLoadActivity;
+import com.twirlingvr.www.model.VideoItem;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,19 +47,18 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(final MainAdapter.ViewHolder holder, int position) {
-        final List<String> item = datas.get(position);
-        final String imageName = item.get(6);
-        String title = item.get(2);
-        final String videoName = item.get(4);
+        final VideoItem item = new VideoItem(datas.get(position));
+        String imageName = item.getImageName();
+        String title = item.getTitle();
         Glide.with(holder.itemView.getContext()).load(imagePath + imageName).into(holder.iv_background);
         holder.tv_title.setText(title);
         holder.cv_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {//
                 Intent intent = new Intent(holder.itemView.getContext(), PlayLoadActivity.class);
-                intent.putExtra("videoUrl", videoPath + videoName);
-                intent.putExtra("imageUrl", imagePath + imageName);
-                intent.putExtra("videoName", videoName);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("videoItem", (Serializable) item);
+                intent.putExtra("videoItem", bundle);
                 //
                 ActivityOptions transitionActivityOptions = null;
                 String ti = holder.itemView.getContext().getString(R.string.ti);

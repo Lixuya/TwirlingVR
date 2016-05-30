@@ -46,7 +46,7 @@ public class DownloadService extends IntentService {
         request.setDescription("下载..");
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, videoName);
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_MOVIES, videoName);
         request.setVisibleInDownloadsUi(true);
         request.allowScanningByMediaScanner();
         enqueue = dm.enqueue(request);
