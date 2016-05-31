@@ -44,14 +44,4 @@
             android:layout_marginLeft="40dp"
             android:background="@drawable/play" />
     </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/pb_loading"
-        style="@android:style/Widget.ProgressBar.Horizontal"
-        android:layout_width="290dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="70dp"
-        android:layout_marginRight="70dp"
-        android:layout_marginTop="100dp" />
 </LinearLayout>

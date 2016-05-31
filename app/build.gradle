@@ -39,11 +39,16 @@ android {
         }
     }
 }
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile(name: 'commonwidget', ext: 'aar')
     compile(name: 'videowidget', ext: 'aar')
     compile(name: 'common', ext: 'aar')
-    compile(name: 'commonwidget', ext: 'aar')
     //
     compile 'com.android.support:appcompat-v7:23.2.0'
     compile 'com.android.support:cardview-v7:23.2.0'
@@ -58,6 +63,7 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     //
     compile 'com.jaeger.statusbaruitl:library:1.0.0'
+    compile 'com.github.tibolte:elasticdownload:1.0.4'
 //    compile 'cn.edu.zafu:coreprogress:0.0.3'
 //    compile 'com.squareup.okhttp3:okhttp:3.3.0'
 }

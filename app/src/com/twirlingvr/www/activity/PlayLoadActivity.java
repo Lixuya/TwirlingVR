@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
 import com.jaeger.library.StatusBarUtil;
+import com.twirlingvr.www.App;
 import com.twirlingvr.www.R;
 import com.twirlingvr.www.data.RealmHelper;
 import com.twirlingvr.www.model.VideoItem;
@@ -49,7 +50,7 @@ public class PlayLoadActivity extends Activity {
                 videoItem.setUpdateTime(System.currentTimeMillis());
                 RealmHelper.getIns().insertVideoItem(videoItem);
                 //
-                Intent intent = new Intent(PlayLoadActivity.this, DownloadService.class);
+                Intent intent = new Intent(App.getInst().getApplicationContext(), DownloadService.class);
                 intent.putExtra("url", videoUrl);
                 intent.putExtra("videoName", videoName);
                 startService(intent);
@@ -66,6 +67,5 @@ public class PlayLoadActivity extends Activity {
                 startActivity(intent);
             }
         });
-        mPbLoading = (ProgressBar) findViewById(R.id.pb_loading);
     }
 }

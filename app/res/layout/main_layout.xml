@@ -11,13 +11,12 @@
         android:padding="10dip"
         android:weightSum="1">
 
-        <!--suppress AndroidDomInspection -->
         <com.google.vr.sdk.widgets.video.VrVideoView
             android:id="@+id/video_view"
             android:layout_width="match_parent"
             android:layout_height="500dp"
             android:layout_weight="11.05"
-            android:scrollbars="@null" />
+            android:scrollbars="" />
 
         <!-- Seeking UI & progress indicator.-->
         <SeekBar

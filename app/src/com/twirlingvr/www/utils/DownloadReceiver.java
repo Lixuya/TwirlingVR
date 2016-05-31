@@ -31,6 +31,9 @@ public class DownloadReceiver extends BroadcastReceiver {
             DownloadManager.Query query = new DownloadManager.Query();
             query.setFilterById(id);
             downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+            //
+//            downloadManager.remove(App.services.get(App.valueGetKey(id)));
+            //
             Cursor cursor = downloadManager.query(query);
             int columnCount = cursor.getColumnCount();
             //TODO 这里把所有的列都打印一下，有什么需求，就怎么处理,文件的本地路径就是path

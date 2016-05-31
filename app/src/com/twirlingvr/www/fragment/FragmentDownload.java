@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.twirlingvr.www.R;
-import com.twirlingvr.www.adapter.MainAdapter;
+import com.twirlingvr.www.adapter.OffineAdapter;
 import com.twirlingvr.www.data.RealmHelper;
 import com.twirlingvr.www.model.VideoItem;
 
@@ -22,7 +22,7 @@ import java.util.List;
  * Created by 谢秋鹏 on 2016/5/27.
  */
 public class FragmentDownload extends Fragment {
-    private MainAdapter mAdapter = null;
+    private OffineAdapter mAdapter = null;
     private XRecyclerView mRecyclerView = null;
     private List<VideoItem> datas = new ArrayList<>();
 
@@ -62,13 +62,14 @@ public class FragmentDownload extends Fragment {
 //                page += 1;
             }
         });
-        mAdapter = new MainAdapter(datas, true);
+        mAdapter = new OffineAdapter(datas);
         mRecyclerView.setAdapter(mAdapter);
     }
 
     private void loadData() {
         datas.clear();
         datas.addAll(RealmHelper.getIns().selectVideoList());
+//        Handler handler2 = new DownloadService().handler;
         mAdapter.notifyDataSetChanged();
     }
 }

@@ -1,6 +1,5 @@
 package com.twirlingvr.www.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -28,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                startActivity(new Intent(MainActivity.this, ListShowActivity.class));
+//                startActivity(new Intent(MainActivity.this, ListShowActivity.class));
                 return false;
             }
         });

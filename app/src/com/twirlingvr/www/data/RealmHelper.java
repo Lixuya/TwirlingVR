@@ -9,7 +9,6 @@ import java.util.List;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
-import io.realm.Sort;
 
 /**
  * Created by 谢秋鹏 on 2016/5/30.
@@ -37,7 +36,8 @@ public class RealmHelper {
     }
 
     public List<VideoItem> selectVideoList() {
-        RealmResults<VideoItem> puppies = Realm.getDefaultInstance().where(VideoItem.class).findAll().sort("updateTime", Sort.DESCENDING);
+        RealmResults<VideoItem> puppies = Realm.getDefaultInstance().where(VideoItem.class).findAll();
+                //.sort("updateTime", Sort.DESCENDING);
         List<VideoItem> list = new ArrayList<VideoItem>();
         for (VideoItem item : puppies) {
             VideoItem obj = new VideoItem();
@@ -53,6 +53,13 @@ public class RealmHelper {
     public void deleteVideoItem(VideoItem item) {
         Realm.getDefaultInstance().beginTransaction();
         item.deleteFromRealm();
+        Realm.getDefaultInstance().commitTransaction();
+    }
+
+    public void deleteVideoItem(String videoName) {
+        Realm.getDefaultInstance().beginTransaction();
+        VideoItem videoItem = Realm.getDefaultInstance().where(VideoItem.class).equalTo("videoName", videoName).findFirst();
+        videoItem.deleteFromRealm();
         Realm.getDefaultInstance().commitTransaction();
     }
 }

@@ -2,14 +2,18 @@ package com.twirlingvr.www;
 
 import android.app.Activity;
 import android.app.Application;
+import android.database.ContentObserver;
 import android.os.Bundle;
 
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -20,7 +24,7 @@ public class App extends Application {
     //    private static User user;
     private WeakReference<Activity> mCurrentActivity;
     public static Map<String, Long> services = new HashMap<String, Long>();
-
+    public static ContentObserver observer = null;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -115,5 +119,19 @@ public class App extends Application {
 
     public Activity getCurrentShowActivity() {
         return mCurrentActivity.get();
+    }
+
+    public static String valueGetKey(long value) {
+        Set set = services.entrySet();//新建一个不可重复的集合
+        ArrayList<String> arr = new ArrayList<String>();//新建一个集合
+        Iterator it = set.iterator();//遍历的类
+        while (it.hasNext()) {
+            Map.Entry entry = (Map.Entry) it.next();//找到所有key-value对集合
+            if (entry.getValue().equals(value)) {//通过判断是否有该value值
+                String s = (String) entry.getKey();//取得key值
+                arr.add(s);
+            }
+        }
+        return arr.get(0);
     }
 }
