@@ -3,6 +3,7 @@ package com.twirlingvr.www.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,6 +16,7 @@ import com.twirlingvr.www.R;
 import com.twirlingvr.www.data.RealmHelper;
 import com.twirlingvr.www.model.VideoItem;
 import com.twirlingvr.www.utils.Constants;
+import com.twirlingvr.www.utils.DownloadChangeObserver;
 import com.twirlingvr.www.utils.DownloadService;
 
 public class PlayLoadActivity extends Activity {
@@ -24,6 +26,16 @@ public class PlayLoadActivity extends Activity {
     private String imageUrl,
             videoUrl,
             videoName;
+    private CountDownTimer selfTimer = new CountDownTimer(100 * 1000, 1000) {
+        public void onTick(long millSec) {
+            mPbLoading.setProgress((int) ((100 * 1000 - millSec) / 1000));
+        }
+
+        @Override
+        public void onFinish() {
+
+        }
+    };
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +66,8 @@ public class PlayLoadActivity extends Activity {
                 intent.putExtra("url", videoUrl);
                 intent.putExtra("videoName", videoName);
                 startService(intent);
+                //
+                selfTimer.start();
             }
         });
         play = (Button) findViewById(R.id.button2);
@@ -67,5 +81,23 @@ public class PlayLoadActivity extends Activity {
                 startActivity(intent);
             }
         });
+        mPbLoading = (ProgressBar) findViewById(R.id.pb_download);
+        DownloadChangeObserver pco = (DownloadChangeObserver) App.observer;
+        if (pco == null) {
+            return;
+        }
+        pco.setProgressListener(new DownloadChangeObserver.ProgressListener() {
+            @Override
+            public void invoke(int progress) {
+                mPbLoading.setProgress(progress);
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        selfTimer.cancel();
+        selfTimer = null;
     }
 }
