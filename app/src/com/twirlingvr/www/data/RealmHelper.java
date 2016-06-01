@@ -62,4 +62,8 @@ public class RealmHelper {
         videoItem.deleteFromRealm();
         Realm.getDefaultInstance().commitTransaction();
     }
+
+    public void insertPath(){
+
+    }
 }

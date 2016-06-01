@@ -4,7 +4,6 @@ import android.app.DownloadManager;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.os.Handler;
-import android.util.Log;
 
 import com.orhanobut.logger.Logger;
 import com.twirlingvr.www.App;
@@ -46,7 +45,7 @@ public class DownloadChangeObserver extends ContentObserver {
         if (size == null || size[0] == -1) {
             return;
         }
-        Log.i("observer", (double) size[0] / (double) size[1] + " " + progress + " " + size[0] + " " + size[1]);
+//        Log.i("observer", (double) size[0] / (double) size[1] + " " + progress + " " + size[0] + " " + size[1]);
         if (listener != null) {
             listener.invoke(progress);
         }

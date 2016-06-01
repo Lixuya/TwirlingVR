@@ -15,13 +15,15 @@ public class VideoItem extends RealmObject implements Parcelable {
     @PrimaryKey
     private String title;
     private String imageName,
-            videoName;
+            videoName,
+            fileUri;
     private long updateTime = 0;
 
     protected VideoItem(Parcel in) {
         title = in.readString();
         imageName = in.readString();
         videoName = in.readString();
+        fileUri = in.readString();
         updateTime = in.readLong();
     }
 
@@ -76,7 +78,16 @@ public class VideoItem extends RealmObject implements Parcelable {
         dest.writeString(title);
         dest.writeString(imageName);
         dest.writeString(videoName);
+        dest.writeString(fileUri);
         dest.writeLong(updateTime);
+    }
+
+    public String getFileUri() {
+        return fileUri;
+    }
+
+    public void setFileUri(String fileUri) {
+        this.fileUri = fileUri;
     }
 
     public static final Creator<VideoItem> CREATOR = new Creator<VideoItem>() {
@@ -86,6 +97,7 @@ public class VideoItem extends RealmObject implements Parcelable {
             videoItem.title=in.readString();
             videoItem.imageName=in.readString();
             videoItem.videoName=in.readString();
+            videoItem.fileUri=in.readString();
             videoItem.updateTime=in.readLong();
             return videoItem;
         }

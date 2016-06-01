@@ -2,6 +2,7 @@ package com.twirlingvr.www.adapter;
 
 import android.app.DownloadManager;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,6 +21,7 @@ import com.twirlingvr.www.data.RealmHelper;
 import com.twirlingvr.www.model.VideoItem;
 import com.twirlingvr.www.utils.Constants;
 import com.twirlingvr.www.utils.DownloadChangeObserver;
+import com.twirlingvr.www.utils.FileUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,12 +75,17 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
         holder.iv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 如果下载中，取消下载
                 if (App.services.size() != 0) {
                     DownloadManager dm = (DownloadManager) App.getInst().getApplicationContext().getSystemService(
                             App.getInst().getApplicationContext().DOWNLOAD_SERVICE);
                     dm.remove(App.services.get(item.getVideoName()));
                 }
-                //
+                // 删除本地文件
+                else {
+                    FileUtil.delete(Uri.parse(Constants.URI_VIDEO + item.getVideoName()));
+                }
+                // 删除数据库下载记录
                 RealmHelper.getIns().deleteVideoItem(item);
                 datas.clear();
                 datas.addAll(RealmHelper.getIns().selectVideoList());
@@ -89,7 +96,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
             @Override
             public void onClick(View v) {//
                 Intent intent = new Intent(holder.itemView.getContext(), SimpleVrVideoActivity.class);
-                intent.putExtra("videoUrl", Constants.CONTENT_PATH + item.getVideoName());
+                intent.putExtra("videoUrl", Constants.URI_VIDEO + item.getVideoName());
                 holder.itemView.getContext().startActivity(intent);
             }
         });

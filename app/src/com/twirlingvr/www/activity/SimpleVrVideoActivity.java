@@ -1,9 +1,9 @@
 package com.twirlingvr.www.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -12,10 +12,11 @@ import android.widget.Toast;
 import com.google.vr.sdk.widgets.video.VrVideoEventListener;
 import com.google.vr.sdk.widgets.video.VrVideoView;
 import com.twirlingvr.www.R;
+import com.twirlingvr.www.utils.TextUtil;
 
 import java.io.IOException;
 
-public class SimpleVrVideoActivity extends Activity {
+public class SimpleVrVideoActivity extends AppCompatActivity {
     private static final String TAG = SimpleVrVideoActivity.class.getSimpleName();
     private static final String STATE_IS_PAUSED = "isPaused";
     private static final String STATE_PROGRESS_TIME = "progressTime";
@@ -52,7 +53,10 @@ public class SimpleVrVideoActivity extends Activity {
 
         String uri = getIntent().getStringExtra("videoUrl");
         fileUri = Uri.parse(uri);
-
+        Log.w("uri", uri + " " + fileUri.toString());
+        if (!TextUtil.isValidate(uri)) {
+            return;
+        }
         Intent videoIntent = new Intent(Intent.ACTION_VIEW);
         videoIntent.setDataAndType(fileUri, "video/*");
         onNewIntent(videoIntent);
