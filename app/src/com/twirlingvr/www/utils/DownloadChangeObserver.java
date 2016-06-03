@@ -22,6 +22,10 @@ public class DownloadChangeObserver extends ContentObserver {
         this.handler = handler;
     }
 
+    public long getDownloadId() {
+        return downloadId;
+    }
+
     public void setDownloadId(long downloadId) {
         this.downloadId = downloadId;
     }

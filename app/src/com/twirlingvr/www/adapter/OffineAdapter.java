@@ -49,7 +49,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
         final VideoItem item = datas.get(position);
         Log.w("item", item + "");
         String imageName = item.getImageName();
-        String title = item.getTitle();
+        final String title = item.getTitle();
 //        final String videoName = item.getVideoName();
         Glide.with(holder.itemView.getContext()).load(Constants.PAPH_IMAGE + imageName).into(holder.iv_background);
         holder.tv_title.setText(title);
@@ -63,9 +63,11 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
                     if (progress == 100) {
                         holder.pb_download.setVisibility(View.GONE);
                         holder.tv_title.setVisibility(View.VISIBLE);
+                        holder.cv_card.setEnabled(true);
                     } else {
                         holder.pb_download.setVisibility(View.VISIBLE);
                         holder.tv_title.setVisibility(View.GONE);
+                        holder.cv_card.setEnabled(false);
                         holder.pb_download.setProgress(progress);
                     }
                 }
@@ -92,7 +94,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
                 notifyDataSetChanged();
             }
         });
-        holder.tv_title.setOnClickListener(new View.OnClickListener() {
+        holder.cv_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {//
                 Intent intent = new Intent(holder.itemView.getContext(), SimpleVrVideoActivity.class);

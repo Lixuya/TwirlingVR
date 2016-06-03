@@ -121,7 +121,7 @@ public class App extends Application {
         return mCurrentActivity.get();
     }
 
-    public static String valueGetKey(long value) {
+    public static String getKeyByValue(long value) {
         Set set = services.entrySet();//新建一个不可重复的集合
         ArrayList<String> arr = new ArrayList<String>();//新建一个集合
         Iterator it = set.iterator();//遍历的类

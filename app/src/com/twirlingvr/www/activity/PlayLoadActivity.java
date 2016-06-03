@@ -26,9 +26,9 @@ public class PlayLoadActivity extends Activity {
     private String imageUrl,
             videoUrl,
             videoName;
-    private CountDownTimer selfTimer = new CountDownTimer(100 * 1000, 1000) {
+    private CountDownTimer selfTimer = new CountDownTimer(20 * 1000, 1000) {
         public void onTick(long millSec) {
-            mPbLoading.setProgress((int) ((100 * 1000 - millSec) / 1000));
+            mPbLoading.setProgress((int) ((20 * 1000 - millSec) / 1000));
         }
 
         @Override
@@ -83,7 +83,7 @@ public class PlayLoadActivity extends Activity {
         });
         mPbLoading = (ProgressBar) findViewById(R.id.pb_download);
         DownloadChangeObserver pco = (DownloadChangeObserver) App.observer;
-        if (pco == null) {
+        if (pco == null || !App.getKeyByValue(pco.getDownloadId()).equals(videoName)) {
             return;
         }
         pco.setProgressListener(new DownloadChangeObserver.ProgressListener() {

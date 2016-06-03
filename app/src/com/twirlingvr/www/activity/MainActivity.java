@@ -12,11 +12,13 @@ import com.twirlingvr.www.R;
 import com.twirlingvr.www.adapter.ViewPagerAdapter;
 import com.twirlingvr.www.fragment.FragmentDownload;
 import com.twirlingvr.www.fragment.FragmentOnline;
+import com.twirlingvr.www.player.OpenMXPlayer;
 
 public class MainActivity extends AppCompatActivity {
     //
     int pageIndex = 0;
     private Toolbar toolbar = null;
+    boolean toggle = false;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +29,14 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+
+                OpenMXPlayer openMXPlayer = new OpenMXPlayer();
+                openMXPlayer.setDataSource(getBaseContext(), R.raw.music_aac_320k);
+                if (toggle == false) {
+                    openMXPlayer.play();
+                } else {
+                    openMXPlayer.stop();
+                }
 //                startActivity(new Intent(MainActivity.this, ListShowActivity.class));
                 return false;
             }
