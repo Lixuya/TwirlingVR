@@ -21,8 +21,8 @@ android {
             renderscript.srcDirs = ['rs']
             res.srcDirs = ['res']
             assets.srcDirs = ['assets']
+            jni.srcDirs = [];
             jniLibs.srcDirs = ['libs']
-
         }
     }
     signingConfigs {
@@ -39,17 +39,49 @@ android {
             storePassword '123456'
         }
     }
+    productFlavors {
+        x86 {
+            ndk {
+                abiFilter "armeabi"
+            }
+        }
+        mips {
+            ndk {
+                abiFilter "armeabi"
+            }
+        }
+        arm {
+            ndk {
+                abiFilter "armeabi"
+            }
+        }
+        armv7 {
+            ndk {
+                abiFilter "armeabi"
+            }
+        }
+        armv8 {
+            ndk {
+                abiFilter "armeabi"
+            }
+        }
+        fat
+    }
+    lintOptions.abortOnError false
 }
 repositories {
     flatDir {
         dirs 'libs'
     }
 }
+
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+
     compile(name: 'commonwidget', ext: 'aar')
     compile(name: 'videowidget', ext: 'aar')
     compile(name: 'common', ext: 'aar')
+//    compile(name: 'twirlingAudio', ext: 'jar')
     //
     compile 'com.android.support:appcompat-v7:23.2.0'
     compile 'com.android.support:cardview-v7:23.2.0'
@@ -65,6 +97,7 @@ dependencies {
     //
     compile 'com.jaeger.statusbaruitl:library:1.0.0'
     compile 'com.github.tibolte:elasticdownload:1.0.4'
-//    compile 'cn.edu.zafu:coreprogress:0.0.3'
-//    compile 'com.squareup.okhttp3:okhttp:3.3.0'
+    //    compile 'cn.edu.zafu:coreprogress:0.0.3'
+    //    compile 'com.squareup.okhttp3:okhttp:3.3.0'
+//    compile files('twirlingAudio.jar')
 }

@@ -18,7 +18,8 @@ public class MainActivity extends AppCompatActivity {
     //
     int pageIndex = 0;
     private Toolbar toolbar = null;
-    boolean toggle = false;
+    private boolean toggle = false;
+    private OpenMXPlayer openMXPlayer = new OpenMXPlayer();
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,16 +27,18 @@ public class MainActivity extends AppCompatActivity {
         //
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        //
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-
-                OpenMXPlayer openMXPlayer = new OpenMXPlayer();
                 openMXPlayer.setDataSource(getBaseContext(), R.raw.music_aac_320k);
                 if (toggle == false) {
                     openMXPlayer.play();
+                    toggle = true;
                 } else {
                     openMXPlayer.stop();
+                    toggle = false;
                 }
 //                startActivity(new Intent(MainActivity.this, ListShowActivity.class));
                 return false;

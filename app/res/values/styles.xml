@@ -7,7 +7,9 @@
         <item name="android:layout_margin">5dip</item>
     </style>
 
-    <style name="Theme.AppCompat.MyDesign" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="Theme.AppCompat.MyDesign" parent="Theme.AppCompat.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
         <item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>
     </style>
 
