@@ -33,7 +33,7 @@ public class AtmosAudio {
             for (ii = 0; ii < FRAME_LENGTH * 4; ii++) {
                 audioInput[ii] = audioFlat[n_acc++];
             }
-            audioProcess.Process(0, 0, audioInput, audioOutput, metadata);
+            audioProcess.Process(3.14f / 4, 0, audioInput, audioOutput, metadata);
             for (ii = 0; ii < FRAME_LENGTH * 2; ii++) {
                 audioOutputBufShort[n_acc_out++] = (short) audioOutput[ii];
             }
