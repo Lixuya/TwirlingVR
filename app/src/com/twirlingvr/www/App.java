@@ -25,6 +25,7 @@ public class App extends Application {
     private WeakReference<Activity> mCurrentActivity;
     public static Map<String, Long> services = new HashMap<String, Long>();
     public static ContentObserver observer = null;
+
     @Override
     public void onCreate() {
         super.onCreate();

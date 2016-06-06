@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.twirlingvr.www.App;
 import com.twirlingvr.www.R;
 import com.twirlingvr.www.activity.PlayLoadActivity;
 import com.twirlingvr.www.model.VideoItem;
@@ -62,7 +63,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                 ActivityOptions transitionActivityOptions = null;
                 String ti = holder.itemView.getContext().getString(R.string.ti);
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                    transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation((Activity) holder.itemView.getContext(), holder.iv_background, ti);
+                    Activity activity = App.getInst().getCurrentShowActivity();
+                    transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(activity, holder.iv_background, ti);
                     holder.itemView.getContext().startActivity(intent, transitionActivityOptions.toBundle());
                 } else {
                     holder.itemView.getContext().startActivity(intent);
