@@ -290,17 +290,26 @@ public class OpenMXPlayer implements Runnable {
                 final byte[] chunk = new byte[info.size];
                 buf.get(chunk);
                 buf.clear();
-
+//                int i1 = 0;
+//                int i2 = 0;
+//                byte[] chunk2 = new byte[info.size / 2];
+//                for (int ii = 0; ii < info.size / 2 / 4; ii++) {
+//                    chunk2[i2++] = chunk[i1++];
+//                    chunk2[i2++] = chunk[i1++];
+//                    chunk2[i2++] = chunk[i1++];
+//                    chunk2[i2++] = chunk[i1++];
+//                    i1 += 4;
+//                }
                 //
-                int loopNum = chunk.length / 4 / FRAME_LENGTH;
-                //
-                DulbyAtmosAudio daa = new DulbyAtmosAudio();
-                short[] audioOutputBufShort = daa.byte2Short(chunk);
-                audioOutputBufShort = daa.convertToAtmos(audioOutputBufShort, audioProcess);
+                DulbyAtmosAudio daa = new DulbyAtmosAudio(audioProcess);
+                short[] audio = daa.byte2Short(chunk);
+                Log.w("short", audio.length + "");
+                audio = daa.convertToAtmos(audio);
 
                 // 播放
+                int loopNum = chunk.length / 4 / FRAME_LENGTH;
                 if (chunk.length > 0) {
-                    audioTrack.write(audioOutputBufShort, 0, FRAME_LENGTH * 2 * loopNum);
+                    audioTrack.write(audio, 0, FRAME_LENGTH * 2 * loopNum);
 //                    audioTrack.write(chunk2, 0, chunk2.length);
                     Log.d(LOG_TAG, "chunk.length." + chunk.length);
                     /*if(this.state.get() != PlayerStates.PLAYING) {

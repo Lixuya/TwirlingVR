@@ -13,23 +13,29 @@ public class DulbyAtmosAudio {
     private static final int FRAME_LENGTH = 512;
     private int chunkSize = 0;
     private int loopNum = 0;
-    private int ii;
+    private AudioProcess audioProcess = null;
+
+    DulbyAtmosAudio(AudioProcess audioProcess) {
+        this.audioProcess = audioProcess;
+    }
+
     //
-    public short[] convertToAtmos(short[] audioFlat, AudioProcess audioProcess) {
+    public short[] convertToAtmos(short[] audioFlat) {
         // TODO
         short[] audioOutputBufShort = new short[FRAME_LENGTH * 2 * loopNum];
+        int n_acc = 0;
+        int n_acc_out = 0;
+        int ii = 0;
         float[] metadata = new float[4 * 3];
         float[] audioInput = new float[FRAME_LENGTH * 4];
         float[] audioOutput = new float[FRAME_LENGTH * 2];
-        int n_acc = 0;
-        int n_acc_out = 0;
         for (int loopi = 0; loopi < loopNum; loopi++) {
             for (ii = 0; ii < FRAME_LENGTH * 4; ii++) {
-                audioInput[ii] = audioFlat[n_acc++];
+                audioInput[ii] = audioFlat[ii];
             }
             audioProcess.Process(0, 0, audioInput, audioOutput, metadata);
             for (ii = 0; ii < FRAME_LENGTH * 2; ii++) {
-                audioOutputBufShort[n_acc_out++] = (short) audioOutput[ii];
+                audioOutputBufShort[ii] = (short) audioOutput[ii];
             }
         }
         return audioOutputBufShort;

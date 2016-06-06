@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 apply plugin: 'realm-android'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    compileSdkVersion setup.compileSdk
+    buildToolsVersion setup.buildTools
 
     defaultConfig {
         applicationId "com.twirlingvr.com"
-        minSdkVersion 19
-        targetSdkVersion 23
+        minSdkVersion setup.minSdk
+        targetSdkVersion setup.targetSdk
         versionCode 1
         versionName "1.0"
     }
@@ -67,7 +67,9 @@ android {
         }
         fat
     }
-    lintOptions.abortOnError false
+    lintOptions {
+        abortOnError false
+    }
 }
 repositories {
     flatDir {
@@ -96,8 +98,18 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     //
     compile 'com.jaeger.statusbaruitl:library:1.0.0'
-    compile 'com.github.tibolte:elasticdownload:1.0.4'
-    //    compile 'cn.edu.zafu:coreprogress:0.0.3'
-    //    compile 'com.squareup.okhttp3:okhttp:3.3.0'
-//    compile files('twirlingAudio.jar')
+//    compile 'com.github.tibolte:elasticdownload:1.0.4'
+    //
+    compile('com.mikepenz:aboutlibraries:5.6.6@aar') {
+        transitive = true
+        exclude module: "fastadapter"
+    }
+
+    compile 'com.mikepenz:itemanimators:0.2.4@aar'
+    compile 'com.mikepenz:crossfader:1.3.7@aar'
+    compile('com.mikepenz:crossfadedrawerlayout:0.3.4@aar')
+    compile 'com.mikepenz:google-material-typeface:2.2.0.1@aar'
+    compile 'com.mikepenz:fontawesome-typeface:4.4.0.1@aar'
+    compile 'com.mikepenz:octicons-typeface:3.0.0.1@aar'
+    compile project(':library')
 }

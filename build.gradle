@@ -1,8 +1,16 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+    ext {
+        setup = [compileSdk: 23,
+                 buildTools: "23.0.2",
+                 minSdk    : 19,
+                 targetSdk : 23]
+        versions = [supportLib: "23.4.0"]
+    }
     repositories {
         jcenter()
+        mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.1.0'
@@ -15,10 +23,15 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
 
 }
 //
-//task clean(type: Delete) {
-//    delete rootProject.buildDir
-//}
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.10'
+}
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
