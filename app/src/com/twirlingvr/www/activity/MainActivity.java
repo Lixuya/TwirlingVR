@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                openMXPlayer.setDataSource(getBaseContext(), R.raw.music_aac_320k);
+                openMXPlayer.setDataSource(getBaseContext(), R.raw.sound4);
                 if (toggle == false) {
                     openMXPlayer.play();
                     toggle = true;
@@ -105,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
                 .withActivity(this)
                 .withHeaderBackground(R.mipmap.header)
                 .withHeaderBackground(R.mipmap.banner)
-                
                 .withSavedInstance(savedInstanceState)
                 .build();
 

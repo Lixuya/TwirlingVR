@@ -9,13 +9,13 @@ import java.nio.ByteOrder;
  * 解决问题：立体声变为全景声，大帧转为小帧处理
  * Created by 谢秋鹏 on 2016/6/6.
  */
-public class DulbyAtmosAudio {
+public class AtmosAudio {
     private static final int FRAME_LENGTH = 512;
     private int chunkSize = 0;
     private int loopNum = 0;
     private AudioProcess audioProcess = null;
 
-    DulbyAtmosAudio(AudioProcess audioProcess) {
+    AtmosAudio(AudioProcess audioProcess) {
         this.audioProcess = audioProcess;
     }
 
@@ -31,11 +31,11 @@ public class DulbyAtmosAudio {
         float[] audioOutput = new float[FRAME_LENGTH * 2];
         for (int loopi = 0; loopi < loopNum; loopi++) {
             for (ii = 0; ii < FRAME_LENGTH * 4; ii++) {
-                audioInput[ii] = audioFlat[ii];
+                audioInput[ii] = audioFlat[n_acc++];
             }
             audioProcess.Process(0, 0, audioInput, audioOutput, metadata);
             for (ii = 0; ii < FRAME_LENGTH * 2; ii++) {
-                audioOutputBufShort[ii] = (short) audioOutput[ii];
+                audioOutputBufShort[n_acc_out++] = (short) audioOutput[ii];
             }
         }
         return audioOutputBufShort;
@@ -45,7 +45,7 @@ public class DulbyAtmosAudio {
     public short[] byte2Short(byte[] chunk) {
         //
         chunkSize = chunk.length;
-        loopNum = chunkSize / 4 / FRAME_LENGTH;
+        loopNum = chunkSize / 2 / 4 / FRAME_LENGTH;
         ByteBuffer fulldata = ByteBuffer.allocate(chunkSize);
         fulldata.put(chunk);
         fulldata.order(ByteOrder.LITTLE_ENDIAN);
