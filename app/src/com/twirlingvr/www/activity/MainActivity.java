@@ -103,8 +103,7 @@ public class MainActivity extends AppCompatActivity {
         //
         headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
-                .withHeaderBackground(R.mipmap.header)
-                .withHeaderBackground(R.mipmap.banner)
+                .withHeaderBackground(R.drawable.fl_drawer_head)
                 .withSavedInstance(savedInstanceState)
                 .build();
 

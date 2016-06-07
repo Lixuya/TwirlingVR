@@ -14,6 +14,24 @@ public class AtmosAudio {
     private int chunkSize = 0;
     private int loopNum = 0;
     private AudioProcess audioProcess = null;
+    private float pitch = 3.14f / 4;
+    private float yaw = 0;
+
+    public float getYaw() {
+        return yaw;
+    }
+
+    public void setYaw(float yaw) {
+        this.yaw = yaw;
+    }
+
+    public float getPitch() {
+        return pitch;
+    }
+
+    public void setPitch(float pitch) {
+        this.pitch = pitch;
+    }
 
     AtmosAudio(AudioProcess audioProcess) {
         this.audioProcess = audioProcess;
@@ -26,6 +44,7 @@ public class AtmosAudio {
         int n_acc = 0;
         int n_acc_out = 0;
         int ii = 0;
+        // 0度方向
         float[] metadata = new float[4 * 3];
         float[] audioInput = new float[FRAME_LENGTH * 4];
         float[] audioOutput = new float[FRAME_LENGTH * 2];
@@ -33,7 +52,7 @@ public class AtmosAudio {
             for (ii = 0; ii < FRAME_LENGTH * 4; ii++) {
                 audioInput[ii] = audioFlat[n_acc++];
             }
-            audioProcess.Process(3.14f / 4, 0, audioInput, audioOutput, metadata);
+            audioProcess.Process(pitch, yaw, audioInput, audioOutput, metadata);
             for (ii = 0; ii < FRAME_LENGTH * 2; ii++) {
                 audioOutputBufShort[n_acc_out++] = (short) audioOutput[ii];
             }
