@@ -43,7 +43,7 @@ public class OpenMXPlayer implements Runnable {
     private MediaExtractor extractor;
     private MediaCodec codec;
     private AudioTrack audioTrack;
-
+    private float[] metadataP = null;
     private PlayerEvents events = null;
     private PlayerStates state = new PlayerStates();
     private String sourcePath = null;
@@ -52,7 +52,7 @@ public class OpenMXPlayer implements Runnable {
     private boolean stop = false;
     private AudioProcess audioProcess = null;
     Handler handler = new Handler();
-
+    private AtmosAudio daa = null;
     String mime = null;
     int sampleRate = 0, channels = 0, bitrate = 0;
     long presentationTimeUs = 0, duration = 0;
@@ -152,7 +152,9 @@ public class OpenMXPlayer implements Runnable {
         extractor = new MediaExtractor();
         // try to set the source, this might fail
         try {
-            if (sourcePath != null) extractor.setDataSource(this.sourcePath);
+            if (sourcePath != null) {
+                extractor.setDataSource(sourcePath);
+            }
             if (sourceRawResId != -1) {
                 AssetFileDescriptor fd = mContext.getResources().openRawResourceFd(sourceRawResId);
                 extractor.setDataSource(fd.getFileDescriptor(), fd.getStartOffset(), fd.getDeclaredLength());
@@ -290,10 +292,11 @@ public class OpenMXPlayer implements Runnable {
                 final byte[] chunk = new byte[info.size];
                 buf.get(chunk);
                 buf.clear();
-                //
-                AtmosAudio daa = new AtmosAudio(audioProcess);
+                // TODO
+                daa = new AtmosAudio(audioProcess);
                 short[] audio = daa.byte2Short(chunk);
                 Log.w("short", audio.length + "");
+                daa.setMetadata(metadataP);
                 audio = daa.convertToAtmos(audio);
 
                 // 播放
@@ -387,5 +390,11 @@ public class OpenMXPlayer implements Runnable {
         return results;
     }
 
-
+    public void setMetadata(float[] metadataP) {
+        if (daa == null) {
+            this.metadataP = metadataP;
+        } else {
+            daa.setMetadata(metadataP);
+        }
+    }
 }

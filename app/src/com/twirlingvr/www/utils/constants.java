@@ -12,4 +12,5 @@ public class Constants {
     public static final String PAPH_IMAGE = "http://www.twirlingvr.com/App_Media/videos/";
     public static final String PAPH_VIDEO = "http://www.twirlingvr.com/App_Media/videos/";
     public static final String URI_VIDEO = "file:///storage/emulated/0/Download/";
+    public static final String URL_AAC = "http://twirlingvr.com/test/sound4.wav";
 }

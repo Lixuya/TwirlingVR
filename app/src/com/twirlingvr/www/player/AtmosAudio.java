@@ -17,23 +17,7 @@ public class AtmosAudio {
     private float pitch = 3.14f / 4;
     private float yaw = 0;
 
-    public float getYaw() {
-        return yaw;
-    }
-
-    public void setYaw(float yaw) {
-        this.yaw = yaw;
-    }
-
-    public float getPitch() {
-        return pitch;
-    }
-
-    public void setPitch(float pitch) {
-        this.pitch = pitch;
-    }
-
-    AtmosAudio(AudioProcess audioProcess) {
+    public AtmosAudio(AudioProcess audioProcess) {
         this.audioProcess = audioProcess;
     }
 
@@ -94,4 +78,11 @@ public class AtmosAudio {
         }
         return bytes;
     }
+
+    public void setMetadata(float[] metadataP) {
+        pitch = -metadataP[1];
+        yaw = metadataP[0];
+        //Log.i("angle", "eular = " + azi + ", " + elv);
+    }
+
 }

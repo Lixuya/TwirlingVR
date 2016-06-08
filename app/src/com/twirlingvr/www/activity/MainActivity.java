@@ -1,5 +1,6 @@
 package com.twirlingvr.www.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -12,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.mikepenz.crossfadedrawerlayout.view.CrossfadeDrawerLayout;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
@@ -35,18 +35,15 @@ import com.twirlingvr.www.R;
 import com.twirlingvr.www.adapter.ViewPagerAdapter;
 import com.twirlingvr.www.fragment.FragmentDownload;
 import com.twirlingvr.www.fragment.FragmentOnline;
-import com.twirlingvr.www.player.OpenMXPlayer;
 
 public class MainActivity extends AppCompatActivity {
     //
     int pageIndex = 0;
     private Toolbar toolbar = null;
-    private boolean toggle = false;
-    private OpenMXPlayer openMXPlayer = new OpenMXPlayer();
-    //
     private AccountHeader headerResult = null;
     private Drawer result = null;
     private CrossfadeDrawerLayout crossfadeDrawerLayout = null;
+    private ViewPager viewPager = null;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,23 +53,16 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         //
+
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                openMXPlayer.setDataSource(getBaseContext(), R.raw.sound4);
-                if (toggle == false) {
-                    openMXPlayer.play();
-                    toggle = true;
-                } else {
-                    openMXPlayer.stop();
-                    toggle = false;
-                }
 //                startActivity(new Intent(MainActivity.this, ListShowActivity.class));
                 return false;
             }
         });
         //
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
         FragmentManager manager = this.getSupportFragmentManager();
         ViewPagerAdapter adapter = new ViewPagerAdapter(manager);
         adapter.addFragment(new FragmentOnline());
@@ -117,20 +107,35 @@ public class MainActivity extends AppCompatActivity {
                 .withGenerateMiniDrawer(true)
                 .withAccountHeader(headerResult) //set the AccountHeader we created earlier for the header
                 .addDrawerItems(
-                        new PrimaryDrawerItem().withName(R.string.drawer_item_compact_header).withIcon(GoogleMaterial.Icon.gmd_sun).withIdentifier(1),
-                        new PrimaryDrawerItem().withName(R.string.drawer_item_action_bar_drawer).withIcon(FontAwesome.Icon.faw_home).withBadge("22").withBadgeStyle(new BadgeStyle(Color.RED, Color.RED)).withIdentifier(2).withSelectable(false),
-                        new PrimaryDrawerItem().withName(R.string.drawer_item_multi_drawer).withIcon(FontAwesome.Icon.faw_gamepad).withIdentifier(3),
-                        new PrimaryDrawerItem().withName(R.string.drawer_item_non_translucent_status_drawer).withIcon(FontAwesome.Icon.faw_eye).withIdentifier(4),
-                        new PrimaryDrawerItem().withDescription("A more complex sample").withName(R.string.drawer_item_advanced_drawer).withIcon(GoogleMaterial.Icon.gmd_adb).withIdentifier(5),
+                        new PrimaryDrawerItem().withName(R.string.download).withIcon(FontAwesome.Icon.faw_cloud_download).withIdentifier(1),
+                        new PrimaryDrawerItem().withName(R.string.local).withIcon(FontAwesome.Icon.faw_play_circle).withIdentifier(2),
+                        new PrimaryDrawerItem().withName(R.string.atmos).withIcon(FontAwesome.Icon.faw_headphones).withIdentifier(3),
                         new SectionDrawerItem().withName(R.string.drawer_item_section_header),
-                        new SecondaryDrawerItem().withName(R.string.drawer_item_open_source).withIcon(FontAwesome.Icon.faw_github),
-                        new SecondaryDrawerItem().withName(R.string.drawer_item_contact).withIcon(GoogleMaterial.Icon.gmd_format_color_fill).withTag("Bullhorn")
+                        new SecondaryDrawerItem().withName(R.string.homepage).withIcon(FontAwesome.Icon.faw_home).withIdentifier(4),
+                        new SecondaryDrawerItem().withName(R.string.products).withIcon(GoogleMaterial.Icon.gmd_comment_video).withBadge("22").withBadgeStyle(new BadgeStyle(Color.RED, Color.RED)).withIdentifier(5).withSelectable(false),
+                        new SecondaryDrawerItem().withName(R.string.blog).withIcon(FontAwesome.Icon.faw_desktop).withIdentifier(6),
+                        new SecondaryDrawerItem().withName(R.string.contact).withIcon(GoogleMaterial.Icon.gmd_code_smartphone).withTag("Bullhorn").withIdentifier(7)
+
                 ) // add the items we want to use with our Drawer
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        switch (position) {
+                            case 1:
+                                viewPager.setCurrentItem(0);
+                                break;
+                            case 2:
+                                viewPager.setCurrentItem(1);
+                                break;
+                            case 3:
+                                Intent intent = new Intent(getBaseContext(), AudioActivity.class);
+                                startActivity(intent);
+                                break;
+                            default:
+                                break;
+                        }
                         if (drawerItem instanceof Nameable) {
-                            Toast.makeText(getBaseContext(), ((Nameable) drawerItem).getName().getText(getBaseContext()), Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getBaseContext(), ((Nameable) drawerItem).getName().getText(getBaseContext()), Toast.LENGTH_SHORT).show();
                         }
                         //we do not consume the event and want the Drawer to continue with the event chain
                         return false;
