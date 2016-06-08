@@ -3,11 +3,6 @@ package com.twirlingvr.www.activity;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.google.vrtoolkit.cardboard.CardboardActivity;
-import com.google.vrtoolkit.cardboard.CardboardView;
-import com.google.vrtoolkit.cardboard.Eye;
-import com.google.vrtoolkit.cardboard.HeadTransform;
-import com.google.vrtoolkit.cardboard.Viewport;
 import com.twirlingvr.www.R;
 import com.twirlingvr.www.player.OpenMXPlayer;
 import com.twirlingvr.www.utils.Constants;
@@ -17,7 +12,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 /**
  * Created by 谢秋鹏 on 2016/6/8.
  */
-public class AudioActivity extends CardboardActivity implements CardboardView.StereoRenderer {
+public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer {
     private float[] headView;
     //    private float[] modelPosition;
     private float[] headRotation;
@@ -30,10 +25,11 @@ public class AudioActivity extends CardboardActivity implements CardboardView.St
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_audio);
-        CardboardView cardboardView = (CardboardView) findViewById(R.id.cardboard_view);
-        cardboardView.setRestoreGLStateEnabled(false);
-        cardboardView.setRenderer(this);
-        setCardboardView(cardboardView);
+        GvrView gvrView = (GvrView) findViewById(R.id.cardboard_view);
+        gvrView.setRenderer(this);
+//        gvrView.setTransitionViewEnabled(true);
+//        gvrView.setRestoreGLStateEnabled(false);
+        setGvrView(gvrView);
         openMXPlayer = new OpenMXPlayer();
         headView = new float[16];
         headRotation = new float[4];
