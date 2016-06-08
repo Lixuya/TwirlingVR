@@ -63,6 +63,7 @@ public class OpenMXPlayer implements Runnable {
 
     public OpenMXPlayer() {
         audioProcess = new AudioProcess();
+        daa = new AtmosAudio(audioProcess);
     }
 
     public OpenMXPlayer(PlayerEvents events) {
@@ -293,7 +294,6 @@ public class OpenMXPlayer implements Runnable {
                 buf.get(chunk);
                 buf.clear();
                 // TODO
-                daa = new AtmosAudio(audioProcess);
                 short[] audio = daa.byte2Short(chunk);
                 Log.w("short", audio.length + "");
                 daa.setMetadata(metadataP);
@@ -391,10 +391,6 @@ public class OpenMXPlayer implements Runnable {
     }
 
     public void setMetadata(float[] metadataP) {
-        if (daa == null) {
-            this.metadataP = metadataP;
-        } else {
-            daa.setMetadata(metadataP);
-        }
+        daa.setMetadata(metadataP);
     }
 }

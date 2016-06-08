@@ -3,6 +3,11 @@ package com.twirlingvr.www.activity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.vr.sdk.base.Eye;
+import com.google.vr.sdk.base.GvrActivity;
+import com.google.vr.sdk.base.GvrView;
+import com.google.vr.sdk.base.HeadTransform;
+import com.google.vr.sdk.base.Viewport;
 import com.twirlingvr.www.R;
 import com.twirlingvr.www.player.OpenMXPlayer;
 import com.twirlingvr.www.utils.Constants;
@@ -25,12 +30,21 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_audio);
-        GvrView gvrView = (GvrView) findViewById(R.id.cardboard_view);
+        GvrView gvrView = (GvrView) findViewById(R.id.gvrview);
+        gvrView.setEGLConfigChooser(8, 8, 8, 8, 16, 8);
         gvrView.setRenderer(this);
-//        gvrView.setTransitionViewEnabled(true);
-//        gvrView.setRestoreGLStateEnabled(false);
+        gvrView.setTransitionViewEnabled(true);
+        gvrView.setOnCardboardBackButtonListener(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        onBackPressed();
+                    }
+                });
         setGvrView(gvrView);
+        //
         openMXPlayer = new OpenMXPlayer();
+        openMXPlayer.setDataSource(Constants.URL_AAC);
         headView = new float[16];
         headRotation = new float[4];
         headRotationEular = new float[3];
@@ -38,12 +52,12 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
 
     @Override
     public void onNewFrame(HeadTransform headTransform) {
-        Log.i(TAG, "onNewFrame");
+//        Log.i(TAG, "onNewFrame");
         headTransform.getHeadView(headView, 0);
         // Update the 3d audio engine with the most recent head rotation.
         headTransform.getQuaternion(headRotation, 0);
         headTransform.getEulerAngles(headRotationEular, 0);
-        Log.i("angle", "eular = " + headRotationEular[0] + ", " + headRotationEular[1] + ", " + headRotationEular[2]);
+//        Log.i("angle", "eular = " + headRotationEular[0] + ", " + headRotationEular[1] + ", " + headRotationEular[2]);
         if (openMXPlayer != null) {
             openMXPlayer.setMetadata(headRotationEular);
         }
@@ -66,21 +80,14 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
 
     @Override
     public void onCardboardTrigger() {
-        Log.i(TAG, "onCardboardTrigger");
+//        Log.i(TAG, "onCardboardTrigger");
         super.onCardboardTrigger();
     }
 
     @Override
     public void onSurfaceCreated(EGLConfig eglConfig) {
-        Log.i(TAG, "onSurfaceCreated");
-        openMXPlayer.setDataSource(Constants.URL_AAC);
-        if (toggle == false) {
-            openMXPlayer.play();
-            toggle = true;
-        } else {
-            openMXPlayer.pause();
-            toggle = false;
-        }
+
+        openMXPlayer.play();
     }
 
     @Override

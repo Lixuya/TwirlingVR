@@ -1,5 +1,7 @@
 package com.twirlingvr.www.player;
 
+import android.util.Log;
+
 import com.twirling.audio.AudioProcess;
 
 import java.nio.ByteBuffer;
@@ -14,7 +16,7 @@ public class AtmosAudio {
     private int chunkSize = 0;
     private int loopNum = 0;
     private AudioProcess audioProcess = null;
-    private float pitch = 3.14f / 4;
+    private float pitch = 0;
     private float yaw = 0;
 
     public AtmosAudio(AudioProcess audioProcess) {
@@ -82,7 +84,7 @@ public class AtmosAudio {
     public void setMetadata(float[] metadataP) {
         pitch = -metadataP[1];
         yaw = metadataP[0];
-        //Log.i("angle", "eular = " + azi + ", " + elv);
+        Log.i("angle", "eular = " + pitch + ", " + yaw);
     }
 
 }
