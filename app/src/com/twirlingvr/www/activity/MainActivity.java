@@ -1,7 +1,6 @@
 package com.twirlingvr.www.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v4.app.FragmentManager;
@@ -22,7 +21,6 @@ import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.MiniDrawer;
-import com.mikepenz.materialdrawer.holder.BadgeStyle;
 import com.mikepenz.materialdrawer.interfaces.ICrossfader;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
@@ -35,15 +33,18 @@ import com.twirlingvr.www.R;
 import com.twirlingvr.www.adapter.ViewPagerAdapter;
 import com.twirlingvr.www.fragment.FragmentDownload;
 import com.twirlingvr.www.fragment.FragmentOnline;
+import com.twirlingvr.www.fragment.WebFragment;
 
 public class MainActivity extends AppCompatActivity {
     //
-    int pageIndex = 0;
+    private int pageIndex = 0;
     private Toolbar toolbar = null;
     private AccountHeader headerResult = null;
     private Drawer result = null;
     private CrossfadeDrawerLayout crossfadeDrawerLayout = null;
     private ViewPager viewPager = null;
+    private WebFragment webFragment = null;
+    private String url = "http://www.twirlingvr.com/index.html";
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,14 +63,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         //
+        webFragment = new WebFragment();
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         FragmentManager manager = this.getSupportFragmentManager();
         ViewPagerAdapter adapter = new ViewPagerAdapter(manager);
         adapter.addFragment(new FragmentOnline());
         adapter.addFragment(new FragmentDownload());
+        adapter.addFragment(webFragment);
+        viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(0);
-//      viewPager.setOffscreenPageLimit(0);
         //
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -79,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
                     toolbar.getMenu().getItem(0).setTitle("下载");
                 } else if (pageIndex == 1) {
                     toolbar.getMenu().getItem(0).setTitle("本地");
+                } else if (pageIndex == 2) {
+                    toolbar.getMenu().getItem(0).setTitle("关于");
                 }
             }
 
@@ -111,11 +116,11 @@ public class MainActivity extends AppCompatActivity {
                         new PrimaryDrawerItem().withName(R.string.local).withIcon(FontAwesome.Icon.faw_play_circle).withIdentifier(2),
                         new PrimaryDrawerItem().withName(R.string.atmos).withIcon(FontAwesome.Icon.faw_headphones).withIdentifier(3),
                         new SectionDrawerItem().withName(R.string.drawer_item_section_header),
-                        new SecondaryDrawerItem().withName(R.string.homepage).withIcon(FontAwesome.Icon.faw_home).withIdentifier(4),
-                        new SecondaryDrawerItem().withName(R.string.products).withIcon(GoogleMaterial.Icon.gmd_comment_video).withBadge("22").withBadgeStyle(new BadgeStyle(Color.RED, Color.RED)).withIdentifier(5).withSelectable(false),
-                        new SecondaryDrawerItem().withName(R.string.blog).withIcon(FontAwesome.Icon.faw_desktop).withIdentifier(6),
-                        new SecondaryDrawerItem().withName(R.string.contact).withIcon(GoogleMaterial.Icon.gmd_code_smartphone).withTag("Bullhorn").withIdentifier(7)
-
+                        new SecondaryDrawerItem().withName(R.string.homepage).withIcon(FontAwesome.Icon.faw_home).withIdentifier(5),
+                        new SecondaryDrawerItem().withName(R.string.products).withIcon(GoogleMaterial.Icon.gmd_comment_video).withIdentifier(6),
+                        new SecondaryDrawerItem().withName(R.string.blog).withIcon(FontAwesome.Icon.faw_desktop).withIdentifier(7),
+                        new SecondaryDrawerItem().withName(R.string.cloud).withIcon(FontAwesome.Icon.faw_cloud).withIdentifier(8),
+                        new SecondaryDrawerItem().withName(R.string.contact).withIcon(GoogleMaterial.Icon.gmd_code_smartphone).withIdentifier(9)
                 ) // add the items we want to use with our Drawer
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -130,6 +135,15 @@ public class MainActivity extends AppCompatActivity {
                             case 3:
                                 Intent intent = new Intent(getBaseContext(), AudioActivity.class);
                                 startActivity(intent);
+                                break;
+                            case 5:
+                            case 6:
+                            case 7:
+                            case 8:
+                            case 9:
+                                webFragment.setCachUrl(position);
+                                viewPager.setCurrentItem(2);
+                                webFragment.loadPage(position);
                                 break;
                             default:
                                 break;

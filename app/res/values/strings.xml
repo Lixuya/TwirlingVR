@@ -39,5 +39,6 @@
     <string name="blog">拓灵博客</string>
     <string name="contact">联系我们</string>
     <string name="products">产品与服务</string>
+    <string name="cloud">拓灵云服务</string>
     <string name="drawer_item_section_header">关于我们</string>
 </resources>

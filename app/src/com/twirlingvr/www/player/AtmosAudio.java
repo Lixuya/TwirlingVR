@@ -38,6 +38,7 @@ public class AtmosAudio {
             for (ii = 0; ii < FRAME_LENGTH * 4; ii++) {
                 audioInput[ii] = audioFlat[n_acc++];
             }
+            Log.i("angle", "eular = " + pitch + ", " + yaw);
             audioProcess.Process(pitch, yaw, audioInput, audioOutput, metadata);
             for (ii = 0; ii < FRAME_LENGTH * 2; ii++) {
                 audioOutputBufShort[n_acc_out++] = (short) audioOutput[ii];
@@ -84,7 +85,6 @@ public class AtmosAudio {
     public void setMetadata(float[] metadataP) {
         pitch = -metadataP[1];
         yaw = metadataP[0];
-        Log.i("angle", "eular = " + pitch + ", " + yaw);
     }
 
 }

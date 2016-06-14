@@ -16,7 +16,7 @@
         tools:replace="android:label">
         <!-- This demo is singleTask since it makes launching via custom adb intents easier. -->
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".activity.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.MyDesign">
             <intent-filter>
@@ -27,9 +27,13 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activity.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.MyDesign" />
+        <activity
             android:name=".activity.ListShowActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.SimpleVrVideoActivity"
             android:screenOrientation="portrait"

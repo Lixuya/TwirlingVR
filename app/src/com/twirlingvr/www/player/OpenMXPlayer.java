@@ -295,8 +295,6 @@ public class OpenMXPlayer implements Runnable {
                 buf.clear();
                 // TODO
                 short[] audio = daa.byte2Short(chunk);
-                Log.w("short", audio.length + "");
-                daa.setMetadata(metadataP);
                 audio = daa.convertToAtmos(audio);
 
                 // 播放
