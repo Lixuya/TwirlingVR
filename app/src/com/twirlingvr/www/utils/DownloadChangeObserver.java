@@ -12,8 +12,8 @@ import com.twirlingvr.www.App;
  * Created by 谢秋鹏 on 2016/5/31.
  */
 public class DownloadChangeObserver extends ContentObserver {
+    private long downloadId = 0;
     private DownloadManager dm = null;
-    private long downloadId;
 
     public DownloadChangeObserver(Handler handler) {
         super(handler);

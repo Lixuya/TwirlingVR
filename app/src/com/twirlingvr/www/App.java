@@ -9,6 +9,8 @@ import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -18,13 +20,13 @@ public class App extends Application {
     public static App INS;
     //    private static User user;
     private WeakReference<Activity> mCurrentActivity;
-    public static ContentObserver observer = null;
+    public static Map<Long, ContentObserver> observers = new HashMap<Long, ContentObserver>();
 
     @Override
     public void onCreate() {
         super.onCreate();
         INS = this;
-        Logger.init("bear").setLogLevel(BuildConfig.DEBUG ? LogLevel.FULL : LogLevel.NONE);
+        Logger.init("twirling").setLogLevel(BuildConfig.DEBUG ? LogLevel.FULL : LogLevel.NONE);
 //        SharePreHelper.getIns().initialize(this, null);
 //        initializeSocialSdk();
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {

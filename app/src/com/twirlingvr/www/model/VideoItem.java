@@ -119,4 +119,10 @@ public class VideoItem extends RealmObject implements Parcelable {
             return new VideoItem[size];
         }
     };
+
+    @Override
+    public String toString() {
+        String str = getDownloadId() + " " + getTitle() + " " + getImageName() + " " + getVideoName() + " " + getUpdateTime();
+        return str;
+    }
 }

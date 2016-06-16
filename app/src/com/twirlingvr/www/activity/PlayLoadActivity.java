@@ -2,6 +2,7 @@ package com.twirlingvr.www.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -19,21 +20,21 @@ import com.twirlingvr.www.utils.Constants;
 import com.twirlingvr.www.utils.DownloadChangeObserver;
 import com.twirlingvr.www.utils.DownloadService;
 
-import butterknife.BindView;
+import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
 public class PlayLoadActivity extends Activity {
-    @BindView(R.id.button)
-    Button load;
+    @Bind(R.id.button)
+    ImageView load;
 
-    @BindView(R.id.button2)
+    @Bind(R.id.button2)
     Button play;
 
-    @BindView(R.id.iv_video_image)
+    @Bind(R.id.iv_video_image)
     ImageView iv_video_image;
 
-    @BindView(R.id.pb_download)
+    @Bind(R.id.pb_download)
     ProgressBar mPbLoading;
 
     private String imageUrl,
@@ -71,6 +72,9 @@ public class PlayLoadActivity extends Activity {
         load.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //
+                load.setBackgroundColor(Color.parseColor("#C0C0C0"));
+                load.setEnabled(false);
+                //
                 Intent intent = new Intent(App.getInst().getApplicationContext(), DownloadService.class);
                 intent.putExtra("videoItem", videoItem);
                 startService(intent);
@@ -86,12 +90,22 @@ public class PlayLoadActivity extends Activity {
                 startActivity(intent);
             }
         });
-        DownloadChangeObserver pco = (DownloadChangeObserver) App.observer;
-        if (pco == null || RealmHelper.getIns().selectVideoName(pco.getDownloadId()).equals(videoName)) {
-            load.setVisibility(View.INVISIBLE);
+        VideoItem itemInDB = RealmHelper.getIns().selectVideoItem(videoName);
+        if (itemInDB == null) {
+            load.setBackgroundColor(Color.TRANSPARENT);
             return;
         }
-        load.setVisibility(View.VISIBLE);
+        long downLoadId = itemInDB.getDownloadId();
+        if (downLoadId == 0) {
+            return;
+        } else if (downLoadId == 1) {
+            mPbLoading.setProgress(100);
+        }
+        load.setBackgroundColor(Color.parseColor("#C0C0C0"));
+        DownloadChangeObserver pco = (DownloadChangeObserver) App.observers.get(downLoadId);
+        if (pco == null) {
+            return;
+        }
         pco.setProgressListener(new DownloadChangeObserver.ProgressListener() {
             @Override
             public void invoke(int progress) {

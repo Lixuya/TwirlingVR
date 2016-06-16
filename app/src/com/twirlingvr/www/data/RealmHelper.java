@@ -1,9 +1,10 @@
 package com.twirlingvr.www.data;
 
+import android.util.Log;
+
 import com.twirlingvr.www.App;
 import com.twirlingvr.www.model.VideoItem;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
@@ -45,6 +46,9 @@ public class RealmHelper {
                 VideoItem videoItem = realm.where(VideoItem.class)
                         .equalTo("videoName", videoName)
                         .findFirst();
+                if (videoItem == null) {
+                    return;
+                }
                 videoItem.setDownloadId(downloadId);
             }
         });
@@ -57,7 +61,10 @@ public class RealmHelper {
                 VideoItem videoItem = realm.where(VideoItem.class)
                         .equalTo("downloadId", downloadId)
                         .findFirst();
-                videoItem.setDownloadId(0);
+                if (videoItem == null) {
+                    return;
+                }
+                videoItem.setDownloadId(1);
             }
         });
     }
@@ -67,14 +74,8 @@ public class RealmHelper {
                 .notEqualTo("downloadId", (long) 0)
                 .findAll()
                 .sort("updateTime", Sort.ASCENDING);
-        List<VideoItem> list = new ArrayList<VideoItem>();
         for (VideoItem item : puppies) {
-            VideoItem obj = new VideoItem();
-            obj.setTitle(item.getTitle());
-            obj.setImageName(item.getImageName());
-            obj.setVideoName(item.getVideoName());
-            obj.setUpdateTime(item.getUpdateTime());
-            list.add(obj);
+            Log.i("selectVideoList", item.toString());
         }
         return puppies;
     }
@@ -105,9 +106,5 @@ public class RealmHelper {
         VideoItem videoItem = Realm.getDefaultInstance().where(VideoItem.class).equalTo("videoName", videoName).findFirst();
         videoItem.deleteFromRealm();
         realm.commitTransaction();
-    }
-
-    public void insertPath() {
-
     }
 }

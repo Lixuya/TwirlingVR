@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,7 @@ import com.twirlingvr.www.utils.FileUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
+import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
@@ -49,40 +50,24 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
     @Override
     public void onBindViewHolder(final OffineAdapter.ViewHolder holder, int position) {
         final VideoItem item = datas.get(position);
+        holder.downloadId = item.getDownloadId();
+        Log.w("downloadId", holder.downloadId + "");
         Glide.with(holder.itemView.getContext()).load(Constants.PAPH_IMAGE + item.getImageName()).into(holder.iv_background);
         holder.tv_title.setText(item.getTitle());
-        //
-//        holder.pb_download.startIntro();
-        DownloadChangeObserver pco = (DownloadChangeObserver) App.observer;
-        if (pco != null) {
-            pco.setProgressListener(new DownloadChangeObserver.ProgressListener() {
-                @Override
-                public void invoke(int progress) {
-                    if (progress == 100) {
-                        holder.pb_download.setVisibility(View.GONE);
-                        holder.tv_title.setVisibility(View.VISIBLE);
-                        holder.cv_card.setEnabled(true);
-                    } else {
-                        holder.pb_download.setVisibility(View.VISIBLE);
-                        holder.tv_title.setVisibility(View.GONE);
-                        holder.cv_card.setEnabled(false);
-                        holder.pb_download.setProgress(progress);
-                    }
-                }
-            });
-        }
         //
         holder.iv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 如果下载中，取消下载
-                if (RealmHelper.getIns().selectVideoItem(item.getVideoName()) != null) {
+                holder.downloadId = RealmHelper.getIns().selectVideoItem(item.getVideoName()).getDownloadId();
+                Log.w("downloadId", holder.downloadId + "");
+                if (holder.downloadId != 1 && holder.downloadId != 0) {
                     DownloadManager dm = (DownloadManager) App.getInst().getApplicationContext().getSystemService(
                             App.getInst().getApplicationContext().DOWNLOAD_SERVICE);
                     dm.remove(RealmHelper.getIns().selectVideoItem(item.getVideoName()).getDownloadId());
                 }
                 // 删除本地文件
-                else {
+                else if (holder.downloadId == 1) {
                     FileUtil.delete(Uri.parse(Constants.URI_VIDEO + item.getVideoName()));
                 }
                 // 删除数据库下载记录
@@ -100,6 +85,30 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
                 holder.itemView.getContext().startActivity(intent);
             }
         });
+        if (holder.downloadId == 1) {
+            holder.pb_download.setVisibility(View.GONE);
+            holder.tv_title.setVisibility(View.VISIBLE);
+            return;
+        }
+        if (holder.downloadId != 1) {
+            DownloadChangeObserver pco = (DownloadChangeObserver) App.observers.get(holder.downloadId);
+            if (pco == null) {
+                return;
+            }
+            pco.setProgressListener(new DownloadChangeObserver.ProgressListener() {
+                @Override
+                public void invoke(int progress) {
+                    if (progress == 100 || holder.downloadId == 1) {
+                        holder.pb_download.setVisibility(View.GONE);
+                        holder.tv_title.setVisibility(View.VISIBLE);
+                        return;
+                    }
+                    holder.pb_download.setVisibility(View.VISIBLE);
+                    holder.tv_title.setVisibility(View.GONE);
+                    holder.pb_download.setProgress(progress);
+                }
+            });
+        }
     }
 
     @Override
@@ -108,16 +117,17 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.iv_background)
+        @Bind(R.id.iv_background)
         ImageView iv_background;
-        @BindView(R.id.iv_delete)
+        @Bind(R.id.iv_delete)
         ImageView iv_delete;
-        @BindView(R.id.cv_card)
+        @Bind(R.id.cv_card)
         CardView cv_card;
-        @BindView(R.id.tv_title)
+        @Bind(R.id.tv_title)
         TextView tv_title;
-        @BindView(R.id.pb_download)
+        @Bind(R.id.pb_download)
         ProgressBar pb_download = null;
+        long downloadId;
 
         public ViewHolder(View view) {
             super(view);

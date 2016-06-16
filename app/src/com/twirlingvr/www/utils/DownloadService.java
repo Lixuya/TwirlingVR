@@ -7,6 +7,7 @@ import android.database.ContentObserver;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 
 import com.twirlingvr.www.App;
@@ -20,10 +21,12 @@ public class DownloadService extends IntentService {
     private DownloadManager dm;
     private ContentObserver downloadObserver;
 
-    public Handler handler = new Handler() {
+    public Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            VideoItem videoItem = (VideoItem) msg.obj;
+            RealmHelper.getIns().insertVideoItem(videoItem);
         }
     };
 
@@ -52,10 +55,12 @@ public class DownloadService extends IntentService {
         //
         videoItem.setUpdateTime(System.currentTimeMillis());
         videoItem.setDownloadId(downloadId);
-        RealmHelper.getIns().insertVideoItem(videoItem);
+        Message message = new Message();
+        message.obj = videoItem;
+        handler.sendMessage(message);
         //
+        App.observers.put(downloadId, downloadObserver);
         ((DownloadChangeObserver) downloadObserver).setDownloadId(downloadId);
-        App.observer = downloadObserver;
     }
 
     private long startDownload(Uri uri, String videoName) {
@@ -74,6 +79,7 @@ public class DownloadService extends IntentService {
 
     @Override
     public void onDestroy() {
+        App.observers.remove(downloadObserver);
 //        getContentResolver().unregisterContentObserver(downloadObserver);
         super.onDestroy();
     }
