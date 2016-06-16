@@ -12,14 +12,13 @@ import com.twirlingvr.www.App;
  * Created by 谢秋鹏 on 2016/5/31.
  */
 public class DownloadChangeObserver extends ContentObserver {
-    private DownloadManager dm = (DownloadManager) App.getInst().getApplicationContext().getSystemService(
-            App.getInst().getApplicationContext().DOWNLOAD_SERVICE);
-    private Handler handler = null;
+    private DownloadManager dm = null;
     private long downloadId;
 
     public DownloadChangeObserver(Handler handler) {
         super(handler);
-        this.handler = handler;
+        dm = (DownloadManager) App.getInst().getApplicationContext().getSystemService(
+                App.getInst().getApplicationContext().DOWNLOAD_SERVICE);
     }
 
     public long getDownloadId() {

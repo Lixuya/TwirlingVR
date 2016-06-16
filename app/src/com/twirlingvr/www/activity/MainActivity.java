@@ -79,11 +79,16 @@ public class MainActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 pageIndex = position;
                 if (pageIndex == 0) {
-                    toolbar.getMenu().getItem(0).setTitle("下载");
+                    toolbar.getMenu().getItem(0).setTitle("在线");
+                    result.setSelection(1);
+                    result.getMiniDrawer().setSelection(1);
                 } else if (pageIndex == 1) {
                     toolbar.getMenu().getItem(0).setTitle("本地");
+                    result.setSelection(2);
+                    result.getMiniDrawer().setSelection(2);
                 } else if (pageIndex == 2) {
                     toolbar.getMenu().getItem(0).setTitle("关于");
+//                    result.setSelection(5);
                 }
             }
 
@@ -114,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                 .addDrawerItems(
                         new PrimaryDrawerItem().withName(R.string.download).withIcon(FontAwesome.Icon.faw_cloud_download).withIdentifier(1),
                         new PrimaryDrawerItem().withName(R.string.local).withIcon(FontAwesome.Icon.faw_play_circle).withIdentifier(2),
-                        new PrimaryDrawerItem().withName(R.string.atmos).withIcon(FontAwesome.Icon.faw_headphones).withIdentifier(3),
+//                        new PrimaryDrawerItem().withName(R.string.atmos).withIcon(FontAwesome.Icon.faw_headphones).withIdentifier(3),
                         new SectionDrawerItem().withName(R.string.drawer_item_section_header),
                         new SecondaryDrawerItem().withName(R.string.homepage).withIcon(FontAwesome.Icon.faw_home).withIdentifier(5),
                         new SecondaryDrawerItem().withName(R.string.products).withIcon(GoogleMaterial.Icon.gmd_comment_video).withIdentifier(6),
@@ -136,16 +141,15 @@ public class MainActivity extends AppCompatActivity {
                                 Intent intent = new Intent(getBaseContext(), AudioActivity.class);
                                 startActivity(intent);
                                 break;
+                            case 4:
                             case 5:
                             case 6:
                             case 7:
                             case 8:
                             case 9:
-                                webFragment.setCachUrl(position);
+                            default:
                                 viewPager.setCurrentItem(2);
                                 webFragment.loadPage(position);
-                                break;
-                            default:
                                 break;
                         }
                         if (drawerItem instanceof Nameable) {

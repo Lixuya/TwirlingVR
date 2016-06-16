@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
+import com.twirlingvr.www.data.RealmHelper;
 
 import java.io.File;
 
@@ -26,6 +27,7 @@ public class DownloadReceiver extends BroadcastReceiver {
             //TODO 判断这个id与之前的id是否相等，如果相等说明是之前的那个要下载的文件
             downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
             long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0);
+            RealmHelper.getIns().updateDownloadId(id);
             //
             printDownloadInformation(id);
             //TODO 判断这个id与之前的id是否相等，如果相等说明是之前的那个要下载的文件

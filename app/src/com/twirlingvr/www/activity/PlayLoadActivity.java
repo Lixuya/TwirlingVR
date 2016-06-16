@@ -19,10 +19,23 @@ import com.twirlingvr.www.utils.Constants;
 import com.twirlingvr.www.utils.DownloadChangeObserver;
 import com.twirlingvr.www.utils.DownloadService;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+
 public class PlayLoadActivity extends Activity {
-    private Button load,
-            play;
-    private ProgressBar mPbLoading;
+    @BindView(R.id.button)
+    Button load;
+
+    @BindView(R.id.button2)
+    Button play;
+
+    @BindView(R.id.iv_video_image)
+    ImageView iv_video_image;
+
+    @BindView(R.id.pb_download)
+    ProgressBar mPbLoading;
+
     private String imageUrl,
             videoUrl,
             videoName;
@@ -40,8 +53,9 @@ public class PlayLoadActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.playpanel);
+        ButterKnife.bind(this);
         //
-        StatusBarUtil.setTranslucent(PlayLoadActivity.this, 60);
+        StatusBarUtil.setTransparent(PlayLoadActivity.this);
         //
         final VideoItem videoItem = (VideoItem) getIntent().getExtras().getParcelable("videoItem");
         videoName = videoItem.getVideoName();
@@ -52,40 +66,32 @@ public class PlayLoadActivity extends Activity {
 //        TextView tv_title = (TextView) findViewById(R.id.tv_title);
 //        tv_title.setText(title);
         //
-        final ImageView iv_video_image = (ImageView) findViewById(R.id.iv_video_image);
         Glide.with(getBaseContext()).load(imageUrl).into(iv_video_image);
         //
-        load = (Button) findViewById(R.id.button);
         load.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //
-                videoItem.setUpdateTime(System.currentTimeMillis());
-                RealmHelper.getIns().insertVideoItem(videoItem);
-                //
                 Intent intent = new Intent(App.getInst().getApplicationContext(), DownloadService.class);
-                intent.putExtra("url", videoUrl);
-                intent.putExtra("videoName", videoName);
+                intent.putExtra("videoItem", videoItem);
                 startService(intent);
                 //
                 selfTimer.start();
             }
         });
-        play = (Button) findViewById(R.id.button2);
         play.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.putExtra("videoUrl", videoUrl);
-                //设置跳转新的activity，参数（当前对象，跳转到的class）
                 intent.setClass(PlayLoadActivity.this, SimpleVrVideoActivity.class);
-                //启动Activity 没有返回
                 startActivity(intent);
             }
         });
-        mPbLoading = (ProgressBar) findViewById(R.id.pb_download);
         DownloadChangeObserver pco = (DownloadChangeObserver) App.observer;
-        if (pco == null || !App.getKeyByValue(pco.getDownloadId()).equals(videoName)) {
+        if (pco == null || RealmHelper.getIns().selectVideoName(pco.getDownloadId()).equals(videoName)) {
+            load.setVisibility(View.INVISIBLE);
             return;
         }
+        load.setVisibility(View.VISIBLE);
         pco.setProgressListener(new DownloadChangeObserver.ProgressListener() {
             @Override
             public void invoke(int progress) {

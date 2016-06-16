@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +24,9 @@ import com.twirlingvr.www.utils.FileUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by 谢秋鹏 on 2016/5/26.
@@ -47,12 +49,8 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
     @Override
     public void onBindViewHolder(final OffineAdapter.ViewHolder holder, int position) {
         final VideoItem item = datas.get(position);
-        Log.w("item", item + "");
-        String imageName = item.getImageName();
-        final String title = item.getTitle();
-//        final String videoName = item.getVideoName();
-        Glide.with(holder.itemView.getContext()).load(Constants.PAPH_IMAGE + imageName).into(holder.iv_background);
-        holder.tv_title.setText(title);
+        Glide.with(holder.itemView.getContext()).load(Constants.PAPH_IMAGE + item.getImageName()).into(holder.iv_background);
+        holder.tv_title.setText(item.getTitle());
         //
 //        holder.pb_download.startIntro();
         DownloadChangeObserver pco = (DownloadChangeObserver) App.observer;
@@ -78,10 +76,10 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
             @Override
             public void onClick(View v) {
                 // 如果下载中，取消下载
-                if (App.services.size() != 0) {
+                if (RealmHelper.getIns().selectVideoItem(item.getVideoName()) != null) {
                     DownloadManager dm = (DownloadManager) App.getInst().getApplicationContext().getSystemService(
                             App.getInst().getApplicationContext().DOWNLOAD_SERVICE);
-                    dm.remove(App.services.get(item.getVideoName()));
+                    dm.remove(RealmHelper.getIns().selectVideoItem(item.getVideoName()).getDownloadId());
                 }
                 // 删除本地文件
                 else {
@@ -110,19 +108,20 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private ImageView iv_background,
-                iv_delete;
-        private CardView cv_card = null;
-        private TextView tv_title = null;
-        private ProgressBar pb_download = null;
+        @BindView(R.id.iv_background)
+        ImageView iv_background;
+        @BindView(R.id.iv_delete)
+        ImageView iv_delete;
+        @BindView(R.id.cv_card)
+        CardView cv_card;
+        @BindView(R.id.tv_title)
+        TextView tv_title;
+        @BindView(R.id.pb_download)
+        ProgressBar pb_download = null;
 
         public ViewHolder(View view) {
             super(view);
-            iv_background = (ImageView) view.findViewById(R.id.iv_background);
-            iv_delete = (ImageView) view.findViewById(R.id.iv_delete);
-            cv_card = (CardView) view.findViewById(R.id.cv_card);
-            pb_download = (ProgressBar) view.findViewById(R.id.pb_download);
-            tv_title = (TextView) view.findViewById(R.id.tv_title);
+            ButterKnife.bind(this, view);
         }
     }
 }

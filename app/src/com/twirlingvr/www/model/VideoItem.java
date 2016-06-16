@@ -13,11 +13,12 @@ import io.realm.annotations.PrimaryKey;
  */
 public class VideoItem extends RealmObject implements Parcelable {
     @PrimaryKey
-    private String title;
-    private String imageName,
-            videoName,
-            fileUri;
-    private long updateTime = 0;
+    private String title = "";
+    private String imageName = "",
+            videoName = "",
+            fileUri = "";
+    private long updateTime = 0,
+            downloadId = 0;
 
     protected VideoItem(Parcel in) {
         title = in.readString();
@@ -25,6 +26,7 @@ public class VideoItem extends RealmObject implements Parcelable {
         videoName = in.readString();
         fileUri = in.readString();
         updateTime = in.readLong();
+        downloadId = in.readLong();
     }
 
     public long getUpdateTime() {
@@ -33,6 +35,14 @@ public class VideoItem extends RealmObject implements Parcelable {
 
     public void setUpdateTime(long updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public long getDownloadId() {
+        return downloadId;
+    }
+
+    public void setDownloadId(long downloadId) {
+        this.downloadId = downloadId;
     }
 
     public VideoItem() {
@@ -80,6 +90,7 @@ public class VideoItem extends RealmObject implements Parcelable {
         dest.writeString(videoName);
         dest.writeString(fileUri);
         dest.writeLong(updateTime);
+        dest.writeLong(downloadId);
     }
 
     public String getFileUri() {
@@ -94,11 +105,12 @@ public class VideoItem extends RealmObject implements Parcelable {
         @Override
         public VideoItem createFromParcel(Parcel in) {
             VideoItem videoItem = new VideoItem();
-            videoItem.title=in.readString();
-            videoItem.imageName=in.readString();
-            videoItem.videoName=in.readString();
-            videoItem.fileUri=in.readString();
-            videoItem.updateTime=in.readLong();
+            videoItem.title = in.readString();
+            videoItem.imageName = in.readString();
+            videoItem.videoName = in.readString();
+            videoItem.fileUri = in.readString();
+            videoItem.updateTime = in.readLong();
+            videoItem.downloadId = in.readLong();
             return videoItem;
         }
 

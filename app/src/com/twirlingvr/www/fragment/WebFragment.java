@@ -16,7 +16,6 @@ import com.twirlingvr.www.R;
  */
 public class WebFragment extends Fragment {
     private WebView webView = null;
-    private int cachUrl = 5;
 
     @Nullable
     @Override
@@ -42,13 +41,9 @@ public class WebFragment extends Fragment {
         // 设置Application Caches 缓存目录
         webSettings.setAppCachePath(cacheDirPath);
         // 4 JS
-//        this.addJavascriptInterface(new MyJavaScriptInterface(this), "WidgetWebView");
-        loadPage(cachUrl);
+//      this.addJavascriptInterface(new MyJavaScriptInterface(this), "WidgetWebView");
+        loadPage(4);
         return rootView;
-    }
-
-    public void setCachUrl(int cachUrl) {
-        this.cachUrl = cachUrl;
     }
 
     @Override
@@ -64,20 +59,20 @@ public class WebFragment extends Fragment {
     public void loadPage(int index) {
         String url = "";
         switch (index) {
-            case 5:
+            case 4:
             default:
                 url = "http://www.twirlingvr.com/index.html";
                 break;
-            case 6:
+            case 5:
                 url = "http://www.twirlingvr.com/service.html";
                 break;
-            case 7:
+            case 6:
                 url = "http://www.twirlingvr.com/App_Web/blog/essaylist.html?ch=time";
                 break;
-            case 8:
+            case 7:
                 url = "http://yun.twirlingvr.com";
                 break;
-            case 9:
+            case 8:
                 url = "http://www.twirlingvr.com/index.html#contact";
                 break;
         }
