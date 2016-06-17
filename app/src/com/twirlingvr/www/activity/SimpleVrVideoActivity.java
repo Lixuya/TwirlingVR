@@ -162,10 +162,6 @@ public class SimpleVrVideoActivity extends AppCompatActivity {
         statusText.setText(status.toString());
     }
 
-    public int getLoadVideoStatus() {
-        return loadVideoStatus;
-    }
-
     private void togglePause() {
         if (isPaused) {
             videoWidgetView.playVideo();

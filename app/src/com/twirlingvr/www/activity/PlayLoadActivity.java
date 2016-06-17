@@ -5,13 +5,13 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
 import com.jaeger.library.StatusBarUtil;
+import com.jakewharton.rxbinding.view.RxView;
 import com.twirlingvr.www.App;
 import com.twirlingvr.www.R;
 import com.twirlingvr.www.data.RealmHelper;
@@ -20,8 +20,11 @@ import com.twirlingvr.www.utils.Constants;
 import com.twirlingvr.www.utils.DownloadChangeObserver;
 import com.twirlingvr.www.utils.DownloadService;
 
+import java.util.concurrent.TimeUnit;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.functions.Action1;
 
 
 public class PlayLoadActivity extends Activity {
@@ -69,9 +72,9 @@ public class PlayLoadActivity extends Activity {
         //
         Glide.with(getBaseContext()).load(imageUrl).into(iv_video_image);
         //
-        load.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                //
+        RxView.clicks(load).debounce(300, TimeUnit.MILLISECONDS).subscribe(new Action1<Void>() {
+            @Override
+            public void call(Void aVoid) {
                 load.setBackgroundColor(Color.parseColor("#C0C0C0"));
                 load.setEnabled(false);
                 //
@@ -79,11 +82,14 @@ public class PlayLoadActivity extends Activity {
                 intent.putExtra("videoItem", videoItem);
                 startService(intent);
                 //
-                selfTimer.start();
+                if (load.isEnabled()){
+                    selfTimer.start();
+                }
             }
         });
-        play.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+        RxView.clicks(play).subscribe(new Action1<Void>() {
+            @Override
+            public void call(Void aVoid) {
                 Intent intent = new Intent();
                 intent.putExtra("videoUrl", videoUrl);
                 intent.setClass(PlayLoadActivity.this, SimpleVrVideoActivity.class);

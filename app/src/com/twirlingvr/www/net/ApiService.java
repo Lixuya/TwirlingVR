@@ -17,5 +17,4 @@ public interface ApiService {
     @GET("App_Run/video_deal.aspx")
     Call<DataArray> getVideoList(@QueryMap Map<String, Object> params);
 
-
 }

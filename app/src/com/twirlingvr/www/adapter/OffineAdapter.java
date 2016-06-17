@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.twirlingvr.www.App;
 import com.twirlingvr.www.R;
-import com.twirlingvr.www.activity.SimpleVrVideoActivity;
+import com.twirlingvr.www.activity.AudioActivity;
 import com.twirlingvr.www.data.RealmHelper;
 import com.twirlingvr.www.model.VideoItem;
 import com.twirlingvr.www.utils.Constants;
@@ -80,7 +80,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
         holder.cv_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {//
-                Intent intent = new Intent(holder.itemView.getContext(), SimpleVrVideoActivity.class);
+                Intent intent = new Intent(holder.itemView.getContext(), AudioActivity.class);
                 intent.putExtra("videoUrl", Constants.URI_VIDEO + item.getVideoName());
                 holder.itemView.getContext().startActivity(intent);
             }

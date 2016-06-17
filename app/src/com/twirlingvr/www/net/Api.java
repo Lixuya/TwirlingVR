@@ -18,7 +18,7 @@ import retrofit2.GsonConverterFactory;
 import retrofit2.Retrofit;
 
 /**
- * Created by MagicBean on 2016/01/12 16:16:08
+ * Created by 谢秋鹏 on 2016/01/12 16:16:08
  */
 public class Api {
     public static Retrofit mRetrofit;
@@ -39,8 +39,8 @@ public class Api {
                 Logger.i("request url:" + url.toString());
 //                if (TextUtil.isValidate(App.getInst().getUser().token)) {
                 Request newRequest = chain.request().newBuilder().addHeader("token", "").build();
-                Response respnse = chain.proceed(newRequest);
-                return respnse;
+                Response response = chain.proceed(newRequest);
+                return response;
 //                } else {
 //                    return chain.proceed(chain.request());
 //                }
