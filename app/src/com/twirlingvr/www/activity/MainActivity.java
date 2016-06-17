@@ -46,7 +46,9 @@ public class MainActivity extends AppCompatActivity {
     private WebFragment webFragment = null;
     private String url = "http://www.twirlingvr.com/index.html";
 
-
+    private void onToolbarItemClicked(MenuItem menuItem) {
+//                startActivity(new Intent(MainActivity.this, ListShowActivity.class));
+    }
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,14 +58,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         //
+//        RxToolbar.itemClicks(toolbar).subscribe(this::onToolbarItemClicked);
 
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-//                startActivity(new Intent(MainActivity.this, ListShowActivity.class));
-                return false;
-            }
-        });
         //
         webFragment = new WebFragment();
         viewPager = (ViewPager) findViewById(R.id.viewPager);

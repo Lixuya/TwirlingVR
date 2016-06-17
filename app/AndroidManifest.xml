@@ -41,7 +41,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.AudioActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.MyDesign">
             <category android:name="com.google.intent.category.CARDBOARD" />
         </activity>
 

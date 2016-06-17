@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 
 
@@ -66,36 +67,35 @@ public class PlayLoadActivity extends Activity {
         videoUrl = Constants.PAPH_VIDEO + videoName;
         imageUrl = Constants.PAPH_IMAGE + videoItem.getImageName();
         //
-//        String title = getIntent().getStringExtra("title");
-//        TextView tv_title = (TextView) findViewById(R.id.tv_title);
-//        tv_title.setText(title);
-        //
         Glide.with(getBaseContext()).load(imageUrl).into(iv_video_image);
-        //
-        RxView.clicks(load).debounce(300, TimeUnit.MILLISECONDS).subscribe(new Action1<Void>() {
-            @Override
-            public void call(Void aVoid) {
-                load.setBackgroundColor(Color.parseColor("#C0C0C0"));
-                load.setEnabled(false);
-                //
-                Intent intent = new Intent(App.getInst().getApplicationContext(), DownloadService.class);
-                intent.putExtra("videoItem", videoItem);
-                startService(intent);
-                //
-                if (load.isEnabled()){
-                    selfTimer.start();
-                }
-            }
-        });
-        RxView.clicks(play).subscribe(new Action1<Void>() {
-            @Override
-            public void call(Void aVoid) {
-                Intent intent = new Intent();
-                intent.putExtra("videoUrl", videoUrl);
-                intent.setClass(PlayLoadActivity.this, SimpleVrVideoActivity.class);
-                startActivity(intent);
-            }
-        });
+        RxView.clicks(load)
+                .debounce(300, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        load.setBackgroundColor(Color.parseColor("#C0C0C0"));
+                        //
+                        Intent intent = new Intent(App.getInst().getApplicationContext(), DownloadService.class);
+                        intent.putExtra("videoItem", videoItem);
+                        startService(intent);
+                        //
+                        if (load.isEnabled()) {
+                            selfTimer.start();
+                        }
+                        load.setEnabled(false);
+                    }
+                });
+        RxView.clicks(play)
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        Intent intent = new Intent();
+                        intent.putExtra("videoUrl", videoUrl);
+                        intent.setClass(PlayLoadActivity.this, SimpleVrVideoActivity.class);
+                        startActivity(intent);
+                    }
+                });
         VideoItem itemInDB = RealmHelper.getIns().selectVideoItem(videoName);
         if (itemInDB == null) {
             load.setBackgroundColor(Color.TRANSPARENT);
@@ -120,6 +120,9 @@ public class PlayLoadActivity extends Activity {
                 mPbLoading.setProgress(progress);
             }
         });
+    }
+
+    private void initData() {
     }
 
     @Override

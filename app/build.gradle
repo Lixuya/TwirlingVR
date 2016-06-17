@@ -78,6 +78,8 @@ repositories {
     }
 }
 def Dagger2_Version = '2.2'
+def Rxbinding_Version = '0.4.0'
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     //
@@ -104,8 +106,9 @@ dependencies {
     //
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.1.6'
-    compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
-    compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7:0.4.0'
+    compile "com.jakewharton.rxbinding:rxbinding:$Rxbinding_Version"
+    compile "com.jakewharton.rxbinding:rxbinding-appcompat-v7:$Rxbinding_Version"
+    compile "com.jakewharton.rxbinding:rxbinding-design:$Rxbinding_Version"
     //
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.jcodecraeer:xrecyclerview:1.2.6'
