@@ -13,7 +13,7 @@ import rx.Observable;
 import rx.functions.Action1;
 
 /**
- * Created by Phoebe on 2015/6/29.
+ * Created by 谢秋鹏 on 2015/6/29.
  */
 public class SplashActivity extends AppCompatActivity {
     @Override

@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     private WebFragment webFragment = null;
     private String url = "http://www.twirlingvr.com/index.html";
 
+
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
