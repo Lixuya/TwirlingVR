@@ -26,7 +26,7 @@ import com.twirlingvr.www.utils.FileUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -117,16 +117,16 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.iv_background)
+        @BindView(R.id.iv_background)
         ImageView iv_background;
-        @Bind(R.id.iv_delete)
+        @BindView(R.id.iv_delete)
         ImageView iv_delete;
-        @Bind(R.id.cv_card)
+        @BindView(R.id.cv_card)
         CardView cv_card;
-        @Bind(R.id.tv_title)
+        @BindView(R.id.tv_title)
         TextView tv_title;
-        @Bind(R.id.pb_download)
-        ProgressBar pb_download = null;
+        @BindView(R.id.pb_download)
+        ProgressBar pb_download;
         long downloadId;
 
         public ViewHolder(View view) {

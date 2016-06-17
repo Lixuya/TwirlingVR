@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'realm-android'
-apply plugin: 'android-apt'
+apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     compileSdkVersion setup.compileSdk
@@ -94,9 +94,10 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.0.0-beta3'
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta3'
     //
-    compile 'com.jakewharton:butterknife:7.0.1'
-//    apt 'com.jakewharton:butterknife-compiler:8.1.0'
-
+    compile "com.jakewharton:butterknife:8.1.0"
+    apt "com.jakewharton:butterknife-compiler:8.1.0"
+    compile 'com.squareup:javapoet:1.7.0'
+    //
     compile "com.google.dagger:dagger:$Dagger2_Version"
     provided "com.google.dagger:dagger-compiler:$Dagger2_Version"
     provided 'org.glassfish:javax.annotation:10.0-b28'

@@ -20,21 +20,21 @@ import com.twirlingvr.www.utils.Constants;
 import com.twirlingvr.www.utils.DownloadChangeObserver;
 import com.twirlingvr.www.utils.DownloadService;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
 public class PlayLoadActivity extends Activity {
-    @Bind(R.id.button)
+    @BindView(R.id.button)
     ImageView load;
 
-    @Bind(R.id.button2)
+    @BindView(R.id.button2)
     Button play;
 
-    @Bind(R.id.iv_video_image)
+    @BindView(R.id.iv_video_image)
     ImageView iv_video_image;
 
-    @Bind(R.id.pb_download)
+    @BindView(R.id.pb_download)
     ProgressBar mPbLoading;
 
     private String imageUrl,
@@ -93,6 +93,7 @@ public class PlayLoadActivity extends Activity {
         VideoItem itemInDB = RealmHelper.getIns().selectVideoItem(videoName);
         if (itemInDB == null) {
             load.setBackgroundColor(Color.TRANSPARENT);
+            load.setEnabled(true);
             return;
         }
         long downLoadId = itemInDB.getDownloadId();
@@ -100,6 +101,7 @@ public class PlayLoadActivity extends Activity {
             return;
         } else if (downLoadId == 1) {
             mPbLoading.setProgress(100);
+            load.setEnabled(false);
         }
         load.setBackgroundColor(Color.parseColor("#C0C0C0"));
         DownloadChangeObserver pco = (DownloadChangeObserver) App.observers.get(downLoadId);

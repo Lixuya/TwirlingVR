@@ -2,17 +2,23 @@ package com.twirlingvr.www.activity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.SeekBar;
 
 import com.google.vr.sdk.base.Eye;
 import com.google.vr.sdk.base.GvrActivity;
 import com.google.vr.sdk.base.GvrView;
 import com.google.vr.sdk.base.HeadTransform;
 import com.google.vr.sdk.base.Viewport;
+import com.google.vr.sdk.widgets.video.VrVideoView;
 import com.twirlingvr.www.R;
 import com.twirlingvr.www.player.OpenMXPlayer;
 import com.twirlingvr.www.utils.Constants;
 
 import javax.microedition.khronos.egl.EGLConfig;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 /**
  * Created by 谢秋鹏 on 2016/6/8.
@@ -26,10 +32,18 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
     private boolean toggle = false;
     private String TAG = "AudioActivity";
 
+    @BindView(R.id.video_view)
+    VrVideoView video_view;
+    @BindView(R.id.seek_bar)
+    SeekBar seek_bar;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_audio);
+        ButterKnife.bind(this);
+        //
         GvrView gvrView = (GvrView) findViewById(R.id.gvrview);
         gvrView.setEGLConfigChooser(8, 8, 8, 8, 16, 8);
         gvrView.setRenderer(this);
@@ -86,7 +100,6 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
 
     @Override
     public void onSurfaceCreated(EGLConfig eglConfig) {
-
         openMXPlayer.play();
     }
 

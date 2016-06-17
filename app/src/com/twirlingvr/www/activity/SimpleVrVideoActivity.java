@@ -1,10 +1,8 @@
 package com.twirlingvr.www.activity;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,7 +14,11 @@ import com.twirlingvr.www.utils.TextUtil;
 
 import java.io.IOException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class SimpleVrVideoActivity extends AppCompatActivity {
+    //
     private static final String TAG = SimpleVrVideoActivity.class.getSimpleName();
     private static final String STATE_IS_PAUSED = "isPaused";
     private static final String STATE_PROGRESS_TIME = "progressTime";
@@ -25,75 +27,86 @@ public class SimpleVrVideoActivity extends AppCompatActivity {
     public static final int LOAD_VIDEO_STATUS_SUCCESS = 1;
     public static final int LOAD_VIDEO_STATUS_ERROR = 2;
     private int loadVideoStatus = LOAD_VIDEO_STATUS_UNKNOWN;
-
-    public int getLoadVideoStatus() {
-        return loadVideoStatus;
-    }
-
     private Uri fileUri;
-    //    private VideoLoaderTask backgroundVideoLoaderTask;
-    private VrVideoView videoWidgetView;
-    private SeekBar seekBar;
-    private TextView statusText;
     private boolean isPaused = false;
+    //
+    @BindView(R.id.status_text)
+    TextView statusText;
+    @BindView(R.id.video_view)
+    VrVideoView videoWidgetView;
+    @BindView(R.id.seek_bar)
+    SeekBar seekBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
+        ButterKnife.bind(this);
+        //
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    videoWidgetView.seekTo(progress);
+                    updateStatusText();
+                }
+            }
 
-        seekBar = (SeekBar) findViewById(R.id.seek_bar);
-        seekBar.setOnSeekBarChangeListener(new SeekBarListener());
-        statusText = (TextView) findViewById(R.id.status_text);
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
 
-        videoWidgetView = (VrVideoView) findViewById(R.id.video_view);
-        videoWidgetView.setEventListener(new ActivityEventListener());
+            }
 
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        //
+        videoWidgetView.setEventListener(new VrVideoEventListener() {
+            @Override
+            public void onLoadSuccess() {
+                loadVideoStatus = LOAD_VIDEO_STATUS_SUCCESS;
+                seekBar.setMax((int) videoWidgetView.getDuration());
+                updateStatusText();
+            }
+
+            @Override
+            public void onLoadError(String errorMessage) {
+                loadVideoStatus = LOAD_VIDEO_STATUS_ERROR;
+                Toast.makeText(SimpleVrVideoActivity.this, "Error loading video: " + errorMessage, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onClick() {
+                togglePause();
+            }
+
+            @Override
+            public void onNewFrame() {
+                seekBar.setProgress((int) videoWidgetView.getCurrentPosition());
+                updateStatusText();
+            }
+
+
+            @Override
+            public void onCompletion() {
+                videoWidgetView.seekTo(0);
+            }
+        });
+        //
         loadVideoStatus = LOAD_VIDEO_STATUS_UNKNOWN;
-
+        //
         String uri = getIntent().getStringExtra("videoUrl");
         fileUri = Uri.parse(uri);
-        Log.w("uri", uri + " " + fileUri.toString());
         if (!TextUtil.isValidate(uri)) {
             return;
-        }
-        Intent videoIntent = new Intent(Intent.ACTION_VIEW);
-        videoIntent.setDataAndType(fileUri, "video/*");
-        onNewIntent(videoIntent);
-        // handleIntent(getIntent());
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        Log.i(TAG, this.hashCode() + ".onNewIntent()");
-        setIntent(intent);
-        handleIntent(intent);
-    }
-
-    private void handleIntent(Intent intent) {
-        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-            Log.i(TAG, "ACTION_VIEW Intent received");
-            fileUri = intent.getData();
-            if (fileUri == null) {
-                Log.w(TAG, "No data uri specified. Use \"-d /path/filename\".");
-            } else {
-                Log.i(TAG, "Using file " + fileUri.toString());
-            }
-        } else {
-            Log.i(TAG, "Intent is not ACTION_VIEW. Using the default video.");
-            fileUri = null;
         }
         try {
             videoWidgetView.loadVideo(fileUri);
         } catch (IOException e) {
             e.printStackTrace();
         }
-//    if (backgroundVideoLoaderTask != null) {
-//      // Cancel any task from a previous intent sent to this activity.
-//      backgroundVideoLoaderTask.cancel(true);
-//    }
-//    backgroundVideoLoaderTask = new VideoLoaderTask();
-//    backgroundVideoLoaderTask.execute(fileUri);
     }
 
     @Override
@@ -106,15 +119,17 @@ public class SimpleVrVideoActivity extends AppCompatActivity {
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
         long progressTime = savedInstanceState.getLong(STATE_PROGRESS_TIME);
-        videoWidgetView.seekTo(progressTime);
-        seekBar.setMax((int) savedInstanceState.getLong(STATE_VIDEO_DURATION));
-        seekBar.setProgress((int) progressTime);
+        long duration = savedInstanceState.getLong(STATE_VIDEO_DURATION);
         isPaused = savedInstanceState.getBoolean(STATE_IS_PAUSED);
+        //
+        seekBar.setMax((int) duration);
+        seekBar.setProgress((int) progressTime);
+        videoWidgetView.seekTo(progressTime);
         if (isPaused) {
             videoWidgetView.pauseVideo();
         }
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override
@@ -137,16 +152,6 @@ public class SimpleVrVideoActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    private void togglePause() {
-        if (isPaused) {
-            videoWidgetView.playVideo();
-        } else {
-            videoWidgetView.pauseVideo();
-        }
-        isPaused = !isPaused;
-        updateStatusText();
-    }
-
     private void updateStatusText() {
         StringBuilder status = new StringBuilder();
         status.append(isPaused ? "Paused: " : "Playing: ");
@@ -157,85 +162,17 @@ public class SimpleVrVideoActivity extends AppCompatActivity {
         statusText.setText(status.toString());
     }
 
-    private class SeekBarListener implements SeekBar.OnSeekBarChangeListener {
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            if (fromUser) {
-                videoWidgetView.seekTo(progress);
-                updateStatusText();
-            }
-        }
-
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-        }
-
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
-        }
+    public int getLoadVideoStatus() {
+        return loadVideoStatus;
     }
 
-    private class ActivityEventListener extends VrVideoEventListener {
-
-        @Override
-        public void onLoadSuccess() {
-            Log.i(TAG, "Sucessfully loaded video " + videoWidgetView.getDuration());
-            loadVideoStatus = LOAD_VIDEO_STATUS_SUCCESS;
-            seekBar.setMax((int) videoWidgetView.getDuration());
-            updateStatusText();
+    private void togglePause() {
+        if (isPaused) {
+            videoWidgetView.playVideo();
+        } else {
+            videoWidgetView.pauseVideo();
         }
-
-        @Override
-        public void onLoadError(String errorMessage) {
-            loadVideoStatus = LOAD_VIDEO_STATUS_ERROR;
-            Toast.makeText(
-                    SimpleVrVideoActivity.this, "Error loading video: " + errorMessage, Toast.LENGTH_LONG)
-                    .show();
-            Log.e(TAG, "Error loading video: " + errorMessage);
-        }
-
-        @Override
-        public void onClick() {
-            togglePause();
-        }
-
-        @Override
-        public void onNewFrame() {
-            updateStatusText();
-            seekBar.setProgress((int) videoWidgetView.getCurrentPosition());
-        }
-
-
-        @Override
-        public void onCompletion() {
-            videoWidgetView.seekTo(0);
-        }
+        isPaused = !isPaused;
+        updateStatusText();
     }
-
-//    class VideoLoaderTask extends AsyncTask<Uri, Void, Boolean> {
-//        @Override
-//        protected Boolean doInBackground(Uri... uri) {
-//            try {
-//                if (uri == null || uri.length < 1 || uri[0] == null) {
-//                    videoWidgetView.loadVideoFromAsset("congo.mp4");
-//                } else {
-//                    videoWidgetView.loadVideo(fileUri[0]);
-//                }
-//            } catch (IOException e) {
-//                // An error here is normally due to being unable to locate the file.
-//                loadVideoStatus = LOAD_VIDEO_STATUS_ERROR;
-//                // Since this is a background thread, we need to switch to the main thread to show a toast.
-//                videoWidgetView.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Toast
-//                                .makeText(SimpleVrVideoActivity.this, "Error opening file. ", Toast.LENGTH_LONG)
-//                                .show();
-//                    }
-//                });
-//                Log.e(TAG, "Could not open video: " + e);
-//            }
-//            return true;
-//        }
-//    }
 }
