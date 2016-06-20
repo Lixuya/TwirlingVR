@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     private CrossfadeDrawerLayout crossfadeDrawerLayout = null;
     private ViewPager viewPager = null;
     private WebFragment webFragment = null;
-    private String url = "http://www.twirlingvr.com/index.html";
 
     private void onToolbarItemClicked(MenuItem menuItem) {
 //                startActivity(new Intent(MainActivity.this, ListShowActivity.class));

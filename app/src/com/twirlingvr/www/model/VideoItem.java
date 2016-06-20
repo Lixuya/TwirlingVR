@@ -13,17 +13,18 @@ import io.realm.annotations.PrimaryKey;
  */
 public class VideoItem extends RealmObject implements Parcelable {
     @PrimaryKey
-    private String title = "";
+    private String name = "";
     private String image = "",
             video = "",
             videoUri = "",
             describe = "",
             androidoffline = "";
+    private boolean isaudio;
     private long downloadTime = 0,
             downloadId = 0;
 
     protected VideoItem(Parcel in) {
-        title = in.readString();
+        name = in.readString();
         image = in.readString();
         video = in.readString();
         videoUri = in.readString();
@@ -51,17 +52,17 @@ public class VideoItem extends RealmObject implements Parcelable {
     }
 
     public VideoItem(List<String> item) {
-        title = item.get(2);
+        name = item.get(2);
         video = item.get(4);
         image = item.get(6);
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getImage() {
@@ -87,7 +88,7 @@ public class VideoItem extends RealmObject implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(title);
+        dest.writeString(name);
         dest.writeString(image);
         dest.writeString(video);
         dest.writeString(videoUri);
@@ -107,7 +108,7 @@ public class VideoItem extends RealmObject implements Parcelable {
         @Override
         public VideoItem createFromParcel(Parcel in) {
             VideoItem videoItem = new VideoItem();
-            videoItem.title = in.readString();
+            videoItem.name = in.readString();
             videoItem.image = in.readString();
             videoItem.video = in.readString();
             videoItem.videoUri = in.readString();
@@ -124,7 +125,7 @@ public class VideoItem extends RealmObject implements Parcelable {
 
     @Override
     public String toString() {
-        String str = getDownloadId() + " " + getTitle() + " " + getImage() + " " + getVideo() + " " + getDownloadTime();
+        String str = getDownloadId() + " " + getName() + " " + getImage() + " " + getVideo() + " " + getDownloadTime();
         return str;
     }
 }

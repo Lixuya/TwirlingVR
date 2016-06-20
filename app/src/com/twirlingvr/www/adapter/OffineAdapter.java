@@ -53,7 +53,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
         holder.downloadId = item.getDownloadId();
         Log.w("downloadId", holder.downloadId + "");
         Glide.with(holder.itemView.getContext()).load(Constants.PAPH_IMAGE + item.getImage()).into(holder.iv_background);
-        holder.tv_title.setText(item.getTitle());
+        holder.tv_title.setText(item.getName());
         //
         holder.iv_delete.setOnClickListener(new View.OnClickListener() {
             @Override

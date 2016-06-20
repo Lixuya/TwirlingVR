@@ -48,7 +48,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         final VideoItem item = datas.get(position);
         Log.w("item", item + "");
         String imageName = item.getImage();
-        String title = item.getTitle();
+        String title = item.getName();
         Glide.with(holder.itemView.getContext()).load(Constants.PAPH_IMAGE + imageName).into(holder.iv_background);
         holder.tv_title.setText(title);
 //        holder.iv_delete.setBackgroundResource(R.drawable.download);

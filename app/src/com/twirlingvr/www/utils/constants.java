@@ -10,8 +10,12 @@ public class Constants {
     public static final String MIME_ZIP = "application/zip";
     //
     public static final String PATH_SERVER = "http://www.twirlingvr.com/";
+    // 图片
     public static final String PAPH_IMAGE = PATH_SERVER + "App_Media/images/";
+    // 在线
     public static final String PAPH_VIDEO = PATH_SERVER + "App_Media/videos/";
+    // 下载
+    public static final String PAPH_DOWNLOAD = PATH_SERVER + "App_Media/downloads/";
     //
     public static final Uri URI_DOWNLOAD = Uri.parse("content://downloads/my_downloads/");
     public static final String URI_VIDEO = "file:///storage/emulated/0/Download/";
