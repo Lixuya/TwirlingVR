@@ -17,7 +17,7 @@ public class VideoItem extends RealmObject implements Parcelable {
             videoUri = "",
             describe = "",
             androidoffline = "";
-    private int isaudio = 0;
+    private int isatmos = 0;
     private long downloadTime = 0;
 
     public String getDescribe() {
@@ -36,12 +36,12 @@ public class VideoItem extends RealmObject implements Parcelable {
         this.androidoffline = androidoffline;
     }
 
-    public int getIsaudio() {
-        return isaudio;
+    public int getIsatmos() {
+        return isatmos;
     }
 
-    public void setIsaudio(int isaudio) {
-        this.isaudio = isaudio;
+    public void setIsatmos(int isatmos) {
+        this.isatmos = isatmos;
     }
 
     private long downloadId = 0;
@@ -57,7 +57,7 @@ public class VideoItem extends RealmObject implements Parcelable {
         downloadTime = in.readLong();
         downloadId = in.readLong();
         //
-        isaudio = in.readInt();
+        isatmos = in.readInt();
     }
 
     public long getDownloadTime() {
@@ -116,7 +116,7 @@ public class VideoItem extends RealmObject implements Parcelable {
         dest.writeString(videoUri);
         dest.writeString(androidoffline);
         dest.writeString(describe);
-        dest.writeInt(isaudio);
+        dest.writeInt(isatmos);
         dest.writeLong(downloadTime);
         dest.writeLong(downloadId);
     }
@@ -139,7 +139,7 @@ public class VideoItem extends RealmObject implements Parcelable {
             videoItem.videoUri = in.readString();
             videoItem.androidoffline = in.readString();
             videoItem.describe = in.readString();
-            videoItem.isaudio = in.readInt();
+            videoItem.isatmos = in.readInt();
             videoItem.downloadTime = in.readLong();
             videoItem.downloadId = in.readLong();
             return videoItem;
@@ -158,7 +158,7 @@ public class VideoItem extends RealmObject implements Parcelable {
                 + getImage() + " :image "//
                 + getVideo() + " :video "//
                 + getDownloadTime() + " :time " //
-                + getIsaudio() + " :isaudio "//
+                + getIsatmos() + " :isatmos "//
                 + getAndroidoffline() + " :offline "//
                 + getDescribe() + " :describe ";
         return str;

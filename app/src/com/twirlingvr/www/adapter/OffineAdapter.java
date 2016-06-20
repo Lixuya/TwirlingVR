@@ -60,7 +60,6 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
             public void onClick(View v) {
                 // 如果下载中，取消下载
                 holder.downloadId = RealmHelper.getIns().selectVideoItem(item.getVideo()).getDownloadId();
-                Log.w("downloadId", holder.downloadId + "");
                 if (holder.downloadId != 1 && holder.downloadId != 0) {
                     DownloadManager dm = (DownloadManager) App.getInst().getApplicationContext().getSystemService(
                             App.getInst().getApplicationContext().DOWNLOAD_SERVICE);
@@ -68,7 +67,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
                 }
                 // 删除本地文件
                 else if (holder.downloadId == 1) {
-                    FileUtil.delete(Uri.parse(Constants.URI_VIDEO + item.getVideo()));
+                    FileUtil.delete(Uri.parse(Constants.URI_DOWNLOAD_LOCAL + item.getVideo()));
                 }
                 // 删除数据库下载记录
                 RealmHelper.getIns().deleteVideoItem(item);
@@ -81,7 +80,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
             @Override
             public void onClick(View v) {//
                 Intent intent = new Intent(holder.itemView.getContext(), AudioActivity.class);
-                intent.putExtra("videoUrl", Constants.URI_VIDEO + item.getVideo());
+                intent.putExtra("videoItem", item);
                 holder.itemView.getContext().startActivity(intent);
             }
         });

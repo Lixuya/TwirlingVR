@@ -15,9 +15,9 @@ import com.google.vr.sdk.base.Viewport;
 import com.google.vr.sdk.widgets.video.VrVideoEventListener;
 import com.google.vr.sdk.widgets.video.VrVideoView;
 import com.twirlingvr.www.R;
+import com.twirlingvr.www.model.VideoItem;
 import com.twirlingvr.www.player.OpenMXPlayer;
 import com.twirlingvr.www.utils.Constants;
-import com.twirlingvr.www.utils.TextUtil;
 
 import java.io.IOException;
 
@@ -46,7 +46,8 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
     public static final int LOAD_VIDEO_STATUS_ERROR = 2;
     private int loadVideoStatus = LOAD_VIDEO_STATUS_UNKNOWN;
     private boolean isPaused = false;
-    private Uri fileUri = null;
+    private Uri videoUri = null;
+    private String audioPath = "";
     //
     @BindView(R.id.status_text)
     TextView statusText;
@@ -62,6 +63,12 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_audio);
         ButterKnife.bind(this);
+        // initData
+        VideoItem videoItem = getIntent().getParcelableExtra("videoItem");
+        String name = videoItem.getAndroidoffline().split("\\.")[0];
+        videoUri = Uri.parse(Constants.URI_DOWNLOAD + name + "video.mp4");
+        audioPath = Constants.URI_DOWNLOAD + name + "audio.mp4";
+        Log.w("videoUri", videoUri.toString() + audioPath);
         //
         gvrView.setEGLConfigChooser(8, 8, 8, 8, 16, 8);
         gvrView.setRenderer(this);
@@ -76,7 +83,7 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         setGvrView(gvrView);
         //
         openMXPlayer = new OpenMXPlayer();
-        openMXPlayer.setDataSource(Constants.URL_AAC);
+        openMXPlayer.setDataSource(audioPath);
         headView = new float[16];
         headRotation = new float[4];
         headRotationEular = new float[3];
@@ -131,15 +138,7 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
                 video_view.seekTo(0);
             }
         });
-        //
         loadVideoStatus = LOAD_VIDEO_STATUS_UNKNOWN;
-        //
-        String uri = getIntent().getStringExtra("videoUrl");
-        fileUri = Uri.parse(uri);
-        if (!TextUtil.isValidate(uri)) {
-            return;
-        }
-
     }
 
     @Override
@@ -178,7 +177,7 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
     public void onSurfaceCreated(EGLConfig eglConfig) {
         openMXPlayer.play();
         try {
-            video_view.loadVideo(fileUri);
+            video_view.loadVideo(videoUri);
         } catch (IOException e) {
             e.printStackTrace();
         }

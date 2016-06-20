@@ -20,6 +20,8 @@ import com.twirlingvr.www.model.VideoItem;
 public class DownloadService extends IntentService {
     private DownloadManager dm;
     private ContentObserver downloadObserver;
+    private String mime = "";
+    private String name = "";
 
     public Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
@@ -45,7 +47,16 @@ public class DownloadService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         VideoItem videoItem = intent.getParcelableExtra("videoItem");
         String videoName = videoItem.getVideo();
-        String url = Constants.PAPH_VIDEO + videoName;
+        String url = "";
+        if (videoItem.getIsatmos() == 0) {
+            url = Constants.PAPH_VIDEO + videoName;
+            mime = Constants.MIME_MP4;
+            name = videoName;
+        } else if (videoItem.getIsatmos() == 1) {
+            url = Constants.PAPH_DOWNLOAD + videoItem.getAndroidoffline();
+            mime = Constants.MIME_ZIP;
+            name = videoItem.getAndroidoffline();
+        }
         //
         if (!TextUtil.isValidate(url) || !TextUtil.isValidate(videoName)) {
             return;
@@ -61,17 +72,17 @@ public class DownloadService extends IntentService {
         //
         App.observers.put(downloadId, downloadObserver);
         ((DownloadChangeObserver) downloadObserver).setDownloadId(downloadId);
+
     }
 
     private long startDownload(Uri uri, String videoName) {
         dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
         DownloadManager.Request request = new DownloadManager.Request(uri);
-        request.setMimeType(Constants.MIME_MP4);
+        request.setMimeType(mime);
         request.setDescription("下载..");
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
-
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, videoName);
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, name);
         request.setVisibleInDownloadsUi(true);
         request.allowScanningByMediaScanner();
         long downloadId = dm.enqueue(request);

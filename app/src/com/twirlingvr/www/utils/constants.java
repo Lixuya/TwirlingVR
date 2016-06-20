@@ -1,6 +1,7 @@
 package com.twirlingvr.www.utils;
 
 import android.net.Uri;
+import android.os.Environment;
 
 /**
  * Created by 谢秋鹏 on 2016/5/26.
@@ -17,7 +18,8 @@ public class Constants {
     // 下载
     public static final String PAPH_DOWNLOAD = PATH_SERVER + "APP_Videos/downloads/";
     //
+    public static final String PAPH_DOWNLOAD_LOCAL = Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOWNLOADS + "/";
+    public static final String URI_DOWNLOAD_LOCAL = "file:///storage/emulated/0/Download/";
     public static final Uri URI_DOWNLOAD = Uri.parse("content://downloads/my_downloads/");
-    public static final String URI_VIDEO = "file:///storage/emulated/0/Download/";
     public static final String URL_AAC = "http://twirlingvr.com/test/wxyz9.mp4";
 }

@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
 import com.twirlingvr.www.data.RealmHelper;
+import com.twirlingvr.www.model.VideoItem;
 
 import java.io.File;
 
@@ -23,10 +25,18 @@ public class DownloadReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
+        Log.w("DownloadReceiver", action);
         if (action.equals(DownloadManager.ACTION_DOWNLOAD_COMPLETE)) {
             //TODO 判断这个id与之前的id是否相等，如果相等说明是之前的那个要下载的文件
             downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
             long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0);
+            //
+            VideoItem item = RealmHelper.getIns().selectVideoItem(id);
+            String fileFolder = item.getAndroidoffline().substring(0, item.getAndroidoffline().length() - 4);
+            Log.w("fileFolder", fileFolder);
+            if (item.getIsatmos() == 1) {
+                new Decompress(Constants.PAPH_DOWNLOAD_LOCAL + item.getAndroidoffline(), Constants.PAPH_DOWNLOAD_LOCAL + fileFolder).unzip();
+            }
             RealmHelper.getIns().updateDownloadId(id);
             //
             printDownloadInformation(id);
