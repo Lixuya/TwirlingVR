@@ -14,7 +14,7 @@ import retrofit2.http.QueryMap;
  */
 public interface ApiService {
     // 获取视频列表
-    @GET("App_Run/video_deal.aspx")
+    @GET("App_Run/app_video_deal.aspx")
     Call<DataArray> getVideoList(@QueryMap Map<String, Object> params);
 
 }

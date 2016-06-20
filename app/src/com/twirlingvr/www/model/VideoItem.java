@@ -14,27 +14,29 @@ import io.realm.annotations.PrimaryKey;
 public class VideoItem extends RealmObject implements Parcelable {
     @PrimaryKey
     private String title = "";
-    private String imageName = "",
-            videoName = "",
-            fileUri = "";
-    private long updateTime = 0,
+    private String image = "",
+            video = "",
+            videoUri = "",
+            describe = "",
+            androidoffline = "";
+    private long downloadTime = 0,
             downloadId = 0;
 
     protected VideoItem(Parcel in) {
         title = in.readString();
-        imageName = in.readString();
-        videoName = in.readString();
-        fileUri = in.readString();
-        updateTime = in.readLong();
+        image = in.readString();
+        video = in.readString();
+        videoUri = in.readString();
+        downloadTime = in.readLong();
         downloadId = in.readLong();
     }
 
-    public long getUpdateTime() {
-        return updateTime;
+    public long getDownloadTime() {
+        return downloadTime;
     }
 
-    public void setUpdateTime(long updateTime) {
-        this.updateTime = updateTime;
+    public void setDownloadTime(long downloadTime) {
+        this.downloadTime = downloadTime;
     }
 
     public long getDownloadId() {
@@ -50,8 +52,8 @@ public class VideoItem extends RealmObject implements Parcelable {
 
     public VideoItem(List<String> item) {
         title = item.get(2);
-        videoName = item.get(4);
-        imageName = item.get(6);
+        video = item.get(4);
+        image = item.get(6);
     }
 
     public String getTitle() {
@@ -62,20 +64,20 @@ public class VideoItem extends RealmObject implements Parcelable {
         this.title = title;
     }
 
-    public String getImageName() {
-        return imageName;
+    public String getImage() {
+        return image;
     }
 
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public String getVideoName() {
-        return videoName;
+    public String getVideo() {
+        return video;
     }
 
-    public void setVideoName(String videoName) {
-        this.videoName = videoName;
+    public void setVideo(String video) {
+        this.video = video;
     }
 
     @Override
@@ -86,19 +88,19 @@ public class VideoItem extends RealmObject implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(title);
-        dest.writeString(imageName);
-        dest.writeString(videoName);
-        dest.writeString(fileUri);
-        dest.writeLong(updateTime);
+        dest.writeString(image);
+        dest.writeString(video);
+        dest.writeString(videoUri);
+        dest.writeLong(downloadTime);
         dest.writeLong(downloadId);
     }
 
-    public String getFileUri() {
-        return fileUri;
+    public String getVideoUri() {
+        return videoUri;
     }
 
-    public void setFileUri(String fileUri) {
-        this.fileUri = fileUri;
+    public void setVideoUri(String videoUri) {
+        this.videoUri = videoUri;
     }
 
     public static final Creator<VideoItem> CREATOR = new Creator<VideoItem>() {
@@ -106,10 +108,10 @@ public class VideoItem extends RealmObject implements Parcelable {
         public VideoItem createFromParcel(Parcel in) {
             VideoItem videoItem = new VideoItem();
             videoItem.title = in.readString();
-            videoItem.imageName = in.readString();
-            videoItem.videoName = in.readString();
-            videoItem.fileUri = in.readString();
-            videoItem.updateTime = in.readLong();
+            videoItem.image = in.readString();
+            videoItem.video = in.readString();
+            videoItem.videoUri = in.readString();
+            videoItem.downloadTime = in.readLong();
             videoItem.downloadId = in.readLong();
             return videoItem;
         }
@@ -122,7 +124,7 @@ public class VideoItem extends RealmObject implements Parcelable {
 
     @Override
     public String toString() {
-        String str = getDownloadId() + " " + getTitle() + " " + getImageName() + " " + getVideoName() + " " + getUpdateTime();
+        String str = getDownloadId() + " " + getTitle() + " " + getImage() + " " + getVideo() + " " + getDownloadTime();
         return str;
     }
 }

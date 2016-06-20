@@ -38,13 +38,13 @@ public class DownloadService extends IntentService {
     public void onCreate() {
         super.onCreate();
         downloadObserver = new DownloadChangeObserver(handler);
-        getContentResolver().registerContentObserver(Constants.CONTENT_URI, true, downloadObserver);
+        getContentResolver().registerContentObserver(Constants.URI_DOWNLOAD, true, downloadObserver);
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
         VideoItem videoItem = intent.getParcelableExtra("videoItem");
-        String videoName = videoItem.getVideoName();
+        String videoName = videoItem.getVideo();
         String url = Constants.PAPH_VIDEO + videoName;
         //
         if (!TextUtil.isValidate(url) || !TextUtil.isValidate(videoName)) {
@@ -53,7 +53,7 @@ public class DownloadService extends IntentService {
         Uri uri = Uri.parse(url);
         long downloadId = startDownload(uri, videoName);
         //
-        videoItem.setUpdateTime(System.currentTimeMillis());
+        videoItem.setDownloadTime(System.currentTimeMillis());
         videoItem.setDownloadId(downloadId);
         Message message = new Message();
         message.obj = videoItem;
@@ -66,7 +66,7 @@ public class DownloadService extends IntentService {
     private long startDownload(Uri uri, String videoName) {
         dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
         DownloadManager.Request request = new DownloadManager.Request(uri);
-        request.setMimeType(Constants.MIME_TYPE);
+        request.setMimeType(Constants.MIME_MP4);
         request.setDescription("下载..");
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);

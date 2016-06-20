@@ -28,7 +28,7 @@ import java.util.List;
 public class FragmentOnline extends Fragment {
     private MainAdapter mAdapter = null;
     private XRecyclerView mRecyclerView = null;
-    private List<VideoItem> datas = new ArrayList<>();
+    private List<VideoItem> datas = new ArrayList<VideoItem>();
 
     @Nullable
     @Override
@@ -76,11 +76,7 @@ public class FragmentOnline extends Fragment {
             @Override
             public void onSuccess(DataArray dataArray) {
                 datas.clear();
-                List<List<String>> movieList = dataArray.getContent();
-                for (List<String> item : movieList) {
-                    VideoItem videoItem = new VideoItem(item);
-                    datas.add(videoItem);
-                }
+                datas.addAll(dataArray.getContent());
                 mAdapter.notifyDataSetChanged();
             }
 

@@ -1,7 +1,7 @@
 package com.twirlingvr.www.net;
 
 import com.orhanobut.logger.Logger;
-import com.twirlingvr.www.utils.TextUtil;
+import com.twirlingvr.www.utils.Constants;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -84,20 +84,11 @@ public class Api {
     }
 
     public static String getServerUrl() {
-        String url = "http://www.twirlingvr.com/";
-//                SharePreHelper.getIns().getServerUrl();
-        if (!TextUtil.isValidate(url)) {
-            url = "http://www.twirlingvr.com/";
-        } else {
-            if (!url.endsWith("/")) {
-                url += "/";
-            }
+        String url = Constants.PATH_SERVER;
+        if (!url.endsWith("/")) {
+            url += "/";
         }
         return url;
-    }
-
-    public static String getImageUrl(String fileKey) {
-        return base_url + "ctl/resource/download" + "?resId=" + fileKey + HttpParamsHelper.getUrlDeviceInfo();
     }
 
     public static void resetRetrofit() {

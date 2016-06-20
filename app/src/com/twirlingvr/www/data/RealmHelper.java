@@ -98,7 +98,7 @@ public class RealmHelper {
         VideoItem videoItem = realm.where(VideoItem.class)
                 .equalTo("downloadId", downloadId)
                 .findFirst();
-        return videoItem.getVideoName();
+        return videoItem.getVideo();
     }
 
     public void deleteVideoItem(String videoName) {

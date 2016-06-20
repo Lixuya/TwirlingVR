@@ -52,23 +52,23 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
         final VideoItem item = datas.get(position);
         holder.downloadId = item.getDownloadId();
         Log.w("downloadId", holder.downloadId + "");
-        Glide.with(holder.itemView.getContext()).load(Constants.PAPH_IMAGE + item.getImageName()).into(holder.iv_background);
+        Glide.with(holder.itemView.getContext()).load(Constants.PAPH_IMAGE + item.getImage()).into(holder.iv_background);
         holder.tv_title.setText(item.getTitle());
         //
         holder.iv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 如果下载中，取消下载
-                holder.downloadId = RealmHelper.getIns().selectVideoItem(item.getVideoName()).getDownloadId();
+                holder.downloadId = RealmHelper.getIns().selectVideoItem(item.getVideo()).getDownloadId();
                 Log.w("downloadId", holder.downloadId + "");
                 if (holder.downloadId != 1 && holder.downloadId != 0) {
                     DownloadManager dm = (DownloadManager) App.getInst().getApplicationContext().getSystemService(
                             App.getInst().getApplicationContext().DOWNLOAD_SERVICE);
-                    dm.remove(RealmHelper.getIns().selectVideoItem(item.getVideoName()).getDownloadId());
+                    dm.remove(RealmHelper.getIns().selectVideoItem(item.getVideo()).getDownloadId());
                 }
                 // 删除本地文件
                 else if (holder.downloadId == 1) {
-                    FileUtil.delete(Uri.parse(Constants.URI_VIDEO + item.getVideoName()));
+                    FileUtil.delete(Uri.parse(Constants.URI_VIDEO + item.getVideo()));
                 }
                 // 删除数据库下载记录
                 RealmHelper.getIns().deleteVideoItem(item);
@@ -81,7 +81,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
             @Override
             public void onClick(View v) {//
                 Intent intent = new Intent(holder.itemView.getContext(), AudioActivity.class);
-                intent.putExtra("videoUrl", Constants.URI_VIDEO + item.getVideoName());
+                intent.putExtra("videoUrl", Constants.URI_VIDEO + item.getVideo());
                 holder.itemView.getContext().startActivity(intent);
             }
         });

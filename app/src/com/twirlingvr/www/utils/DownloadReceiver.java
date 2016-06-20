@@ -36,7 +36,7 @@ public class DownloadReceiver extends BroadcastReceiver {
 //                // 转换path路径 否则报解析包错误
 //                String uriString = getFilePathFromUri(context, Uri.parse(path));
 //                Logger.i("-----------------------CompleteReceiver 转换后----路径uriString = " + uriString);
-//                install.setDataAndType(Uri.fromFile(new File(uriString)), Constants.MIME_TYPE);
+//                install.setDataAndType(Uri.fromFile(new File(uriString)), Constants.MIME_MP4);
 //                install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                context.startActivity(install);
 //            }
@@ -48,7 +48,7 @@ public class DownloadReceiver extends BroadcastReceiver {
             //TODO 转换path路径 否则报解析包错误
             String uriString = FileUtil.getFilePathFromUri(context, Uri.parse(path));
             Logger.i("uriString " + uriString);
-            install.setDataAndType(Uri.fromFile(new File(uriString)), Constants.MIME_TYPE);
+            install.setDataAndType(Uri.fromFile(new File(uriString)), Constants.MIME_MP4);
             install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(install);
         }

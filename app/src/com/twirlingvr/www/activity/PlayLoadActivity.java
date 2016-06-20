@@ -63,9 +63,9 @@ public class PlayLoadActivity extends Activity {
         StatusBarUtil.setTransparent(PlayLoadActivity.this);
         //
         final VideoItem videoItem = (VideoItem) getIntent().getExtras().getParcelable("videoItem");
-        videoName = videoItem.getVideoName();
+        videoName = videoItem.getVideo();
         videoUrl = Constants.PAPH_VIDEO + videoName;
-        imageUrl = Constants.PAPH_IMAGE + videoItem.getImageName();
+        imageUrl = Constants.PAPH_IMAGE + videoItem.getImage();
         //
         Glide.with(getBaseContext()).load(imageUrl).into(iv_video_image);
         RxView.clicks(load)

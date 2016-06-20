@@ -8,14 +8,13 @@ import java.util.List;
  */
 public class DataArray {
     private String result = "";
-    private List<List<String>> content = new ArrayList<List<String>>();
-    private List<String> list = new ArrayList<String>();
+    private List<VideoItem> content = new ArrayList<VideoItem>();
 
-    public List<List<String>> getContent() {
+    public List<VideoItem> getContent() {
         return content;
     }
 
-    public void setContent(List<List<String>> content) {
+    public void setContent(List<VideoItem> content) {
         this.content = content;
     }
 
