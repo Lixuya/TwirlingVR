@@ -44,7 +44,7 @@ public class RealmHelper {
             @Override
             public void execute(Realm realm) {
                 VideoItem videoItem = realm.where(VideoItem.class)
-                        .equalTo("videoName", videoName)
+                        .equalTo("video", videoName)
                         .findFirst();
                 if (videoItem == null) {
                     return;
@@ -73,7 +73,7 @@ public class RealmHelper {
         RealmResults<VideoItem> puppies = realm.where(VideoItem.class)
                 .notEqualTo("downloadId", (long) 0)
                 .findAll()
-                .sort("updateTime", Sort.ASCENDING);
+                .sort("downloadTime", Sort.ASCENDING);
         for (VideoItem item : puppies) {
             Log.i("selectVideoList", item.toString());
         }
@@ -82,7 +82,7 @@ public class RealmHelper {
 
     public VideoItem selectVideoItem(final String videoName) {
         VideoItem videoItem = realm.where(VideoItem.class)
-                .equalTo("videoName", videoName)
+                .equalTo("video", videoName)
                 .notEqualTo("downloadId", 0)
                 .findFirst();
         return videoItem;

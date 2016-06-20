@@ -69,9 +69,7 @@ public class FragmentOnline extends Fragment {
     private void loadData(final int page) {
         HashMap<String, Object> params = new HashMap<>();
         //HttpParamsHelper.createParams();
-        params.put("id", 0);
-        params.put("group", "pub");
-        params.put("top", 100);
+//        params.put("top", 100);
         Api.getRetrofit().getVideoList(params).enqueue(new RequestCallback<DataArray>() {
             @Override
             public void onSuccess(DataArray dataArray) {

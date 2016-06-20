@@ -3,8 +3,6 @@ package com.twirlingvr.www.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.List;
-
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -19,17 +17,47 @@ public class VideoItem extends RealmObject implements Parcelable {
             videoUri = "",
             describe = "",
             androidoffline = "";
-    private boolean isaudio;
-    private long downloadTime = 0,
-            downloadId = 0;
+    private int isaudio = 0;
+    private long downloadTime = 0;
+
+    public String getDescribe() {
+        return describe;
+    }
+
+    public void setDescribe(String describe) {
+        this.describe = describe;
+    }
+
+    public String getAndroidoffline() {
+        return androidoffline;
+    }
+
+    public void setAndroidoffline(String androidoffline) {
+        this.androidoffline = androidoffline;
+    }
+
+    public int getIsaudio() {
+        return isaudio;
+    }
+
+    public void setIsaudio(int isaudio) {
+        this.isaudio = isaudio;
+    }
+
+    private long downloadId = 0;
 
     protected VideoItem(Parcel in) {
         name = in.readString();
         image = in.readString();
         video = in.readString();
         videoUri = in.readString();
+        describe = in.readString();
+        androidoffline = in.readString();
+        //
         downloadTime = in.readLong();
         downloadId = in.readLong();
+        //
+        isaudio = in.readInt();
     }
 
     public long getDownloadTime() {
@@ -49,12 +77,6 @@ public class VideoItem extends RealmObject implements Parcelable {
     }
 
     public VideoItem() {
-    }
-
-    public VideoItem(List<String> item) {
-        name = item.get(2);
-        video = item.get(4);
-        image = item.get(6);
     }
 
     public String getName() {
@@ -92,6 +114,9 @@ public class VideoItem extends RealmObject implements Parcelable {
         dest.writeString(image);
         dest.writeString(video);
         dest.writeString(videoUri);
+        dest.writeString(androidoffline);
+        dest.writeString(describe);
+        dest.writeInt(isaudio);
         dest.writeLong(downloadTime);
         dest.writeLong(downloadId);
     }
@@ -112,6 +137,9 @@ public class VideoItem extends RealmObject implements Parcelable {
             videoItem.image = in.readString();
             videoItem.video = in.readString();
             videoItem.videoUri = in.readString();
+            videoItem.androidoffline = in.readString();
+            videoItem.describe = in.readString();
+            videoItem.isaudio = in.readInt();
             videoItem.downloadTime = in.readLong();
             videoItem.downloadId = in.readLong();
             return videoItem;
@@ -125,7 +153,14 @@ public class VideoItem extends RealmObject implements Parcelable {
 
     @Override
     public String toString() {
-        String str = getDownloadId() + " " + getName() + " " + getImage() + " " + getVideo() + " " + getDownloadTime();
+        String str = getDownloadId() + " :downloadId "//
+                + getName() + " :name " //
+                + getImage() + " :image "//
+                + getVideo() + " :video "//
+                + getDownloadTime() + " :time " //
+                + getIsaudio() + " :isaudio "//
+                + getAndroidoffline() + " :offline "//
+                + getDescribe() + " :describe ";
         return str;
     }
 }
