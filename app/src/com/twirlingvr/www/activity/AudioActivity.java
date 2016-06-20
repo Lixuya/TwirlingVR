@@ -185,11 +185,6 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
     public void onRendererShutdown() {
 
     }
@@ -212,5 +207,28 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         }
         isPaused = !isPaused;
         updateStatusText();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        video_view.pauseRendering();
+        openMXPlayer.pause();
+        isPaused = true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        video_view.resumeRendering();
+        openMXPlayer.play();
+        updateStatusText();
+    }
+
+    @Override
+    protected void onDestroy() {
+        video_view.shutdown();
+        openMXPlayer.stop();
+        super.onDestroy();
     }
 }

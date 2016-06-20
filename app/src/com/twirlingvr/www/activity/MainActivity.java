@@ -195,7 +195,6 @@ public class MainActivity extends AppCompatActivity {
                 return crossfadeDrawerLayout.isCrossfaded();
             }
         });
-
     }
 
     @Override
