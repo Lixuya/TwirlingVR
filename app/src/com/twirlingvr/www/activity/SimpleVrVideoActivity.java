@@ -103,7 +103,7 @@ public class SimpleVrVideoActivity extends AppCompatActivity {
             return;
         }
         try {
-            videoWidgetView.loadVideo(fileUri);
+            videoWidgetView.loadVideo(fileUri, new VrVideoView.Options());
         } catch (IOException e) {
             e.printStackTrace();
         }

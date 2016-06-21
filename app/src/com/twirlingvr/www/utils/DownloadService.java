@@ -40,7 +40,7 @@ public class DownloadService extends IntentService {
     public void onCreate() {
         super.onCreate();
         downloadObserver = new DownloadChangeObserver(handler);
-        getContentResolver().registerContentObserver(Constants.URI_DOWNLOAD, true, downloadObserver);
+        getContentResolver().registerContentObserver(Uri.parse(Constants.URI_DOWNLOAD), true, downloadObserver);
     }
 
     @Override

@@ -48,6 +48,7 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
     private boolean isPaused = false;
     private Uri videoUri = null;
     private String audioPath = "";
+    private VrVideoView.Options videoOptions = new VrVideoView.Options();
     //
     @BindView(R.id.status_text)
     TextView statusText;
@@ -66,9 +67,9 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         // initData
         VideoItem videoItem = getIntent().getParcelableExtra("videoItem");
         String name = videoItem.getAndroidoffline().split("\\.")[0];
-        videoUri = Uri.parse(Constants.URI_DOWNLOAD + name + "video.mp4");
-        audioPath = Constants.URI_DOWNLOAD + name + "audio.mp4";
-        Log.w("videoUri", videoUri.toString() + audioPath);
+        videoUri = Uri.parse(Constants.URI_DOWNLOAD_LOCAL + name + "video.mp4");
+        audioPath = Constants.URI_DOWNLOAD_LOCAL + name + "audio.mp4";
+        Log.w("videoUri", videoUri.toString() + "   " + audioPath);
         //
         gvrView.setEGLConfigChooser(8, 8, 8, 8, 16, 8);
         gvrView.setRenderer(this);
@@ -143,6 +144,7 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
 
     @Override
     public void onNewFrame(HeadTransform headTransform) {
+
         headTransform.getHeadView(headView, 0);
         headTransform.getQuaternion(headRotation, 0);
         headTransform.getEulerAngles(headRotationEular, 0);
@@ -150,7 +152,7 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         if (openMXPlayer != null) {
             openMXPlayer.setMetadata(headRotationEular);
         }
-
+        Log.i(TAG, "onNewFrame " + headRotationEular);
     }
 
     @Override
@@ -170,14 +172,17 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
 
     @Override
     public void onCardboardTrigger() {
+        Log.i(TAG, "onCardboardTrigger");
         super.onCardboardTrigger();
     }
 
     @Override
     public void onSurfaceCreated(EGLConfig eglConfig) {
+        Log.i(TAG, "onSurfaceCreated");
         openMXPlayer.play();
         try {
-            video_view.loadVideo(videoUri);
+            videoOptions.inputFormat = VrVideoView.Options.FORMAT_DEFAULT;
+            video_view.loadVideo(videoUri, videoOptions);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -210,22 +215,25 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
 
     @Override
     protected void onPause() {
-        super.onPause();
+        Log.i(TAG, "onPause");
         video_view.pauseRendering();
         openMXPlayer.pause();
         isPaused = true;
+        super.onPause();
     }
 
     @Override
     protected void onResume() {
-        super.onResume();
+        Log.i(TAG, "onResume");
         video_view.resumeRendering();
         openMXPlayer.play();
         updateStatusText();
+        super.onResume();
     }
 
     @Override
     protected void onDestroy() {
+        Log.i(TAG, "onDestroy");
         video_view.shutdown();
         openMXPlayer.stop();
         super.onDestroy();

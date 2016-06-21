@@ -14,13 +14,13 @@
         <com.google.vr.sdk.base.GvrView
             android:id="@+id/gvrview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:visibility="gone" />
 
         <com.google.vr.sdk.widgets.video.VrVideoView
             android:id="@+id/video_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="" />
+            android:layout_height="match_parent" />
     </FrameLayout>
 
     <SeekBar
