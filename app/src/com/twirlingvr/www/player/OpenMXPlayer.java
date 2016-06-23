@@ -121,8 +121,9 @@ public class OpenMXPlayer implements Runnable {
     }
 
     public void seek(long pos) {
-        Log.w("seek", pos + "");
+        Log.w(LOG_TAG, pos + "");
         extractor.seekTo(pos, MediaExtractor.SEEK_TO_CLOSEST_SYNC);
+        syncNotify();
     }
 
     public void seek(int percent) {
@@ -251,7 +252,6 @@ public class OpenMXPlayer implements Runnable {
         boolean sawOutputEOS = false;
         int noOutputCounter = 0;
         int noOutputCounterLimit = 10;
-        MediaCodec.BufferInfo info = new MediaCodec.BufferInfo();
         state.set(PlayerStates.PLAYING);
         //
         boolean b = !sawOutputEOS && noOutputCounter < noOutputCounterLimit && !stop;
@@ -288,8 +288,9 @@ public class OpenMXPlayer implements Runnable {
                     Log.e(LOG_TAG, "inputBufIndex " + inputBufIndex);
                 }
             }
-            // decode to PCM and push it to the AudioTrack player
 
+            // decode to PCM and push it to the AudioTrack player
+            MediaCodec.BufferInfo info = new MediaCodec.BufferInfo();
             int res = codec.dequeueOutputBuffer(info, kTimeOutUs);
             //
             if (res >= 0) {
@@ -308,7 +309,6 @@ public class OpenMXPlayer implements Runnable {
                 // 播放
                 if (chunk.length > 0) {
                     audioTrack.write(audio, 0, FRAME_LENGTH * 2 * loopNum);
-//                    audioTrack.write(chunk2, 0, chunk2.length);
                     Log.d(LOG_TAG, "chunk.length." + chunk.length);
                     /*if(this.state.get() != PlayerStates.PLAYING) {
                         if (events != null) handler.post(new Runnable() { @Override public void run() { events.onPlay();  } });
