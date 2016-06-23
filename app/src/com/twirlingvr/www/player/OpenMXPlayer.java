@@ -188,6 +188,7 @@ public class OpenMXPlayer implements Runnable {
         //
         extractor.selectTrack(0);
         // start decoding
+        Log.w("startDecoding", "startDecoding");
         startDecoding(codecInputBuffers, codecOutputBuffers);
     }
 
@@ -283,10 +284,10 @@ public class OpenMXPlayer implements Runnable {
                 } else {
                     Log.e(LOG_TAG, "inputBufIndex " + inputBufIndex);
                 }
-            } // !sawInputEOS
+            }
             // decode to PCM and push it to the AudioTrack player
-//            decode();
             int res = codec.dequeueOutputBuffer(info, kTimeOutUs);
+            //
             if (res >= 0) {
                 if (info.size > 0) noOutputCounter = 0;
                 int outputBufIndex = res;
@@ -320,11 +321,13 @@ public class OpenMXPlayer implements Runnable {
             } else if (res == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
                 MediaFormat oformat = codec.getOutputFormat();
                 Log.d(LOG_TAG, "output format has changed to " + oformat);
+            } else if (res == MediaCodec.INFO_TRY_AGAIN_LATER) {
+                Log.d(LOG_TAG, "INFO_TRY_AGAIN_LATER");
             } else {
                 Log.d(LOG_TAG, "dequeueOutputBuffer returned " + res);
             }
         }
-
+        clearSource();
         if (noOutputCounter >= noOutputCounterLimit) {
             if (events != null) handler.post(new Runnable() {
                 @Override
