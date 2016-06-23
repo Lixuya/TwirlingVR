@@ -113,6 +113,7 @@ public class OpenMXPlayer implements Runnable {
 
     public void stop() {
         stop = true;
+        clearSource();
     }
 
     public void pause() {
@@ -120,6 +121,7 @@ public class OpenMXPlayer implements Runnable {
     }
 
     public void seek(long pos) {
+        Log.w("seek", pos + "");
         extractor.seekTo(pos, MediaExtractor.SEEK_TO_CLOSEST_SYNC);
     }
 
@@ -148,7 +150,6 @@ public class OpenMXPlayer implements Runnable {
         android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO);
         // profileId
         audioProcess.Init(11, FRAME_LENGTH, 3, 44100);
-
         // extractor gets information about the stream
         extractor = new MediaExtractor();
         // try to set the source, this might fail
@@ -171,8 +172,26 @@ public class OpenMXPlayer implements Runnable {
             });
             return;
         }
-
         // Read track header
+        readTrackHeader();
+        //
+        ByteBuffer[] codecInputBuffers = codec.getInputBuffers();
+        ByteBuffer[] codecOutputBuffers = codec.getOutputBuffers();
+        // configure AudioTrack
+        int channelConfiguration = channels == 1 ? AudioFormat.CHANNEL_OUT_MONO : AudioFormat.CHANNEL_OUT_STEREO;
+        int minSize = AudioTrack.getMinBufferSize(sampleRate, channelConfiguration, AudioFormat.ENCODING_PCM_16BIT);
+        //
+        audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, sampleRate, channelConfiguration,
+                AudioFormat.ENCODING_PCM_16BIT, minSize, AudioTrack.MODE_STREAM);
+        // start playing, we will feed the AudioTrack later
+        audioTrack.play();
+        //
+        extractor.selectTrack(0);
+        // start decoding
+        startDecoding(codecInputBuffers, codecOutputBuffers);
+    }
+
+    private void readTrackHeader() {
         MediaFormat format = null;
         try {
             format = extractor.getTrackFormat(0);
@@ -187,7 +206,6 @@ public class OpenMXPlayer implements Runnable {
             // don't exit, tolerate this error, we'll fail later if this is critical
         }
         Log.d(LOG_TAG, "Track info: mime:" + mime + " sampleRate:" + sampleRate + " channels:" + channels + " bitrate:" + bitrate + " duration:" + duration);
-
         // check we have audio content we know
         if (format == null || !mime.startsWith("audio/")) {
             if (events != null) handler.post(new Runnable() {
@@ -224,20 +242,6 @@ public class OpenMXPlayer implements Runnable {
         //
         codec.configure(format, null, null, 0);
         codec.start();
-        ByteBuffer[] codecInputBuffers = codec.getInputBuffers();
-        ByteBuffer[] codecOutputBuffers = codec.getOutputBuffers();
-        // configure AudioTrack
-        int channelConfiguration = channels == 1 ? AudioFormat.CHANNEL_OUT_MONO : AudioFormat.CHANNEL_OUT_STEREO;
-        int minSize = AudioTrack.getMinBufferSize(sampleRate, channelConfiguration, AudioFormat.ENCODING_PCM_16BIT);
-        audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, sampleRate, channelConfiguration,
-                AudioFormat.ENCODING_PCM_16BIT, minSize, AudioTrack.MODE_STREAM);
-        // start playing, we will feed the AudioTrack later
-        audioTrack.play();
-        extractor.selectTrack(0);
-        // start decoding
-        startDecoding(codecInputBuffers, codecOutputBuffers);
-        //
-        audioProcess.Release();
     }
 
     private void startDecoding(ByteBuffer[] codecInputBuffers, ByteBuffer[] codecOutputBuffers) {
@@ -272,16 +276,14 @@ public class OpenMXPlayer implements Runnable {
                             }
                         });
                     }
-
                     codec.queueInputBuffer(inputBufIndex, 0, sampleSize, presentationTimeUs, sawInputEOS ? MediaCodec.BUFFER_FLAG_END_OF_STREAM : 0);
-
-                    if (!sawInputEOS) extractor.advance();
-
+                    if (!sawInputEOS) {
+                        extractor.advance();
+                    }
                 } else {
                     Log.e(LOG_TAG, "inputBufIndex " + inputBufIndex);
                 }
             } // !sawInputEOS
-
             // decode to PCM and push it to the AudioTrack player
 //            decode();
             int res = codec.dequeueOutputBuffer(info, kTimeOutUs);
@@ -323,8 +325,6 @@ public class OpenMXPlayer implements Runnable {
             }
         }
 
-        clearSource();
-        //
         if (noOutputCounter >= noOutputCounterLimit) {
             if (events != null) handler.post(new Runnable() {
                 @Override
