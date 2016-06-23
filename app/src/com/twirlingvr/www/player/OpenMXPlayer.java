@@ -188,13 +188,13 @@ public class OpenMXPlayer implements Runnable {
         //
         extractor.selectTrack(0);
         // start decoding
-        Log.w("startDecoding", "startDecoding");
         startDecoding(codecInputBuffers, codecOutputBuffers);
     }
 
     private void readTrackHeader() {
         MediaFormat format = null;
         try {
+//            int count = extractor.getTrackCount();
             format = extractor.getTrackFormat(0);
             mime = format.getString(MediaFormat.KEY_MIME);
             sampleRate = format.getInteger(MediaFormat.KEY_SAMPLE_RATE);
@@ -247,13 +247,16 @@ public class OpenMXPlayer implements Runnable {
 
     private void startDecoding(ByteBuffer[] codecInputBuffers, ByteBuffer[] codecOutputBuffers) {
         final long kTimeOutUs = 1000;
-        MediaCodec.BufferInfo info = new MediaCodec.BufferInfo();
         boolean sawInputEOS = false;
         boolean sawOutputEOS = false;
         int noOutputCounter = 0;
         int noOutputCounterLimit = 10;
+        MediaCodec.BufferInfo info = new MediaCodec.BufferInfo();
         state.set(PlayerStates.PLAYING);
-        while (!sawOutputEOS && noOutputCounter < noOutputCounterLimit && !stop) {
+        //
+        boolean b = !sawOutputEOS && noOutputCounter < noOutputCounterLimit && !stop;
+        Log.w(LOG_TAG, b + "");
+        while (b) {
             // pause implementation
             waitPlay();
             noOutputCounter++;
@@ -286,10 +289,13 @@ public class OpenMXPlayer implements Runnable {
                 }
             }
             // decode to PCM and push it to the AudioTrack player
+
             int res = codec.dequeueOutputBuffer(info, kTimeOutUs);
             //
             if (res >= 0) {
-                if (info.size > 0) noOutputCounter = 0;
+                if (info.size > 0) {
+                    noOutputCounter = 0;
+                }
                 int outputBufIndex = res;
                 ByteBuffer buf = codecOutputBuffers[outputBufIndex];
                 final byte[] chunk = new byte[info.size];
@@ -322,7 +328,7 @@ public class OpenMXPlayer implements Runnable {
                 MediaFormat oformat = codec.getOutputFormat();
                 Log.d(LOG_TAG, "output format has changed to " + oformat);
             } else if (res == MediaCodec.INFO_TRY_AGAIN_LATER) {
-                Log.d(LOG_TAG, "INFO_TRY_AGAIN_LATER");
+                Log.d(LOG_TAG, "INFO_TRY_AGAIN_LATER" + res);
             } else {
                 Log.d(LOG_TAG, "dequeueOutputBuffer returned " + res);
             }
