@@ -322,17 +322,7 @@ public class OpenMXPlayer implements Runnable {
                 Log.d(LOG_TAG, "dequeueOutputBuffer returned " + res);
             }
         }
-        Log.d(LOG_TAG, "stopping...");
-        if (codec != null) {
-            codec.stop();
-            codec.release();
-            codec = null;
-        }
-        if (audioTrack != null) {
-            audioTrack.flush();
-            audioTrack.release();
-            audioTrack = null;
-        }
+
         clearSource();
         //
         if (noOutputCounter >= noOutputCounterLimit) {
@@ -354,6 +344,17 @@ public class OpenMXPlayer implements Runnable {
 
     // clear source and the other globals
     private void clearSource() {
+        Log.d(LOG_TAG, "stopping...");
+        if (codec != null) {
+            codec.stop();
+            codec.release();
+            codec = null;
+        }
+        if (audioTrack != null) {
+            audioTrack.flush();
+            audioTrack.release();
+            audioTrack = null;
+        }
         sourcePath = null;
         sourceRawResId = -1;
         duration = 0;

@@ -161,12 +161,12 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
 
     @Override
     public void onDrawEye(Eye eye) {
-        Log.i(TAG, "onDrawEye");
+//        Log.i(TAG, "onDrawEye");
     }
 
     @Override
     public void onFinishFrame(Viewport viewport) {
-        Log.i(TAG, "onFinishFrame");
+//        Log.i(TAG, "onFinishFrame");
     }
 
     @Override
