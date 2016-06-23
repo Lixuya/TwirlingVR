@@ -48,7 +48,6 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
     private boolean isPaused = false;
     private Uri videoUri = null;
     private String audioPath = "";
-    private VrVideoView.Options videoOptions = new VrVideoView.Options();
     //
     @BindView(R.id.status_text)
     TextView statusText;
@@ -64,6 +63,7 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_audio);
         ButterKnife.bind(this);
+//        newUiOptions ^= View.SYSTEM_UI_FLAG_FULLSCREEN;
         // initData
         VideoItem videoItem = getIntent().getParcelableExtra("videoItem");
         String name = videoItem.getAndroidoffline().split("\\.")[0];
@@ -82,6 +82,9 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
                     }
                 });
         setGvrView(gvrView);
+//        GvrViewerParams params = new GvrViewerParams();
+//        params.createFromUri(videoUri);
+//        gvrView.updateGvrViewerParams(params);
         //
         openMXPlayer = new OpenMXPlayer();
         openMXPlayer.setDataSource(audioPath);
@@ -94,6 +97,7 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
                     video_view.seekTo(progress);
+                    openMXPlayer.seek(progress);
                     updateStatusText();
                 }
             }
@@ -109,6 +113,11 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
             }
         });
         //
+        try {
+            video_view.loadVideo(videoUri, new VrVideoView.Options());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         video_view.setEventListener(new VrVideoEventListener() {
             @Override
             public void onLoadSuccess() {
@@ -144,15 +153,10 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
 
     @Override
     public void onNewFrame(HeadTransform headTransform) {
-
         headTransform.getHeadView(headView, 0);
         headTransform.getQuaternion(headRotation, 0);
         headTransform.getEulerAngles(headRotationEular, 0);
-        //
-        if (openMXPlayer != null) {
-            openMXPlayer.setMetadata(headRotationEular);
-        }
-        Log.i(TAG, "onNewFrame " + headRotationEular);
+        openMXPlayer.setMetadata(headRotationEular);
     }
 
     @Override
@@ -179,13 +183,13 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
     @Override
     public void onSurfaceCreated(EGLConfig eglConfig) {
         Log.i(TAG, "onSurfaceCreated");
-        openMXPlayer.play();
-        try {
-            videoOptions.inputFormat = VrVideoView.Options.FORMAT_DEFAULT;
-            video_view.loadVideo(videoUri, videoOptions);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            videoOptions.inputFormat = VrVideoView.Options.FORMAT_DEFAULT;
+//            video_view.loadVideo(videoUri, videoOptions);
+//            openMXPlayer.play();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override
@@ -206,8 +210,10 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
     private void togglePause() {
         if (isPaused) {
             video_view.playVideo();
+            openMXPlayer.play();
         } else {
             video_view.pauseVideo();
+            openMXPlayer.pause();
         }
         isPaused = !isPaused;
         updateStatusText();
@@ -226,6 +232,7 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
     protected void onResume() {
         Log.i(TAG, "onResume");
         video_view.resumeRendering();
+//        video_view.playVideo();
         openMXPlayer.play();
         updateStatusText();
         super.onResume();

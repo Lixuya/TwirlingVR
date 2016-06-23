@@ -52,7 +52,7 @@ public class OpenMXPlayer implements Runnable {
     private boolean stop = false;
     private AudioProcess audioProcess = null;
     Handler handler = new Handler();
-    private AtmosAudio daa = null;
+    private SurroundAudio daa = null;
     String mime = null;
     int sampleRate = 0, channels = 0, bitrate = 0;
     long presentationTimeUs = 0, duration = 0;
@@ -63,7 +63,7 @@ public class OpenMXPlayer implements Runnable {
 
     public OpenMXPlayer() {
         audioProcess = new AudioProcess();
-        daa = new AtmosAudio(audioProcess);
+        daa = new SurroundAudio(audioProcess);
     }
 
     public OpenMXPlayer(PlayerEvents events) {
@@ -146,8 +146,8 @@ public class OpenMXPlayer implements Runnable {
     @Override
     public void run() {
         android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO);
-        //
-        audioProcess.Init(0, FRAME_LENGTH, 4, 44100);
+        // profileId
+        audioProcess.Init(11, FRAME_LENGTH, 3, 44100);
 
         // extractor gets information about the stream
         extractor = new MediaExtractor();
@@ -214,7 +214,6 @@ public class OpenMXPlayer implements Runnable {
             });
             return;
         }
-
         //state.set(PlayerStates.READY_TO_PLAY);
         if (events != null) handler.post(new Runnable() {
             @Override
@@ -222,36 +221,36 @@ public class OpenMXPlayer implements Runnable {
                 events.onStart(mime, sampleRate, channels, duration);
             }
         });
-
+        //
         codec.configure(format, null, null, 0);
         codec.start();
         ByteBuffer[] codecInputBuffers = codec.getInputBuffers();
         ByteBuffer[] codecOutputBuffers = codec.getOutputBuffers();
-
         // configure AudioTrack
         int channelConfiguration = channels == 1 ? AudioFormat.CHANNEL_OUT_MONO : AudioFormat.CHANNEL_OUT_STEREO;
         int minSize = AudioTrack.getMinBufferSize(sampleRate, channelConfiguration, AudioFormat.ENCODING_PCM_16BIT);
         audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, sampleRate, channelConfiguration,
                 AudioFormat.ENCODING_PCM_16BIT, minSize, AudioTrack.MODE_STREAM);
-
         // start playing, we will feed the AudioTrack later
         audioTrack.play();
         extractor.selectTrack(0);
-
         // start decoding
+        startDecoding(codecInputBuffers, codecOutputBuffers);
+        //
+        audioProcess.Release();
+    }
+
+    private void startDecoding(ByteBuffer[] codecInputBuffers, ByteBuffer[] codecOutputBuffers) {
         final long kTimeOutUs = 1000;
         MediaCodec.BufferInfo info = new MediaCodec.BufferInfo();
         boolean sawInputEOS = false;
         boolean sawOutputEOS = false;
         int noOutputCounter = 0;
         int noOutputCounterLimit = 10;
-
         state.set(PlayerStates.PLAYING);
         while (!sawOutputEOS && noOutputCounter < noOutputCounterLimit && !stop) {
-
             // pause implementation
             waitPlay();
-
             noOutputCounter++;
             // read a buffer before feeding it to the decoder
             if (!sawInputEOS) {
@@ -284,8 +283,8 @@ public class OpenMXPlayer implements Runnable {
             } // !sawInputEOS
 
             // decode to PCM and push it to the AudioTrack player
+//            decode();
             int res = codec.dequeueOutputBuffer(info, kTimeOutUs);
-
             if (res >= 0) {
                 if (info.size > 0) noOutputCounter = 0;
                 int outputBufIndex = res;
@@ -293,12 +292,11 @@ public class OpenMXPlayer implements Runnable {
                 final byte[] chunk = new byte[info.size];
                 buf.get(chunk);
                 buf.clear();
+                int loopNum = chunk.length / 2 / channels / FRAME_LENGTH;
                 // TODO
-                short[] audio = daa.byte2Short(chunk);
-                audio = daa.convertToAtmos(audio);
-
+                short[] audio = daa.byte2Short(chunk, loopNum);
+                audio = daa.convertToAtmos(audio, channels);
                 // 播放
-                int loopNum = chunk.length / 2 / 4 / FRAME_LENGTH;
                 if (chunk.length > 0) {
                     audioTrack.write(audio, 0, FRAME_LENGTH * 2 * loopNum);
 //                    audioTrack.write(chunk2, 0, chunk2.length);
@@ -335,22 +333,8 @@ public class OpenMXPlayer implements Runnable {
             audioTrack.release();
             audioTrack = null;
         }
-        // clear source and the other globals
-        sourcePath = null;
-        sourceRawResId = -1;
-        duration = 0;
-        mime = null;
-        sampleRate = 0;
-        channels = 0;
-        bitrate = 0;
-        presentationTimeUs = 0;
-        duration = 0;
-
-        state.set(PlayerStates.STOPPED);
-        stop = true;
-
-//        audioProcess.Release();
-
+        clearSource();
+        //
         if (noOutputCounter >= noOutputCounterLimit) {
             if (events != null) handler.post(new Runnable() {
                 @Override
@@ -366,6 +350,21 @@ public class OpenMXPlayer implements Runnable {
                 }
             });
         }
+    }
+
+    // clear source and the other globals
+    private void clearSource() {
+        sourcePath = null;
+        sourceRawResId = -1;
+        duration = 0;
+        mime = null;
+        sampleRate = 0;
+        channels = 0;
+        bitrate = 0;
+        presentationTimeUs = 0;
+        duration = 0;
+        state.set(PlayerStates.STOPPED);
+        stop = true;
     }
 
     public static String listCodecs() {
@@ -385,7 +384,9 @@ public class OpenMXPlayer implements Runnable {
         return results;
     }
 
+    //
     public void setMetadata(float[] metadataP) {
+        Log.w("metadata", "setMetadata");
         daa.setMetadata(metadataP);
     }
 }

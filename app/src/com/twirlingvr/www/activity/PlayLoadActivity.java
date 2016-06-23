@@ -5,12 +5,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
-import com.jaeger.library.StatusBarUtil;
 import com.jakewharton.rxbinding.view.RxView;
 import com.twirlingvr.www.App;
 import com.twirlingvr.www.R;
@@ -60,11 +60,10 @@ public class PlayLoadActivity extends Activity {
         setContentView(R.layout.playpanel);
         ButterKnife.bind(this);
         //
-        StatusBarUtil.setTransparent(PlayLoadActivity.this);
+//        StatusBarUtil.setTransparent(PlayLoadActivity.this);
         //
         final VideoItem videoItem = (VideoItem) getIntent().getExtras().getParcelable("videoItem");
         videoName = videoItem.getVideo();
-        videoUrl = Constants.PAPH_VIDEO + videoName;
         imageUrl = Constants.PAPH_IMAGE + videoItem.getImage();
         //
         Glide.with(getBaseContext()).load(imageUrl).into(iv_video_image);
@@ -91,7 +90,7 @@ public class PlayLoadActivity extends Activity {
                     @Override
                     public void call(Void aVoid) {
                         Intent intent = new Intent();
-                        intent.putExtra("videoUrl", videoUrl);
+                        intent.putExtra("videoItem", videoItem);
                         intent.setClass(PlayLoadActivity.this, SimpleVrVideoActivity.class);
                         startActivity(intent);
                     }
@@ -122,13 +121,24 @@ public class PlayLoadActivity extends Activity {
         });
     }
 
-    private void initData() {
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         selfTimer.cancel();
         selfTimer = null;
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+//                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
     }
 }

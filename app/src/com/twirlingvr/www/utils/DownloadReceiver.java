@@ -32,6 +32,9 @@ public class DownloadReceiver extends BroadcastReceiver {
             long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0);
             //
             VideoItem item = RealmHelper.getIns().selectVideoItem(id);
+            if (item == null) {
+                return;
+            }
             String fileFolder = item.getAndroidoffline().substring(0, item.getAndroidoffline().length() - 4);
             Log.w("fileFolder", fileFolder);
             if (item.getIsatmos() == 1) {

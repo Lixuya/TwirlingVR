@@ -21,10 +21,12 @@ import retrofit2.Retrofit;
  * Created by 谢秋鹏 on 2016/01/12 16:16:08
  */
 public class Api {
-    public static Retrofit mRetrofit;
+    //
     private static ApiService mApiService;
-    public static String base_url;
     private static OkHttpClient okHttpClient = null;
+    //
+    public static Retrofit mRetrofit;
+    public static String base_url;
     public static int TIME_OUT = 20;
 
     private static boolean checkNull() {
