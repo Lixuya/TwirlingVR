@@ -121,13 +121,12 @@ public class OpenMXPlayer implements Runnable {
     }
 
     public void seek(long pos) {
-        Log.w(LOG_TAG, pos + "");
         extractor.seekTo(pos, MediaExtractor.SEEK_TO_CLOSEST_SYNC);
         syncNotify();
     }
 
-    public void seek(int percent) {
-        long pos = percent * duration / 100;
+    public void seek(float percent) {
+        long pos = (long) (percent * duration / 100);
         seek(pos);
     }
 

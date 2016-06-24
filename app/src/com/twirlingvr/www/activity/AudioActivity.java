@@ -97,7 +97,9 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
                     video_view.seekTo(progress);
-                    openMXPlayer.seek(progress);
+                    //
+                    float percent = progress * 100 / video_view.getDuration();
+                    openMXPlayer.seek(percent);
                     updateStatusText();
                 }
             }
