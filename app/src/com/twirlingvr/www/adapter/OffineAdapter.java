@@ -2,7 +2,6 @@ package com.twirlingvr.www.adapter;
 
 import android.app.DownloadManager;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -23,6 +22,7 @@ import com.twirlingvr.www.utils.Constants;
 import com.twirlingvr.www.utils.DownloadChangeObserver;
 import com.twirlingvr.www.utils.FileUtil;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +67,11 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
                 }
                 // 删除本地文件
                 else if (holder.downloadId == 1) {
-                    FileUtil.delete(Uri.parse(Constants.URI_DOWNLOAD_LOCAL + item.getVideo()));
+                    String fileFolder = item.getAndroidoffline().substring(0, item.getAndroidoffline().length() - 4);
+                    FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "video.mp4"));
+                    FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "audio.mp4"));
+                    FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "data.json"));
+                    FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "image.jpg"));
                 }
                 // 删除数据库下载记录
                 RealmHelper.getIns().deleteVideoItem(item);
@@ -87,6 +91,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
         if (holder.downloadId == 1) {
             holder.pb_download.setVisibility(View.GONE);
             holder.tv_title.setVisibility(View.VISIBLE);
+            holder.cv_card.setEnabled(true);
             return;
         }
         if (holder.downloadId != 1) {
@@ -100,8 +105,10 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
                     if (progress == 100 || holder.downloadId == 1) {
                         holder.pb_download.setVisibility(View.GONE);
                         holder.tv_title.setVisibility(View.VISIBLE);
+                        holder.cv_card.setEnabled(true);
                         return;
                     }
+                    holder.cv_card.setEnabled(false);
                     holder.pb_download.setVisibility(View.VISIBLE);
                     holder.tv_title.setVisibility(View.GONE);
                     holder.pb_download.setProgress(progress);

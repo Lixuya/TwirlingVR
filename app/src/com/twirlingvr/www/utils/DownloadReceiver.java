@@ -36,13 +36,13 @@ public class DownloadReceiver extends BroadcastReceiver {
                 return;
             }
             String fileFolder = item.getAndroidoffline().substring(0, item.getAndroidoffline().length() - 4);
-            Log.w("fileFolder", fileFolder);
             if (item.getIsatmos() == 1) {
                 new Decompress(Constants.PAPH_DOWNLOAD_LOCAL + item.getAndroidoffline(), Constants.PAPH_DOWNLOAD_LOCAL + fileFolder).unzip();
             }
             RealmHelper.getIns().updateDownloadId(id);
-            //
             printDownloadInformation(id);
+            FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + item.getAndroidoffline()));
+            FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder));
             //TODO 判断这个id与之前的id是否相等，如果相等说明是之前的那个要下载的文件
 //            if (id == App.downloadId) {
 //                Intent install = new Intent(Intent.ACTION_VIEW);
