@@ -12,45 +12,52 @@ import java.nio.ByteOrder;
  * Created by 谢秋鹏 on 2016/6/6.
  */
 public class SurroundAudio {
+    private static SurroundAudio ins = null;
     private static final int FRAME_LENGTH = 512;
     private int chunkSize = 0;
     private int loopNum = 0;
     private AudioProcess audioProcess = null;
     private float pitch = 0;
     private float yaw = 0;
+    private int channels = 0;
+    private float[] metadata = null;
+
+    private SurroundAudio() {
+    }
+
+    public static SurroundAudio getIns(AudioProcess audioProcess) {
+        if (ins == null) {
+            ins = new SurroundAudio(audioProcess);
+        }
+        return ins;
+    }
+
+    public void setChannels(int channels) {
+        this.channels = channels;
+    }
 
     public SurroundAudio(AudioProcess audioProcess) {
         this.audioProcess = audioProcess;
     }
 
     //
-    public short[] convertToAtmos(short[] audioFlat, int channels) {
+    public short[] convertToAtmos(short[] audioFlat) {
         // TODO
         short[] audioOutputBufShort = new short[FRAME_LENGTH * 2 * loopNum];
         int n_acc = 0;
         int n_acc_out = 0;
         int ii = 0;
+        if (metadata == null) {
+            return audioOutputBufShort;
+        }
         // 0度方向
-        float[] metadata = new float[channels * 3];
-        metadata[0] = 2;
-        metadata[1] = 1.57f;
-        metadata[2] = 0;
-
-        metadata[3] = 2;
-        metadata[4] = 1.57f;
-        metadata[5] = 0;
-
-        metadata[6] = 2;
-        metadata[7] = 1.57f;
-        metadata[8] = 0;
-
         float[] audioInput = new float[FRAME_LENGTH * channels];
         float[] audioOutput = new float[FRAME_LENGTH * 2];
         for (int loopi = 0; loopi < loopNum; loopi++) {
             for (ii = 0; ii < FRAME_LENGTH * channels; ii++) {
                 audioInput[ii] = audioFlat[n_acc++];
             }
-            Log.i("angle", "eular = " + pitch + ", " + yaw);
+            Log.i("angle", "eular = " + pitch + ", " + yaw + " " + metadata);
             audioProcess.Process(pitch, yaw, audioInput, audioOutput, metadata);
             for (ii = 0; ii < FRAME_LENGTH * 2; ii++) {
                 audioOutputBufShort[n_acc_out++] = (short) audioOutput[ii];
@@ -94,21 +101,18 @@ public class SurroundAudio {
         return bytes;
     }
 
-    private float[] getObjectMetadata(float[][] metadata) {
+    public float[] setMetadata(float[][] metadata, float playtime) {
         int i, c, n;
         float azi, elv, r;
         // output
-        float[] metadataThisFrame = null;
-        // channel
-        int objectNum = 0;
         int metadataLen = metadata[0].length;
         int MetadataIndex = metadataLen - 1;
+        float[] metadataThisFrame = new float[metadataLen];
         float interplateFactor = 1.0f;
         //
-        float playtime = 0f;
+//        float playtime = 0f;
 //        (float) audioBufferPosition / sampleRate;
         for (i = 0; i < metadataLen; i++) {
-
             if (playtime <= metadata[i][0]) {
                 MetadataIndex = i;
                 if (i == 0)
@@ -122,7 +126,7 @@ public class SurroundAudio {
         }
         n = 0;
         //channel objectNum
-        for (c = 0; c < objectNum; c++) {
+        for (c = 0; c < channels; c++) {
             //metadata二维数组
             if (MetadataIndex == 0) {
                 r = metadata[MetadataIndex][1 + c * 3];
@@ -144,12 +148,13 @@ public class SurroundAudio {
             metadataThisFrame[n++] = azi;
             metadataThisFrame[n++] = elv;
         }
+        this.metadata = metadataThisFrame;
         return metadataThisFrame;
     }
 
-    public void setMetadata(float[] metadataP) {
-        pitch = -metadataP[1];
-        yaw = metadataP[0];
+    public void setGyroscope(float[] gyroscope) {
+        pitch = -gyroscope[1];
+        yaw = gyroscope[0];
     }
 
 }

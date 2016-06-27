@@ -36,8 +36,6 @@ import com.twirlingvr.www.fragment.FragmentOnline;
 import com.twirlingvr.www.fragment.WebFragment;
 import com.twirlingvr.www.widget.ModuleAlertDialog;
 
-import javax.inject.Inject;
-
 public class MainActivity extends AppCompatActivity {
     //
     private int pageIndex = 0;
@@ -47,8 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private CrossfadeDrawerLayout crossfadeDrawerLayout = null;
     private ViewPager viewPager = null;
     private WebFragment webFragment = null;
-    @Inject
-    ModuleAlertDialog dialog;
+    private ModuleAlertDialog dialog = null;
 
     private void onToolbarItemClicked(MenuItem menuItem) {
 //                startActivity(new Intent(MainActivity.this, ListShowActivity.class));
@@ -57,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        //
+        dialog = new ModuleAlertDialog(MainActivity.this);
         //
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

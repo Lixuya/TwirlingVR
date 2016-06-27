@@ -1,9 +1,11 @@
 package com.twirlingvr.www.widget;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+
+import com.twirlingvr.www.App;
+import com.twirlingvr.www.R;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -20,12 +22,12 @@ public class ModuleAlertDialog extends AlertDialog.Builder {
 
     @Inject
     public ModuleAlertDialog(Context context) {
-        super(context);
+        super(context, R.style.MaterialBaseTheme_Light_AlertDialog);
         setAlertDialog();
     }
 
     public void setAlertDialog() {
-        //this.setTitle("提示");
+        this.setTitle("提示");
         this.setPositiveButton("确认", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -49,6 +51,6 @@ public class ModuleAlertDialog extends AlertDialog.Builder {
     }
 
     protected void onConfirm() {
-        ((Activity) getContext()).finish();
+        App.getInst().getCurrentShowActivity().finish();
     }
 }

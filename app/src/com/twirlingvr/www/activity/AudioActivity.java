@@ -7,6 +7,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.google.vr.sdk.base.Eye;
 import com.google.vr.sdk.base.GvrActivity;
 import com.google.vr.sdk.base.GvrView;
@@ -15,9 +16,12 @@ import com.google.vr.sdk.base.Viewport;
 import com.google.vr.sdk.widgets.video.VrVideoEventListener;
 import com.google.vr.sdk.widgets.video.VrVideoView;
 import com.twirlingvr.www.R;
+import com.twirlingvr.www.model.DownloadJson;
+import com.twirlingvr.www.model.Elements;
 import com.twirlingvr.www.model.VideoItem;
 import com.twirlingvr.www.player.OpenMXPlayer;
 import com.twirlingvr.www.utils.Constants;
+import com.twirlingvr.www.utils.FileUtil;
 
 import java.io.IOException;
 
@@ -48,6 +52,9 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
     private boolean isPaused = false;
     private Uri videoUri = null;
     private String audioPath = "";
+    private String jsonName = "";
+    float[][] metadata = null;
+    int index = 0;
     //
     @BindView(R.id.status_text)
     TextView statusText;
@@ -63,13 +70,13 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_audio);
         ButterKnife.bind(this);
-//        newUiOptions ^= View.SYSTEM_UI_FLAG_FULLSCREEN;
         // initData
         VideoItem videoItem = getIntent().getParcelableExtra("videoItem");
         String name = videoItem.getAndroidoffline().split("\\.")[0];
         videoUri = Uri.parse(Constants.URI_DOWNLOAD_LOCAL + name + "video.mp4");
         audioPath = Constants.URI_DOWNLOAD_LOCAL + name + "audio.mp4";
-        Log.w("videoUri", videoUri.toString() + "   " + audioPath);
+        jsonName = name + "data.json";
+        loadJson(jsonName);
         //
         gvrView.setEGLConfigChooser(8, 8, 8, 8, 16, 8);
         gvrView.setRenderer(this);
@@ -82,9 +89,7 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
                     }
                 });
         setGvrView(gvrView);
-//        GvrViewerParams params = new GvrViewerParams();
-//        params.createFromUri(videoUri);
-//        gvrView.updateGvrViewerParams(params);
+
         //
         openMXPlayer = new OpenMXPlayer();
         openMXPlayer.setDataSource(audioPath);
@@ -158,7 +163,8 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         headTransform.getHeadView(headView, 0);
         headTransform.getQuaternion(headRotation, 0);
         headTransform.getEulerAngles(headRotationEular, 0);
-        openMXPlayer.setMetadata(headRotationEular);
+        openMXPlayer.getDaa().setGyroscope(headRotationEular);
+        openMXPlayer.getDaa().setMetadata(metadata, (float) video_view.getCurrentPosition() / 1000f);
     }
 
     @Override
@@ -246,5 +252,24 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         video_view.shutdown();
         openMXPlayer.stop();
         super.onDestroy();
+    }
+
+    private void loadJson(String fileName) {
+        String response = FileUtil.readFromSDCard(fileName);
+        DownloadJson dj = JSON.parseObject(response, DownloadJson.class);
+        Elements.SoundGroupBean sgb = dj.getElements().getSound_group().get(0);
+        String md = sgb.getMetadata();
+        String[] strs = md.split(";");
+        String[][] strings = new String[strs.length][];
+        for (int i = 0; i < strs.length; i++) {
+            strings[i] = strs[i].replace(";", "").split(",");
+            for (int j = 0; j < strings[i].length; j++) {
+                if (metadata == null) {
+                    metadata = new float[strs.length][strings[i].length];
+                }
+                metadata[i][j] = Float.valueOf(strings[i][j].replace(",", ""));
+            }
+        }
+        int channels = sgb.getChannels();
     }
 }

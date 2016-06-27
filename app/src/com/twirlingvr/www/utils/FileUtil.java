@@ -8,8 +8,12 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.widget.ProgressBar;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -22,6 +26,38 @@ import java.net.URLConnection;
 public class FileUtil {
     public int contentLength;
     public File file;
+
+    // 读文件
+    public static String readFromSDCard(String fileName) {
+        return readFromSDCard(fileName, Constants.PAPH_DOWNLOAD_LOCAL);
+    }
+
+    // 读文件
+    public static String readFromSDCard(String fileName, String folderPath) {
+        StringBuilder text = new StringBuilder();
+        File file = new File(folderPath, fileName);
+        try {
+            File path = new File(folderPath);
+            if (!path.exists()) {
+                path.mkdirs();
+            }
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line = "";
+            while ((line = br.readLine()) != null) {
+                text.append(line);
+                text.append('\n');
+            }
+            br.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return text.toString();
+    }
 
     private String getPath() {
         String savepath = Environment.getDownloadCacheDirectory().getPath();

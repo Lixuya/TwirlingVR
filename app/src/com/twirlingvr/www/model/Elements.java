@@ -278,7 +278,6 @@ public class Elements {
         private int endTime;
         private int trigger;
         private int channels;
-
         private String metadata;
 
         public String getId() {

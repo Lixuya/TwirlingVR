@@ -52,6 +52,11 @@ public class OpenMXPlayer implements Runnable {
     private boolean stop = false;
     private AudioProcess audioProcess = null;
     Handler handler = new Handler();
+
+    public SurroundAudio getDaa() {
+        return daa;
+    }
+
     private SurroundAudio daa = null;
     String mime = null;
     int sampleRate = 0, channels = 0, bitrate = 0;
@@ -304,7 +309,8 @@ public class OpenMXPlayer implements Runnable {
                 int loopNum = chunk.length / 2 / channels / FRAME_LENGTH;
                 // TODO
                 short[] audio = daa.byte2Short(chunk, loopNum);
-                audio = daa.convertToAtmos(audio, channels);
+                daa.setChannels(channels);
+                audio = daa.convertToAtmos(audio);
                 // 播放
                 if (chunk.length > 0) {
                     audioTrack.write(audio, 0, FRAME_LENGTH * 2 * loopNum);
@@ -391,11 +397,5 @@ public class OpenMXPlayer implements Runnable {
             results += (i + 1) + ". " + name + " " + typeList + "\n\n";
         }
         return results;
-    }
-
-    //
-    public void setMetadata(float[] metadataP) {
-        Log.w("metadata", "setMetadata");
-        daa.setMetadata(metadataP);
     }
 }

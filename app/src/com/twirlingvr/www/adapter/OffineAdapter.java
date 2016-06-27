@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.twirlingvr.www.App;
 import com.twirlingvr.www.R;
 import com.twirlingvr.www.activity.AudioActivity;
+import com.twirlingvr.www.activity.SimpleVrVideoActivity;
 import com.twirlingvr.www.data.RealmHelper;
 import com.twirlingvr.www.model.VideoItem;
 import com.twirlingvr.www.utils.Constants;
@@ -83,9 +84,17 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
         holder.cv_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {//
-                Intent intent = new Intent(holder.itemView.getContext(), AudioActivity.class);
-                intent.putExtra("videoItem", item);
-                holder.itemView.getContext().startActivity(intent);
+                int isAtoms = item.getIsatmos();
+                if (isAtoms == 0) {
+                    Intent intent = new Intent(holder.itemView.getContext(), SimpleVrVideoActivity.class);
+                    item.setVideoUri(Constants.PAPH_DOWNLOAD_LOCAL + item.getVideo() + ".mp4");
+                    intent.putExtra("videoItem", item);
+                    holder.itemView.getContext().startActivity(intent);
+                } else {
+                    Intent intent = new Intent(holder.itemView.getContext(), AudioActivity.class);
+                    intent.putExtra("videoItem", item);
+                    holder.itemView.getContext().startActivity(intent);
+                }
             }
         });
         if (holder.downloadId == 1) {
