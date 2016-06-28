@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.twirlingvr.www.App;
 import com.twirlingvr.www.R;
 import com.twirlingvr.www.activity.AudioActivity;
+import com.twirlingvr.www.activity.MainActivity;
 import com.twirlingvr.www.activity.SimpleVrVideoActivity;
 import com.twirlingvr.www.data.RealmHelper;
 import com.twirlingvr.www.model.VideoItem;
@@ -23,6 +24,7 @@ import com.twirlingvr.www.utils.Constants;
 import com.twirlingvr.www.utils.DownloadChangeObserver;
 import com.twirlingvr.www.utils.FileUtil;
 import com.twirlingvr.www.widget.DialogLoading;
+import com.twirlingvr.www.widget.ModuleAlertDialog;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -67,19 +69,27 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
                             App.getInst().getApplicationContext().DOWNLOAD_SERVICE);
                     dm.remove(RealmHelper.getIns().selectVideoItem(item.getVideo()).getDownloadId());
                 }
-                // 删除本地文件
                 if (holder.downloadId == 1) {
-                    DialogLoading.getInstance(App.getInst().getApplicationContext());
-                    String fileFolder = item.getAndroidoffline().substring(0, item.getAndroidoffline().length() - 4);
-                    FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "video.mp4"));
-                    FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "audio.mp4"));
-                    FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "data.json"));
-                    FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "image.jpg"));
-                    FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + item.getVideo()));
+                    // 删除本地文件
+                    new ModuleAlertDialog(App.getInst().getCurrentShowActivity()){
+                        @Override
+                        protected void onConfirm() {
+                            DialogLoading.getInstance(App.getInst().getCurrentShowActivity());
+                            String fileFolder = item.getAndroidoffline().substring(0, item.getAndroidoffline().length() - 4);
+                            FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "video.mp4"));
+                            FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "audio.mp4"));
+                            FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "data.json"));
+                            FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "image.jpg"));
+                            FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + item.getVideo()));
+                            // 删除数据库下载记录
+                            RealmHelper.getIns().deleteVideoItem(item);
+                            DialogLoading.getInstance(App.getInst().getCurrentShowActivity()).dismiss();
+                            datas.clear();
+                            datas.addAll(RealmHelper.getIns().selectVideoList());
+                            notifyDataSetChanged();
+                        }
+                    }.setMessage("确定删除 " + item.getName() + " 吗");
                 }
-                DialogLoading.getInstance(App.getInst().getApplicationContext()).dismiss();
-                // 删除数据库下载记录
-                RealmHelper.getIns().deleteVideoItem(item);
                 datas.clear();
                 datas.addAll(RealmHelper.getIns().selectVideoList());
                 notifyDataSetChanged();
