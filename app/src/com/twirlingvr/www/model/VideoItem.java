@@ -159,7 +159,7 @@ public class VideoItem extends RealmObject implements Parcelable {
                 + getVideo() + " :video "//
                 + getDownloadTime() + " :time " //
                 + getIsatmos() + " :isatmos "//
-                + getAndroidoffline() + " :offline "//
+                + getAndroidoffline() + " :androidoffline "//
                 + getDescribe() + " :describe ";
         return str;
     }

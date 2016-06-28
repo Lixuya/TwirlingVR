@@ -10,7 +10,6 @@ import android.widget.Toast;
 import com.google.vr.sdk.widgets.video.VrVideoEventListener;
 import com.google.vr.sdk.widgets.video.VrVideoView;
 import com.twirlingvr.www.R;
-import com.twirlingvr.www.model.VideoItem;
 
 import java.io.IOException;
 
@@ -97,8 +96,8 @@ public class SimpleVrVideoActivity extends AppCompatActivity {
         //
         loadVideoStatus = LOAD_VIDEO_STATUS_UNKNOWN;
         //
-        VideoItem item = getIntent().getParcelableExtra("videoItem");
-        fileUri = Uri.parse(item.getVideoUri());
+        String uri = getIntent().getStringExtra("videoItem");
+        fileUri = Uri.parse(uri);
         try {
             videoWidgetView.loadVideo(fileUri, new VrVideoView.Options());
         } catch (IOException e) {

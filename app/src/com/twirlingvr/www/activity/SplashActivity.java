@@ -20,9 +20,11 @@ public class SplashActivity extends AppCompatActivity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.activity_splash);
+//        DialogLoading.getInstance(SplashActivity.this);
         Observable.timer(2, TimeUnit.SECONDS).subscribe(new Action1<Long>() {
             @Override
             public void call(Long aLong) {
+//                DialogLoading.getInstance(SplashActivity.this).dismiss();
                 Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                 SplashActivity.this.startActivity(intent);
                 SplashActivity.this.finish();

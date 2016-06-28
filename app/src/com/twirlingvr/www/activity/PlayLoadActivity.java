@@ -90,8 +90,7 @@ public class PlayLoadActivity extends Activity {
                     @Override
                     public void call(Void aVoid) {
                         Intent intent = new Intent();
-                        videoItem.setVideoUri(Constants.PAPH_VIDEO + videoItem.getVideo());
-                        intent.putExtra("videoItem", videoItem);
+                        intent.putExtra("videoItem", Constants.PAPH_VIDEO + videoItem.getVideo());
                         intent.setClass(PlayLoadActivity.this, SimpleVrVideoActivity.class);
                         startActivity(intent);
                     }
@@ -107,8 +106,11 @@ public class PlayLoadActivity extends Activity {
             return;
         } else if (downLoadId == 1) {
             mPbLoading.setProgress(100);
+            load.setBackgroundColor(Color.parseColor("#C0C0C0"));
             load.setEnabled(false);
+            return;
         }
+        load.setEnabled(false);
         load.setBackgroundColor(Color.parseColor("#C0C0C0"));
         DownloadChangeObserver pco = (DownloadChangeObserver) App.observers.get(downLoadId);
         if (pco == null) {
@@ -138,7 +140,7 @@ public class PlayLoadActivity extends Activity {
                             | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                             | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-//                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
     }

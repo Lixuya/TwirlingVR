@@ -43,8 +43,7 @@
         <activity
             android:name=".activity.AudioActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.MyDesign"
-            android:uiOptions="splitActionBarWhenNarrow">
+            android:theme="@style/Theme.AppCompat.MyDesign">
             <category android:name="com.google.intent.category.CARDBOARD" />
         </activity>
 

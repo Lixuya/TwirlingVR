@@ -22,6 +22,7 @@ import com.twirlingvr.www.model.VideoItem;
 import com.twirlingvr.www.utils.Constants;
 import com.twirlingvr.www.utils.DownloadChangeObserver;
 import com.twirlingvr.www.utils.FileUtil;
+import com.twirlingvr.www.widget.DialogLoading;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -67,13 +68,16 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
                     dm.remove(RealmHelper.getIns().selectVideoItem(item.getVideo()).getDownloadId());
                 }
                 // 删除本地文件
-                else if (holder.downloadId == 1) {
+                if (holder.downloadId == 1) {
+                    DialogLoading.getInstance(App.getInst().getApplicationContext());
                     String fileFolder = item.getAndroidoffline().substring(0, item.getAndroidoffline().length() - 4);
                     FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "video.mp4"));
                     FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "audio.mp4"));
                     FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "data.json"));
                     FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "image.jpg"));
+                    FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + item.getVideo()));
                 }
+                DialogLoading.getInstance(App.getInst().getApplicationContext()).dismiss();
                 // 删除数据库下载记录
                 RealmHelper.getIns().deleteVideoItem(item);
                 datas.clear();
@@ -87,10 +91,9 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
                 int isAtoms = item.getIsatmos();
                 if (isAtoms == 0) {
                     Intent intent = new Intent(holder.itemView.getContext(), SimpleVrVideoActivity.class);
-                    item.setVideoUri(Constants.PAPH_DOWNLOAD_LOCAL + item.getVideo() + ".mp4");
-                    intent.putExtra("videoItem", item);
+                    intent.putExtra("videoItem", Constants.PAPH_DOWNLOAD_LOCAL + item.getVideo());
                     holder.itemView.getContext().startActivity(intent);
-                } else {
+                } else if (isAtoms == 1) {
                     Intent intent = new Intent(holder.itemView.getContext(), AudioActivity.class);
                     intent.putExtra("videoItem", item);
                     holder.itemView.getContext().startActivity(intent);

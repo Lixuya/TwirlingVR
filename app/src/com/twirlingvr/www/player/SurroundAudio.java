@@ -57,8 +57,11 @@ public class SurroundAudio {
             for (ii = 0; ii < FRAME_LENGTH * channels; ii++) {
                 audioInput[ii] = audioFlat[n_acc++];
             }
-            Log.i("angle", "eular = " + pitch + ", " + yaw + " " + metadata);
-            audioProcess.Process(pitch, yaw, audioInput, audioOutput, metadata);
+            Log.i("angle", "eular = " + yaw + ", " + pitch);
+            for (int i = 0; i < metadata.length; i++) {
+                Log.w("angle", metadata[i] + "");
+            }
+            audioProcess.Process(yaw, pitch, audioInput, audioOutput, metadata);
             for (ii = 0; ii < FRAME_LENGTH * 2; ii++) {
                 audioOutputBufShort[n_acc_out++] = (short) audioOutput[ii];
             }
@@ -102,12 +105,13 @@ public class SurroundAudio {
     }
 
     public float[] setMetadata(float[][] metadata, float playtime) {
+
         int i, c, n;
         float azi, elv, r;
         // output
         int metadataLen = metadata[0].length;
         int MetadataIndex = metadataLen - 1;
-        float[] metadataThisFrame = new float[metadataLen];
+        float[] metadataThisFrame = new float[MetadataIndex];
         float interplateFactor = 1.0f;
         //
 //        float playtime = 0f;
@@ -153,8 +157,8 @@ public class SurroundAudio {
     }
 
     public void setGyroscope(float[] gyroscope) {
-        pitch = -gyroscope[1];
-        yaw = gyroscope[0];
+        yaw = -gyroscope[1] + (float) Math.PI;
+        pitch = gyroscope[0];
     }
 
 }
