@@ -1,6 +1,5 @@
 package com.twirlingvr.www.utils;
 
-import android.net.Uri;
 import android.os.Environment;
 
 /**
@@ -17,6 +16,7 @@ public class Constants {
     public static final String PAPH_VIDEO = PATH_SERVER + "APP_Videos/videos/";
     // 下载
     public static final String PAPH_DOWNLOAD = PATH_SERVER + "APP_Videos/downloads/";
+    //
     public static final String PAPH_DOWNLOAD_LOCAL = Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOWNLOADS + "/";
     //
     public static final String URI_DOWNLOAD_LOCAL ="file:///storage/emulated/0/Download/";
