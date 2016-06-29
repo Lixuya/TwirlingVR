@@ -16,7 +16,6 @@ import com.bumptech.glide.Glide;
 import com.twirlingvr.www.App;
 import com.twirlingvr.www.R;
 import com.twirlingvr.www.activity.AudioActivity;
-import com.twirlingvr.www.activity.MainActivity;
 import com.twirlingvr.www.activity.SimpleVrVideoActivity;
 import com.twirlingvr.www.data.RealmHelper;
 import com.twirlingvr.www.model.VideoItem;

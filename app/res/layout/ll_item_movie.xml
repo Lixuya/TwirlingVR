@@ -41,8 +41,7 @@
             android:layout_width="92.6dp"
             android:layout_height="29.8dp"
             android:layout_marginBottom="5dp"
-            android:src="@mipmap/banner"
-            android:visibility="gone" />
+            android:src="@mipmap/banner" />
 
         <TextView
             android:id="@+id/tv_title"

@@ -62,8 +62,9 @@ public class SurroundAudio {
                 Log.w("angle", metadata[i] + "");
             }
             audioProcess.Process(yaw, pitch, audioInput, audioOutput, metadata);
+            float postgain = 0.5f;
             for (ii = 0; ii < FRAME_LENGTH * 2; ii++) {
-                audioOutputBufShort[n_acc_out++] = (short) audioOutput[ii];
+                audioOutputBufShort[n_acc_out++] = (short) (audioOutput[ii] * postgain);
             }
         }
         return audioOutputBufShort;
