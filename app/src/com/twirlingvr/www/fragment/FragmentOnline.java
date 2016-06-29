@@ -15,8 +15,8 @@ import com.twirlingvr.www.R;
 import com.twirlingvr.www.adapter.MainAdapter;
 import com.twirlingvr.www.model.DataArray;
 import com.twirlingvr.www.model.VideoItem;
-import com.twirlingvr.www.net.Api;
 import com.twirlingvr.www.net.RequestCallback;
+import com.twirlingvr.www.net.RetrofitManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,7 +70,7 @@ public class FragmentOnline extends Fragment {
         HashMap<String, Object> params = new HashMap<>();
         //HttpParamsHelper.createParams();
 //        params.put("top", 100);
-        Api.getRetrofit().getVideoList(params).enqueue(new RequestCallback<DataArray>() {
+        RetrofitManager.getService().getVideoList(params).enqueue(new RequestCallback<DataArray>() {
             @Override
             public void onSuccess(DataArray dataArray) {
                 datas.clear();
