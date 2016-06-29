@@ -19,11 +19,10 @@ import com.twirlingvr.www.activity.AudioActivity;
 import com.twirlingvr.www.activity.SimpleVrVideoActivity;
 import com.twirlingvr.www.data.RealmHelper;
 import com.twirlingvr.www.model.VideoItem;
+import com.twirlingvr.www.module.ModuleAlertDialog;
 import com.twirlingvr.www.utils.Constants;
 import com.twirlingvr.www.utils.DownloadChangeObserver;
 import com.twirlingvr.www.utils.FileUtil;
-import com.twirlingvr.www.widget.DialogLoading;
-import com.twirlingvr.www.module.ModuleAlertDialog;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -73,7 +72,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
                             dm.remove(RealmHelper.getIns().selectVideoItem(item.getVideo()).getDownloadId());
                         }
                         if (holder.downloadId == 1) {
-                            DialogLoading.getInstance(App.getInst().getCurrentShowActivity());
+//                            DialogLoading.getInstance().show();
                             String fileFolder = "";
                             if (item.getAndroidoffline().length() != 0) {
                                 fileFolder = item.getAndroidoffline().substring(0, item.getAndroidoffline().length() - 4);
@@ -86,7 +85,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
                         }
                         // 删除数据库下载记录
                         RealmHelper.getIns().deleteVideoItem(item);
-                        DialogLoading.getInstance(App.getInst().getCurrentShowActivity()).dismiss();
+//                        DialogLoading.getInstance().dismiss();
                         datas.clear();
                         datas.addAll(RealmHelper.getIns().selectVideoList());
                         notifyDataSetChanged();

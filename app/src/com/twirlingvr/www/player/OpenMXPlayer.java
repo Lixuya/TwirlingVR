@@ -316,7 +316,7 @@ public class OpenMXPlayer implements Runnable {
                 // 播放
                 if (chunk.length > 0) {
                     audioTrack.write(audio, 0, FRAME_LENGTH * 2 * loopNum);
-                    Log.d(LOG_TAG, "chunk.length." + chunk.length);
+//                    Log.d(LOG_TAG, "chunk.length." + chunk.length);
                     /*if(this.state.get() != PlayerStates.PLAYING) {
                         if (events != null) handler.post(new Runnable() { @Override public void run() { events.onPlay();  } });
             			state.set(PlayerStates.PLAYING);

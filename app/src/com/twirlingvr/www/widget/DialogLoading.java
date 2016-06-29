@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.widget.ImageView;
 
+import com.twirlingvr.www.App;
 import com.twirlingvr.www.R;
 
 /**
@@ -13,6 +14,7 @@ import com.twirlingvr.www.R;
 public class DialogLoading extends Dialog {
     private static DialogLoading dialogLoading = null;
     private AnimationDrawable AniDraw = null;
+    private static Context context = null;
 
     public DialogLoading(Context context) {
         super(context, R.style.MaterialBaseTheme_Dialog);
@@ -20,13 +22,12 @@ public class DialogLoading extends Dialog {
         ImageView animationIV = (ImageView) findViewById(R.id.iv_loading);
         animationIV.setBackgroundResource(R.drawable.animation_loading_gif);
         AniDraw = (AnimationDrawable) animationIV.getBackground();
-        AniDraw.start();
     }
 
-    public static DialogLoading getInstance(Context context) {
+    public static DialogLoading getInstance() {
         if (dialogLoading == null) {
+            context = App.getInst().getCurrentShowActivity();
             dialogLoading = new DialogLoading(context);
-            dialogLoading.show();
         }
         return dialogLoading;
     }
@@ -41,5 +42,6 @@ public class DialogLoading extends Dialog {
     public void dismiss() {
         AniDraw.stop();
         super.dismiss();
+        dialogLoading = null;
     }
 }

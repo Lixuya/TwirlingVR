@@ -39,12 +39,14 @@ public class DownloadReceiver extends BroadcastReceiver {
             String fileFolder = "";
             RealmHelper.getIns().updateDownloadId(id);
             if (!TextUtils.isEmpty(item.getAndroidoffline())) {
+//                DialogLoading.getInstance().show();
                 fileFolder = item.getAndroidoffline().substring(0, item.getAndroidoffline().length() - 4);
                 if (item.getIsatmos() == 1) {
                     new Decompress(Constants.PAPH_DOWNLOAD_LOCAL + item.getAndroidoffline(), Constants.PAPH_DOWNLOAD_LOCAL + fileFolder).unzip();
                 }
                 FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + item.getAndroidoffline()));
                 FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder));
+//                DialogLoading.getInstance().dismiss();
             }
             printDownloadInformation(id);
             //TODO 判断这个id与之前的id是否相等，如果相等说明是之前的那个要下载的文件
