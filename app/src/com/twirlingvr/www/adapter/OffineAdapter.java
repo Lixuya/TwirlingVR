@@ -23,7 +23,7 @@ import com.twirlingvr.www.utils.Constants;
 import com.twirlingvr.www.utils.DownloadChangeObserver;
 import com.twirlingvr.www.utils.FileUtil;
 import com.twirlingvr.www.widget.DialogLoading;
-import com.twirlingvr.www.widget.ModuleAlertDialog;
+import com.twirlingvr.www.module.ModuleAlertDialog;
 
 import java.io.File;
 import java.util.ArrayList;

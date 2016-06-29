@@ -6,6 +6,7 @@ import com.twirlingvr.www.utils.Constants;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 
@@ -14,13 +15,13 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import retrofit2.GsonConverterFactory;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by 谢秋鹏 on 2016/01/12 16:16:08
  */
-public class Api {
+public class RetrofitManager {
     //
     private static ApiService mApiService;
     private static OkHttpClient okHttpClient = null;
@@ -28,6 +29,11 @@ public class Api {
     public static Retrofit mRetrofit;
     public static String base_url;
     public static int TIME_OUT = 20;
+
+    @Inject
+    public RetrofitManager() {
+
+    }
 
     private static boolean checkNull() {
         return mRetrofit == null ? true : false;
@@ -69,7 +75,7 @@ public class Api {
         mApiService = mRetrofit.create(ApiService.class);
     }
 
-    public static ApiService getRetrofit() {
+    public static ApiService getService() {
         if (checkNull()) {
             init();
         }

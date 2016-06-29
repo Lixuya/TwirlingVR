@@ -1,4 +1,4 @@
-package com.twirlingvr.www.widget;
+package com.twirlingvr.www.module;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -7,8 +7,7 @@ import android.content.DialogInterface;
 import com.twirlingvr.www.App;
 import com.twirlingvr.www.R;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import dagger.Module;
 
 /**
  * 解决问题：弹出自定义确认窗口
@@ -17,10 +16,9 @@ import javax.inject.Singleton;
  * <p/>
  * Created by 谢秋鹏 on 2015/8/1.
  */
-@Singleton
+@Module
 public class ModuleAlertDialog extends AlertDialog.Builder {
 
-    @Inject
     public ModuleAlertDialog(Context context) {
         super(context, R.style.MaterialBaseTheme_Light_AlertDialog);
         setAlertDialog();

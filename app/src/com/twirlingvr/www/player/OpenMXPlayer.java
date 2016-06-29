@@ -43,7 +43,6 @@ public class OpenMXPlayer implements Runnable {
     private MediaExtractor extractor;
     private MediaCodec codec;
     private AudioTrack audioTrack;
-    private float[] metadataP = null;
     private PlayerEvents events = null;
     private PlayerStates state = new PlayerStates();
     private String sourcePath = null;
@@ -53,14 +52,17 @@ public class OpenMXPlayer implements Runnable {
     private AudioProcess audioProcess = null;
     Handler handler = new Handler();
 
+    private SurroundAudio daa = null;
+    private String mime = null;
+    private int sampleRate = 0,
+            channels = 0,
+            bitrate = 0;
+    private long presentationTimeUs = 0,
+            duration = 0;
+
     public SurroundAudio getDaa() {
         return daa;
     }
-
-    private SurroundAudio daa = null;
-    String mime = null;
-    int sampleRate = 0, channels = 0, bitrate = 0;
-    long presentationTimeUs = 0, duration = 0;
 
     public void setEventsListener(PlayerEvents events) {
         this.events = events;

@@ -8,8 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.LinearLayout;
 
 import com.twirlingvr.www.R;
+import com.twirlingvr.www.widget.MyWebViewClient;
 
 /**
  * Created by 谢秋鹏 on 2016/6/12.
@@ -42,6 +44,9 @@ public class WebFragment extends Fragment {
         webSettings.setAppCachePath(cacheDirPath);
         // 4 JS
 //      this.addJavascriptInterface(new MyJavaScriptInterface(this), "WidgetWebView");
+        MyWebViewClient client = new MyWebViewClient();
+        webView.setWebViewClient(client);
+        //
         loadPage(4);
         return rootView;
     }
@@ -58,24 +63,33 @@ public class WebFragment extends Fragment {
 
     public void loadPage(int index) {
         String url = "";
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1);  // , 1是可选写的
         switch (index) {
             case 4:
-            default:
                 url = "http://www.twirlingvr.com/index.html";
+                lp.setMargins(0, -250, 0, 0);
                 break;
             case 5:
                 url = "http://www.twirlingvr.com/service.html";
+                lp.setMargins(0, -220, 0, 0);
                 break;
             case 6:
                 url = "http://www.twirlingvr.com/App_Web/blog/essaylist.html?ch=time";
+                lp.setMargins(0, 0, 0, 0);
                 break;
             case 7:
                 url = "http://yun.twirlingvr.com";
+                lp.setMargins(0, -250, 0, 0);
                 break;
             case 8:
                 url = "http://www.twirlingvr.com/index.html#contact";
+                lp.setMargins(0, -250, 0, 0);
+                break;
+            default:
+                lp.setMargins(0, 0, 0, 0);
                 break;
         }
+        webView.setLayoutParams(lp);
         webView.loadUrl(url);
     }
 }

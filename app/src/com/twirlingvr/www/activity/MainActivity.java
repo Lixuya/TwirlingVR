@@ -34,7 +34,7 @@ import com.twirlingvr.www.adapter.ViewPagerAdapter;
 import com.twirlingvr.www.fragment.FragmentDownload;
 import com.twirlingvr.www.fragment.FragmentOnline;
 import com.twirlingvr.www.fragment.WebFragment;
-import com.twirlingvr.www.widget.ModuleAlertDialog;
+import com.twirlingvr.www.module.ModuleAlertDialog;
 
 public class MainActivity extends AppCompatActivity {
     //
