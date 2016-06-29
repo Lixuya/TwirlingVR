@@ -13,3 +13,6 @@ app/.idea/
 .idea/
 app/app-release.apk
 keystoreVR.jks
+app/app-arm-release.apk
+app/app-x86-release.apk
+sdtl.keystore

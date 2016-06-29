@@ -2,6 +2,9 @@ apply plugin: 'com.android.application'
 apply plugin: 'realm-android'
 apply plugin: 'com.neenbedankt.android-apt'
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 android {
     compileSdkVersion setup.compileSdk
     buildToolsVersion setup.buildTools
@@ -10,8 +13,8 @@ android {
         applicationId "com.twirlingvr.com"
         minSdkVersion setup.minSdk
         targetSdkVersion setup.targetSdk
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "2.0.0"
     }
     sourceSets {
         main {
@@ -26,18 +29,27 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+
     signingConfigs {
-        debug {
-            keyAlias '谢秋鹏'
-            keyPassword '123456'
-            storeFile file('../keystoreVR.jks')
-            storePassword '123456'
+        def isRelease = gradle.startParameter.taskNames.any { it.contains('Release') }
+        def path = isRelease ? properties.getProperty("keystore.path") : 'debug.keystore'
+        def password = isRelease ? properties.getProperty("keystore.password") : ''
+        def alias = isRelease ? properties.getProperty("keystore.alias") : ''
+        myConfig {
+            storeFile file(path)
+            storePassword password
+            keyAlias alias
+            keyPassword password
         }
+    }
+
+    buildTypes {
         release {
-            keyAlias '谢秋鹏'
-            keyPassword '123456'
-            storeFile file('../keystoreVR.jks')
-            storePassword '123456'
+            release {
+                signingConfig signingConfigs.myConfig
+                minifyEnabled false
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            }
         }
     }
 //    compileOptions {

@@ -79,16 +79,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 pageIndex = position;
+                MenuItem mi = toolbar.getMenu().getItem(0);
                 if (pageIndex == 0) {
-                    toolbar.getMenu().getItem(0).setTitle("在线");
+                    mi.setTitle("在线");
                     result.setSelection(1);
                     result.getMiniDrawer().setSelection(1);
                 } else if (pageIndex == 1) {
-                    toolbar.getMenu().getItem(0).setTitle("本地");
+                    mi.setTitle("本地");
                     result.setSelection(2);
                     result.getMiniDrawer().setSelection(2);
                 } else if (pageIndex == 2) {
-                    toolbar.getMenu().getItem(0).setTitle("关于");
+                    mi.setTitle("关于");
 //                    result.setSelection(5);
                 }
             }

@@ -1,7 +1,5 @@
 package com.twirlingvr.www.player;
 
-import android.util.Log;
-
 import com.twirling.audio.AudioProcess;
 
 import java.nio.ByteBuffer;
@@ -57,10 +55,10 @@ public class SurroundAudio {
             for (ii = 0; ii < FRAME_LENGTH * channels; ii++) {
                 audioInput[ii] = audioFlat[n_acc++];
             }
-            Log.i("angle", "eular = " + yaw + ", " + pitch);
-            for (int i = 0; i < metadata.length; i++) {
-                Log.w("angle", metadata[i] + "");
-            }
+//            Log.i("angle", "eular = " + yaw + ", " + pitch);
+//            for (int i = 0; i < metadata.length; i++) {
+//                Log.w("angle", metadata[i] + "");
+//            }
             audioProcess.Process(yaw, pitch, audioInput, audioOutput, metadata);
             float postgain = 0.5f;
             for (ii = 0; ii < FRAME_LENGTH * 2; ii++) {

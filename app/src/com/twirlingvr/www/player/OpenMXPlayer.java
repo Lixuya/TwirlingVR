@@ -53,11 +53,11 @@ public class OpenMXPlayer implements Runnable {
     Handler handler = new Handler();
 
     private SurroundAudio daa = null;
-    private String mime = null;
-    private int sampleRate = 0,
+    String mime = null;
+    int sampleRate = 0,
             channels = 0,
             bitrate = 0;
-    private long presentationTimeUs = 0,
+    long presentationTimeUs = 0,
             duration = 0;
 
     public SurroundAudio getDaa() {
