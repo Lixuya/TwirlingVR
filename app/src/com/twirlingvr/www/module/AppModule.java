@@ -3,8 +3,8 @@ package com.twirlingvr.www.module;
 import android.content.Context;
 
 import com.twirlingvr.www.App;
-import com.twirlingvr.www.net.ApiService;
-import com.twirlingvr.www.net.RetrofitManager;
+import com.twirlingvr.www.retrofit.Api;
+import com.twirlingvr.www.retrofit.RetrofitManager;
 
 import javax.inject.Singleton;
 
@@ -36,7 +36,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    ApiService providesApiService(RetrofitManager retrofitManager) {
+    Api providesApiService(RetrofitManager retrofitManager) {
         return retrofitManager.getService();
     }
 

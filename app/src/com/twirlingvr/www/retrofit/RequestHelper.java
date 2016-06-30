@@ -8,14 +8,13 @@
 //import com.gzsll.hupu.util.SecurityUtils;
 //import com.gzsll.hupu.util.SettingPrefUtils;
 //
-//import org.apache.log4j.Logger;
-//
 //import java.net.URLEncoder;
 //import java.util.ArrayList;
 //import java.util.Collections;
 //import java.util.Comparator;
 //import java.util.HashMap;
 //import java.util.Map;
+//import java.util.logging.Logger;
 //
 ///**
 // * Created by gzsll on 2014/9/23 0023.

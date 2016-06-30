@@ -3,7 +3,7 @@ package com.twirlingvr.www.component;
 import android.content.Context;
 
 import com.twirlingvr.www.module.AppModule;
-import com.twirlingvr.www.net.ApiService;
+import com.twirlingvr.www.retrofit.Api;
 
 import javax.inject.Singleton;
 
@@ -19,7 +19,7 @@ public interface AppComponent {
 
 //    ThreadExecutor threadExecutor();   // 线程池
 
-    ApiService apiService();  // 所有Api请求的管理类
+    Api apiService();  // 所有Api请求的管理类
 
 //    SpfManager spfManager();  // SharedPreference管理类
 

@@ -16,7 +16,7 @@ import com.twirlingvr.www.adapter.MainAdapter;
 import com.twirlingvr.www.model.DataArray;
 import com.twirlingvr.www.model.VideoItem;
 import com.twirlingvr.www.net.RequestCallback;
-import com.twirlingvr.www.net.RetrofitManager;
+import com.twirlingvr.www.retrofit.RetrofitManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;

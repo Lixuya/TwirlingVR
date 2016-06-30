@@ -1,4 +1,4 @@
-package com.twirlingvr.www.net;
+package com.twirlingvr.www.retrofit;
 
 
 import com.twirlingvr.www.model.DataArray;
@@ -12,7 +12,7 @@ import retrofit2.http.QueryMap;
 /**
  * Created by MagicBean on 2016/01/13 10:10:37
  */
-public interface ApiService {
+public interface Api {
     // 获取视频列表
     @GET("App_Run/app_video_deal.aspx")
     Call<DataArray> getVideoList(@QueryMap Map<String, Object> params);

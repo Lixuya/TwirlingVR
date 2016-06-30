@@ -1,6 +1,7 @@
-package com.twirlingvr.www.net;
+package com.twirlingvr.www.retrofit;
 
 import com.orhanobut.logger.Logger;
+import com.twirlingvr.www.net.SimpleCookieJar;
 import com.twirlingvr.www.utils.Constants;
 
 import java.io.IOException;
@@ -23,7 +24,7 @@ import retrofit2.Retrofit;
  */
 public class RetrofitManager {
     //
-    private static ApiService mApiService;
+    private static Api mApiService;
     private static OkHttpClient okHttpClient = null;
     //
     public static Retrofit mRetrofit;
@@ -72,10 +73,10 @@ public class RetrofitManager {
 //                .addConverterFactory(new StringConverterFactory())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        mApiService = mRetrofit.create(ApiService.class);
+        mApiService = mRetrofit.create(Api.class);
     }
 
-    public static ApiService getService() {
+    public static Api getService() {
         if (checkNull()) {
             init();
         }
