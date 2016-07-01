@@ -104,7 +104,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
                     Intent intent = new Intent(holder.itemView.getContext(), SimpleVrVideoActivity.class);
                     intent.putExtra("videoItem", Constants.PAPH_DOWNLOAD_LOCAL + item.getVideo());
                     holder.itemView.getContext().startActivity(intent);
-                } else if (isAtoms == 1) {
+                } else if (isAtoms == 1 && holder.downloadId == 1) {
                     Intent intent = new Intent(holder.itemView.getContext(), AudioActivity.class);
                     intent.putExtra("videoItem", item);
                     holder.itemView.getContext().startActivity(intent);

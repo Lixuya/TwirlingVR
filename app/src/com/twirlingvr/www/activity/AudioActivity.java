@@ -89,7 +89,6 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
                     }
                 });
         setGvrView(gvrView);
-
         //
         openMXPlayer = new OpenMXPlayer();
         openMXPlayer.setDataSource(audioPath);
@@ -107,6 +106,8 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
                     openMXPlayer.seek(percent);
                     updateStatusText();
                 }
+                Log.e("angle", "video:" + (float) video_view.getCurrentPosition() / 1000f
+                        + " audio: " + ((float) openMXPlayer.presentationTimeUs / 1000f / 1000f));
             }
 
             @Override
@@ -152,7 +153,7 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
 
             @Override
             public void onCompletion() {
-                video_view.seekTo(0);
+//                video_view.seekTo(0);
             }
         });
         loadVideoStatus = LOAD_VIDEO_STATUS_UNKNOWN;
@@ -164,7 +165,7 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         headTransform.getQuaternion(headRotation, 0);
         headTransform.getEulerAngles(headRotationEular, 0);
         openMXPlayer.getDaa().setGyroscope(headRotationEular);
-        openMXPlayer.getDaa().setMetadata(metadata, (float) video_view.getCurrentPosition() / 1000f);
+        openMXPlayer.getDaa().setMetadataFromJson(metadata);
     }
 
     @Override

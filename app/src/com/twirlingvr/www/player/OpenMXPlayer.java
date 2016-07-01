@@ -57,7 +57,7 @@ public class OpenMXPlayer implements Runnable {
     int sampleRate = 0,
             channels = 0,
             bitrate = 0;
-    long presentationTimeUs = 0,
+    public long presentationTimeUs = 0,
             duration = 0;
 
     public SurroundAudio getDaa() {
@@ -250,6 +250,8 @@ public class OpenMXPlayer implements Runnable {
         //
         codec.configure(format, null, null, 0);
         codec.start();
+        //
+        daa.setChannels(channels);
     }
 
     private void startDecoding(ByteBuffer[] codecInputBuffers, ByteBuffer[] codecOutputBuffers) {
@@ -261,7 +263,6 @@ public class OpenMXPlayer implements Runnable {
         state.set(PlayerStates.PLAYING);
         //
         boolean b = !sawOutputEOS && noOutputCounter < noOutputCounterLimit && !stop;
-        Log.w(LOG_TAG, b + "");
         while (b) {
             // pause implementation
             waitPlay();
@@ -311,21 +312,26 @@ public class OpenMXPlayer implements Runnable {
                 int loopNum = chunk.length / 2 / channels / FRAME_LENGTH;
                 // TODO
                 short[] audio = daa.byte2Short(chunk, loopNum);
-                daa.setChannels(channels);
-                audio = daa.convertToAtmos(audio);
+                daa.setAudioPlayTime(presentationTimeUs / 1000f / 1000f);
+                audio = daa.audioProcess(audio);
+
                 // 播放
                 if (chunk.length > 0) {
                     audioTrack.write(audio, 0, FRAME_LENGTH * 2 * loopNum);
-//                    Log.d(LOG_TAG, "chunk.length." + chunk.length);
-                    /*if(this.state.get() != PlayerStates.PLAYING) {
-                        if (events != null) handler.post(new Runnable() { @Override public void run() { events.onPlay();  } });
-            			state.set(PlayerStates.PLAYING);
-                	}*/
+                    if (this.state.get() != PlayerStates.PLAYING) {
+                        if (events != null) handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                events.onPlay();
+                            }
+                        });
+                        state.set(PlayerStates.PLAYING);
+                    }
 
                 }
                 codec.releaseOutputBuffer(outputBufIndex, false);
-                if ((info.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) {
-                    Log.d(LOG_TAG, "saw output EOS.");
+                if (info.flags != MediaCodec.BUFFER_FLAG_END_OF_STREAM) {
+                    Log.d(LOG_TAG, "end while");
                     sawOutputEOS = true;
                 }
             } else if (res == MediaCodec.INFO_OUTPUT_BUFFERS_CHANGED) {
@@ -340,7 +346,6 @@ public class OpenMXPlayer implements Runnable {
                 Log.d(LOG_TAG, "dequeueOutputBuffer returned " + res);
             }
         }
-        clearSource();
         if (noOutputCounter >= noOutputCounterLimit) {
             if (events != null) handler.post(new Runnable() {
                 @Override
@@ -359,7 +364,7 @@ public class OpenMXPlayer implements Runnable {
     }
 
     // clear source and the other globals
-    private void clearSource() {
+    public void clearSource() {
         Log.d(LOG_TAG, "stopping...");
         if (codec != null) {
             codec.stop();

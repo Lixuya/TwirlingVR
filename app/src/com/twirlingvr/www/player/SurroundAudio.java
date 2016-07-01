@@ -1,5 +1,7 @@
 package com.twirlingvr.www.player;
 
+import android.util.Log;
+
 import com.twirling.audio.AudioProcess;
 
 import java.nio.ByteBuffer;
@@ -19,6 +21,8 @@ public class SurroundAudio {
     private float yaw = 0;
     private int channels = 0;
     private float[] metadata = null;
+    private float[][] metadataFromJson = null;
+    private float postgain = 0.5f;
 
     private SurroundAudio() {
     }
@@ -32,6 +36,7 @@ public class SurroundAudio {
 
     public void setChannels(int channels) {
         this.channels = channels;
+        metadata = new float[channels * 3];
     }
 
     public SurroundAudio(AudioProcess audioProcess) {
@@ -39,7 +44,7 @@ public class SurroundAudio {
     }
 
     //
-    public short[] convertToAtmos(short[] audioFlat) {
+    public short[] audioProcess(short[] audioFlat) {
         // TODO
         short[] audioOutputBufShort = new short[FRAME_LENGTH * 2 * loopNum];
         int n_acc = 0;
@@ -55,12 +60,11 @@ public class SurroundAudio {
             for (ii = 0; ii < FRAME_LENGTH * channels; ii++) {
                 audioInput[ii] = audioFlat[n_acc++];
             }
-//            Log.i("angle", "eular = " + yaw + ", " + pitch);
-//            for (int i = 0; i < metadata.length; i++) {
-//                Log.w("angle", metadata[i] + "");
-//            }
+            Log.i("angle", "eular = " + yaw + ", " + pitch);
+            for (int i = 0; i < metadata.length; i++) {
+                Log.w("angle", metadata[i] + "");
+            }
             audioProcess.Process(yaw, pitch, audioInput, audioOutput, metadata);
-            float postgain = 0.5f;
             for (ii = 0; ii < FRAME_LENGTH * 2; ii++) {
                 audioOutputBufShort[n_acc_out++] = (short) (audioOutput[ii] * postgain);
             }
@@ -103,26 +107,34 @@ public class SurroundAudio {
         return bytes;
     }
 
-    public float[] setMetadata(float[][] metadata, float playtime) {
+    public void setMetadataFromJson(float[][] metadata) {
+        if (metadataFromJson == null) {
+            int row = metadata.length;
+            int colume = metadata[0].length;
+            metadataFromJson = new float[row][colume];
+            metadataFromJson = metadata;
+        }
+    }
 
+    public void setAudioPlayTime(float playtime) {
         int i, c, n;
         float azi, elv, r;
         // output
-        int metadataLen = metadata[0].length;
+        if (metadataFromJson == null) {
+            return;
+        }
+        int metadataLen = metadataFromJson.length;
+        Log.d("angle", "playtime: " + playtime + " metadataLength:" + metadataLen);
         int MetadataIndex = metadataLen - 1;
-        float[] metadataThisFrame = new float[MetadataIndex];
         float interplateFactor = 1.0f;
-        //
-//        float playtime = 0f;
-//        (float) audioBufferPosition / sampleRate;
         for (i = 0; i < metadataLen; i++) {
-            if (playtime <= metadata[i][0]) {
+            if (playtime <= metadataFromJson[i][0]) {
                 MetadataIndex = i;
                 if (i == 0)
                     interplateFactor = 1.0f;
                 else {
-                    interplateFactor = (playtime - metadata[i - 1][0]) /
-                            (metadata[i][0] - metadata[i - 1][0]);
+                    interplateFactor = (playtime - metadataFromJson[i - 1][0])
+                            / (metadataFromJson[i][0] - metadataFromJson[i - 1][0]);
                 }
                 break;
             }
@@ -132,31 +144,30 @@ public class SurroundAudio {
         for (c = 0; c < channels; c++) {
             //metadata二维数组
             if (MetadataIndex == 0) {
-                r = metadata[MetadataIndex][1 + c * 3];
+                r = metadataFromJson[MetadataIndex][1 + c * 3];
                 //r = 1; //for test.
-                azi = (float) (metadata[MetadataIndex][2 + c * 3] * Math.PI / 180.0f);
-                elv = (float) (metadata[MetadataIndex][3 + c * 3] * Math.PI / 180.0f);
+                azi = (float) (metadataFromJson[MetadataIndex][2 + c * 3] * Math.PI / 180.0f);
+                elv = (float) (metadataFromJson[MetadataIndex][3 + c * 3] * Math.PI / 180.0f);
             } else {
-                r = (metadata[MetadataIndex][1 + c * 3] *
-                        interplateFactor + metadata[MetadataIndex - 1][1 + c * 3] *
+                r = (metadataFromJson[MetadataIndex][1 + c * 3] *
+                        interplateFactor + metadataFromJson[MetadataIndex - 1][1 + c * 3] *
                         (1 - interplateFactor));
                 //r = 1; //for test.
-                azi = (float) ((metadata[MetadataIndex][2 + c * 3] * interplateFactor +
-                        metadata[MetadataIndex - 1][2 + c * 3] * (1 - interplateFactor)) * Math.PI / 180.0f);
-                elv = (float) ((metadata[MetadataIndex][3 + c * 3] * interplateFactor +
-                        metadata[MetadataIndex - 1][3 + c * 3] * (1 - interplateFactor)) * Math.PI / 180.0f);
+                azi = (float) ((metadataFromJson[MetadataIndex][2 + c * 3] * interplateFactor +
+                        metadataFromJson[MetadataIndex - 1][2 + c * 3] * (1 - interplateFactor)) * Math.PI / 180.0f);
+                elv = (float) ((metadataFromJson[MetadataIndex][3 + c * 3] * interplateFactor +
+                        metadataFromJson[MetadataIndex - 1][3 + c * 3] * (1 - interplateFactor)) * Math.PI / 180.0f);
             }
             //metadata output
-            metadataThisFrame[n++] = r;
-            metadataThisFrame[n++] = azi;
-            metadataThisFrame[n++] = elv;
+            metadata[n++] = r;
+            metadata[n++] = azi + (float) Math.PI;
+            metadata[n++] = elv;
         }
-        this.metadata = metadataThisFrame;
-        return metadataThisFrame;
     }
 
     public void setGyroscope(float[] gyroscope) {
-        yaw = -gyroscope[1] + (float) Math.PI;
+        yaw = -gyroscope[1];
+//        + (float) Math.PI;
         pitch = gyroscope[0];
     }
 
