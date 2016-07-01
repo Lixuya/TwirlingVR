@@ -262,8 +262,7 @@ public class OpenMXPlayer implements Runnable {
         int noOutputCounterLimit = 10;
         state.set(PlayerStates.PLAYING);
         //
-        boolean b = !sawOutputEOS && noOutputCounter < noOutputCounterLimit && !stop;
-        while (b) {
+        while (!sawOutputEOS && noOutputCounter < noOutputCounterLimit && !stop) {
             // pause implementation
             waitPlay();
             noOutputCounter++;
@@ -329,10 +328,14 @@ public class OpenMXPlayer implements Runnable {
                     }
 
                 }
-                codec.releaseOutputBuffer(outputBufIndex, false);
-                if (info.flags != MediaCodec.BUFFER_FLAG_END_OF_STREAM) {
+                if ((info.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) {
                     Log.d(LOG_TAG, "end while");
                     sawOutputEOS = true;
+                }
+                try {
+                    codec.releaseOutputBuffer(outputBufIndex, false);
+                } catch (Exception e) {
+                    return;
                 }
             } else if (res == MediaCodec.INFO_OUTPUT_BUFFERS_CHANGED) {
                 codecOutputBuffers = codec.getOutputBuffers();

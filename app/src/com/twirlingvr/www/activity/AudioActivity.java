@@ -15,6 +15,7 @@ import com.google.vr.sdk.base.HeadTransform;
 import com.google.vr.sdk.base.Viewport;
 import com.google.vr.sdk.widgets.video.VrVideoEventListener;
 import com.google.vr.sdk.widgets.video.VrVideoView;
+import com.jakewharton.rxbinding.widget.RxSeekBar;
 import com.twirlingvr.www.R;
 import com.twirlingvr.www.model.DownloadJson;
 import com.twirlingvr.www.model.Elements;
@@ -29,6 +30,8 @@ import javax.microedition.khronos.egl.EGLConfig;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 
 
 /**
@@ -42,9 +45,6 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
     private OpenMXPlayer openMXPlayer = null;
     private String TAG = "AudioActivity";
     //
-    private static final String STATE_IS_PAUSED = "isPaused";
-    private static final String STATE_PROGRESS_TIME = "progressTime";
-    private static final String STATE_VIDEO_DURATION = "videoDuration";
     public static final int LOAD_VIDEO_STATUS_UNKNOWN = 0;
     public static final int LOAD_VIDEO_STATUS_SUCCESS = 1;
     public static final int LOAD_VIDEO_STATUS_ERROR = 2;
@@ -96,30 +96,27 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         headRotation = new float[4];
         headRotationEular = new float[3];
         //
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (fromUser) {
-                    video_view.seekTo(progress);
-                    //
-                    float percent = (float) progress / video_view.getDuration() * 100f;
-                    openMXPlayer.seek(percent);
-                    updateStatusText();
-                }
-                Log.e("angle", "video:" + (float) video_view.getCurrentPosition() / 1000f
-                        + " audio: " + ((float) openMXPlayer.presentationTimeUs / 1000f / 1000f));
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
+        RxSeekBar.userChanges(seekBar)
+//                .throttleFirst(1500, TimeUnit.MILLISECONDS)
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Integer>() {
+                    @Override
+                    public void call(Integer progress) {
+                        video_view.seekTo(progress);
+                        //
+                        float percent = (float) progress / video_view.getDuration() * 100f;
+//                        if (Math.ceil(openMXPlayer.presentationTimeUs) == Math.ceil(openMXPlayer.duration)) {
+//                            openMXPlayer = new OpenMXPlayer();
+//                            openMXPlayer.setDataSource(audioPath);
+//                            openMXPlayer.play();
+//                        }
+                        openMXPlayer.seek(percent);
+                        updateStatusText();
+                        Log.e("angle", "video:" + (float) video_view.getCurrentPosition() / 1000f
+                                + " audio: " + ((float) openMXPlayer.presentationTimeUs / 1000f / 1000f));
+                    }
+                });
         //
         try {
             video_view.loadVideo(videoUri, new VrVideoView.Options());
@@ -241,7 +238,6 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
     protected void onResume() {
         Log.i(TAG, "onResume");
         video_view.resumeRendering();
-//        video_view.playVideo();
         openMXPlayer.play();
         updateStatusText();
         super.onResume();
