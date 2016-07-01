@@ -60,10 +60,10 @@ public class SurroundAudio {
             for (ii = 0; ii < FRAME_LENGTH * channels; ii++) {
                 audioInput[ii] = audioFlat[n_acc++];
             }
-            Log.i("angle", "eular = " + yaw + ", " + pitch);
-            for (int i = 0; i < metadata.length; i++) {
-                Log.w("angle", metadata[i] + "");
-            }
+//            Log.i("angle", "eular = " + yaw + ", " + pitch);
+//            for (int i = 0; i < metadata.length; i++) {
+//                Log.w("angle", metadata[i] + "");
+//            }
             audioProcess.Process(yaw, pitch, audioInput, audioOutput, metadata);
             for (ii = 0; ii < FRAME_LENGTH * 2; ii++) {
                 audioOutputBufShort[n_acc_out++] = (short) (audioOutput[ii] * postgain);

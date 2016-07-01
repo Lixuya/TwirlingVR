@@ -30,7 +30,6 @@ import javax.microedition.khronos.egl.EGLConfig;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 
 
@@ -98,23 +97,24 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         //
         RxSeekBar.userChanges(seekBar)
 //                .throttleFirst(1500, TimeUnit.MILLISECONDS)
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeOn(AndroidSchedulers.mainThread())
+//                .observeOn(Schedulers.newThread())
+//                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Integer>() {
                     @Override
                     public void call(Integer progress) {
                         video_view.seekTo(progress);
                         //
                         float percent = (float) progress / video_view.getDuration() * 100f;
-//                        if (Math.ceil(openMXPlayer.presentationTimeUs) == Math.ceil(openMXPlayer.duration)) {
-//                            openMXPlayer = new OpenMXPlayer();
-//                            openMXPlayer.setDataSource(audioPath);
-//                            openMXPlayer.play();
-//                        }
+                        if (Math.ceil(openMXPlayer.presentationTimeUs) == Math.ceil(openMXPlayer.duration)) {
+                            openMXPlayer = new OpenMXPlayer();
+                            openMXPlayer.setDataSource(audioPath);
+                            openMXPlayer.play();
+                        }
                         openMXPlayer.seek(percent);
                         updateStatusText();
-                        Log.e("angle", "video:" + (float) video_view.getCurrentPosition() / 1000f
-                                + " audio: " + ((float) openMXPlayer.presentationTimeUs / 1000f / 1000f));
+//                        Log.e("angle", "video:" + (float) video_view.getCurrentPosition() / 1000f
+//                                + " audio: " + ((float) openMXPlayer.presentationTimeUs / 1000f / 1000f));
                     }
                 });
         //
@@ -189,13 +189,6 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
     @Override
     public void onSurfaceCreated(EGLConfig eglConfig) {
         Log.i(TAG, "onSurfaceCreated");
-//        try {
-//            videoOptions.inputFormat = VrVideoView.Options.FORMAT_DEFAULT;
-//            video_view.loadVideo(videoUri, videoOptions);
-//            openMXPlayer.play();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
     }
 
     @Override
@@ -217,11 +210,12 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         if (isPaused) {
             video_view.playVideo();
             openMXPlayer.play();
+            isPaused = false;
         } else {
             video_view.pauseVideo();
             openMXPlayer.pause();
+            isPaused = true;
         }
-        isPaused = !isPaused;
         updateStatusText();
     }
 
