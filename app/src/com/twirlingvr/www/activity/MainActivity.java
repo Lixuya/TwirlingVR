@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager = null;
     private WebFragment webFragment = null;
     private ModuleAlertDialog dialog = null;
+    private MenuItem menuItem;
 
     private void onToolbarItemClicked(MenuItem menuItem) {
 //                startActivity(new Intent(MainActivity.this, ListShowActivity.class));
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+//        ButterKnife.bind(this);
         //
         dialog = new ModuleAlertDialog(MainActivity.this);
         //
@@ -62,8 +64,6 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         //
 //        RxToolbar.itemClicks(toolbar).subscribe(this::onToolbarItemClicked);
-
-        //
         webFragment = new WebFragment();
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         FragmentManager manager = this.getSupportFragmentManager();
@@ -79,17 +79,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 pageIndex = position;
-                MenuItem mi = toolbar.getMenu().getItem(0);
                 if (pageIndex == 0) {
-                    mi.setTitle("在线");
+                    menuItem.setTitle("在线");
                     result.setSelection(1);
                     result.getMiniDrawer().setSelection(1);
                 } else if (pageIndex == 1) {
-                    mi.setTitle("本地");
+                    menuItem.setTitle("本地");
                     result.setSelection(2);
                     result.getMiniDrawer().setSelection(2);
                 } else if (pageIndex == 2) {
-                    mi.setTitle("关于");
+                    menuItem.setTitle("关于");
 //                    result.setSelection(5);
                 }
             }
@@ -213,6 +212,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
+        menuItem = menu.findItem(R.id.action_edit);
+        if (menuItem == null) {
+            menuItem = menu.getItem(0);
+        }
         return true;
     }
 

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,16 @@ import com.twirlingvr.www.R;
 import com.twirlingvr.www.adapter.MainAdapter;
 import com.twirlingvr.www.model.DataArray;
 import com.twirlingvr.www.model.VideoItem;
-import com.twirlingvr.www.net.RequestCallback;
 import com.twirlingvr.www.retrofit.RetrofitManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by 谢秋鹏 on 2016/5/27.
@@ -67,25 +72,33 @@ public class FragmentOnline extends Fragment {
     }
 
     private void loadData(final int page) {
+        Log.d("adapter", datas.size() + "");
         HashMap<String, Object> params = new HashMap<>();
-        //HttpParamsHelper.createParams();
-//        params.put("top", 100);
-        RetrofitManager.getService().getVideoList(params).enqueue(new RequestCallback<DataArray>() {
-            @Override
-            public void onSuccess(DataArray dataArray) {
-                datas.clear();
-                datas.addAll(dataArray.getContent());
-                mAdapter.notifyDataSetChanged();
-            }
+        RetrofitManager.getService().getVideoList(params)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<DataArray>() {
+                    @Override
+                    public void call(DataArray dataArray) {
+                        Log.w("adapter", dataArray.getContent().size() + "");
+                        datas.clear();
+                        datas.addAll(dataArray.getContent());
+                        mAdapter.notifyDataSetChanged();
 
-            @Override
-            public void onFinish() {
-                if (page == 1) {
-                    mRecyclerView.refreshComplete();
-                } else {
-                    mRecyclerView.loadMoreComplete();
-                }
-            }
-        });
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                    }
+                }, new Action0() {
+                    @Override
+                    public void call() {
+                        if (page == 1) {
+                            mRecyclerView.refreshComplete();
+                        } else {
+                            mRecyclerView.loadMoreComplete();
+                        }
+                    }
+                });
     }
 }

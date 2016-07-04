@@ -30,6 +30,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 
 
@@ -97,9 +98,9 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         //
         RxSeekBar.userChanges(seekBar)
 //                .throttleFirst(1500, TimeUnit.MILLISECONDS)
-//                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(AndroidSchedulers.mainThread())
 //                .observeOn(Schedulers.newThread())
-//                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Integer>() {
                     @Override
                     public void call(Integer progress) {
@@ -107,6 +108,7 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
                         //
                         float percent = (float) progress / video_view.getDuration() * 100f;
                         if (Math.ceil(openMXPlayer.presentationTimeUs) == Math.ceil(openMXPlayer.duration)) {
+                            openMXPlayer.clearSource();
                             openMXPlayer = new OpenMXPlayer();
                             openMXPlayer.setDataSource(audioPath);
                             openMXPlayer.play();
