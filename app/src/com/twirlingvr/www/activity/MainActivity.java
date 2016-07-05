@@ -8,6 +8,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -79,17 +80,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 pageIndex = position;
+                String title = "";
                 if (pageIndex == 0) {
-                    menuItem.setTitle("在线");
+                    title = "在线";
                     result.setSelection(1);
                     result.getMiniDrawer().setSelection(1);
                 } else if (pageIndex == 1) {
-                    menuItem.setTitle("本地");
+                    title = "本地";
                     result.setSelection(2);
                     result.getMiniDrawer().setSelection(2);
                 } else if (pageIndex == 2) {
-                    menuItem.setTitle("关于");
-//                    result.setSelection(5);
+                    title = "关于";
+                    menuItem.setTitle("");
+                }
+                try {
+                    menuItem.setTitle(title);
+                } catch (Exception e) {
+                    Log.w("title", title);
                 }
             }
 

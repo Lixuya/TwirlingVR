@@ -13,7 +13,8 @@
             android:id="@+id/iv_video_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:transitionName="@string/ti" />
+            android:transitionName="@string/ti"
+            android:background="#C0C0C0"/>
     </FrameLayout>
 
     <TextView

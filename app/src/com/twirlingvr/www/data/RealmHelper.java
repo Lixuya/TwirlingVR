@@ -1,7 +1,5 @@
 package com.twirlingvr.www.data;
 
-import android.util.Log;
-
 import com.twirlingvr.www.App;
 import com.twirlingvr.www.model.VideoItem;
 
@@ -74,9 +72,9 @@ public class RealmHelper {
                 .notEqualTo("downloadId", (long) 0)
                 .findAll()
                 .sort("downloadTime", Sort.ASCENDING);
-        for (VideoItem item : puppies) {
-            Log.i("selectVideoList", item.toString());
-        }
+//        for (VideoItem item : puppies) {
+//            Log.i("selectVideoList", item.toString());
+//        }
         return puppies;
     }
 

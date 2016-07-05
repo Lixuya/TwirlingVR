@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,7 +71,6 @@ public class FragmentOnline extends Fragment {
     }
 
     private void loadData(final int page) {
-        Log.d("adapter", datas.size() + "");
         HashMap<String, Object> params = new HashMap<>();
         RetrofitManager.getService().getVideoList(params)
                 .subscribeOn(Schedulers.io())
@@ -80,7 +78,6 @@ public class FragmentOnline extends Fragment {
                 .subscribe(new Action1<DataArray>() {
                     @Override
                     public void call(DataArray dataArray) {
-                        Log.w("adapter", dataArray.getContent().size() + "");
                         datas.clear();
                         datas.addAll(dataArray.getContent());
                         mAdapter.notifyDataSetChanged();
@@ -89,6 +86,7 @@ public class FragmentOnline extends Fragment {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
+                        
                     }
                 }, new Action0() {
                     @Override

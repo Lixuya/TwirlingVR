@@ -7,8 +7,6 @@ import android.content.DialogInterface;
 import com.twirlingvr.www.App;
 import com.twirlingvr.www.R;
 
-import dagger.Module;
-
 /**
  * 解决问题：弹出自定义确认窗口
  *
@@ -16,7 +14,7 @@ import dagger.Module;
  * <p/>
  * Created by 谢秋鹏 on 2015/8/1.
  */
-@Module
+//@Module
 public class ModuleAlertDialog extends AlertDialog.Builder {
 
     public ModuleAlertDialog(Context context) {
