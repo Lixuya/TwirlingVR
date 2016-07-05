@@ -10,7 +10,7 @@ android {
     buildToolsVersion setup.buildTools
 
     defaultConfig {
-        applicationId "com.twirlingvr.com"
+        applicationId "com.twirling.SDTL"
         minSdkVersion setup.minSdk
         targetSdkVersion setup.targetSdk
         versionCode 2

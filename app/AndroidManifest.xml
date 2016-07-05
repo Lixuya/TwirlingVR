@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.twirlingvr.www">
+    package="com.twirling.SDTL">
 
     <!-- The app has largeHeap enabled which is required for loading large files. -->
     <!--suppress AndroidDomInspection -->
