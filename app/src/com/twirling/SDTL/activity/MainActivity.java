@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         //
-//        RxToolbar.itemClicks(toolbar).subscribe(this::onToolbarItemClicked);
+//      RxToolbar.itemClicks(toolbar).subscribe(this::onToolbarItemClicked);
         webFragment = new WebFragment();
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         FragmentManager manager = this.getSupportFragmentManager();

@@ -99,6 +99,7 @@ public class SimpleVrVideoActivity extends AppCompatActivity {
         String uri = getIntent().getStringExtra("videoItem");
         fileUri = Uri.parse(uri);
         try {
+            videoWidgetView.setInfoButtonEnabled(false);
             videoWidgetView.loadVideo(fileUri, new VrVideoView.Options());
         } catch (IOException e) {
             e.printStackTrace();

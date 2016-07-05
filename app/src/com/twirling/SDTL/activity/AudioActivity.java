@@ -121,6 +121,7 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
                 });
         //
         try {
+            video_view.setInfoButtonEnabled(false);
             video_view.loadVideo(videoUri, new VrVideoView.Options());
         } catch (IOException e) {
             e.printStackTrace();
