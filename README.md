@@ -1,3 +1,3 @@
-# twirlingvr
+# TwirlingVR
 
 TwirlingVR APP
