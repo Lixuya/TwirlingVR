@@ -17,7 +17,7 @@ import com.twirling.SDTL.App;
 import com.twirling.SDTL.R;
 import com.twirling.SDTL.activity.PlayLoadActivity;
 import com.twirling.SDTL.model.VideoItem;
-import com.twirling.SDTL.utils.Constants;
+import com.twirling.SDTL.Constants;
 
 import java.util.ArrayList;
 import java.util.List;

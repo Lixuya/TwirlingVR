@@ -1,4 +1,4 @@
-package com.twirling.SDTL.utils;
+package com.twirling.SDTL.download;
 
 import android.app.DownloadManager;
 import android.database.ContentObserver;

@@ -2,7 +2,7 @@ package com.twirling.SDTL.retrofit;
 
 import com.orhanobut.logger.Logger;
 import com.twirling.SDTL.net.SimpleCookieJar;
-import com.twirling.SDTL.utils.Constants;
+import com.twirling.SDTL.Constants;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;

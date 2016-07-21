@@ -16,9 +16,9 @@ import com.twirling.SDTL.App;
 import com.twirling.SDTL.R;
 import com.twirling.SDTL.data.RealmHelper;
 import com.twirling.SDTL.model.VideoItem;
-import com.twirling.SDTL.utils.Constants;
-import com.twirling.SDTL.utils.DownloadChangeObserver;
-import com.twirling.SDTL.utils.DownloadService;
+import com.twirling.SDTL.Constants;
+import com.twirling.SDTL.download.DownloadChangeObserver;
+import com.twirling.SDTL.download.DownloadService;
 
 import java.util.concurrent.TimeUnit;
 

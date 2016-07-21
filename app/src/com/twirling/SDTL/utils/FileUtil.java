@@ -8,6 +8,8 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.widget.ProgressBar;
 
+import com.twirling.SDTL.Constants;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;

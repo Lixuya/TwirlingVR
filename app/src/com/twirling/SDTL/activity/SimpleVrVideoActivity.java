@@ -3,6 +3,7 @@ package com.twirling.SDTL.activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,6 +74,7 @@ public class SimpleVrVideoActivity extends AppCompatActivity {
             @Override
             public void onLoadError(String errorMessage) {
                 loadVideoStatus = LOAD_VIDEO_STATUS_ERROR;
+                Log.e("error", "Error loading video:" + errorMessage);
                 Toast.makeText(SimpleVrVideoActivity.this, "Error loading video: " + errorMessage, Toast.LENGTH_LONG).show();
             }
 
@@ -98,9 +100,14 @@ public class SimpleVrVideoActivity extends AppCompatActivity {
         //
         String uri = getIntent().getStringExtra("videoItem");
         fileUri = Uri.parse(uri);
+//        fileUri = Uri.parse("http://2997.liveplay.myqcloud.com/2997_4313ae5e426d11e6a2cba4dcbef5e35a.m3u8");
+//        fileUri = Uri.parse("http://2997.liveplay.myqcloud.com/live/2997_4313ae5e426d11e6a2cba4dcbef5e35a.flv");
+//        fileUri = Uri.parse(" http://2997.liveplay.myqcloud.com/live/2997_4313ae5e426d11e6a2cba4dcbef5e35a_900.flv");
         try {
             videoWidgetView.setInfoButtonEnabled(false);
-            videoWidgetView.loadVideo(fileUri, new VrVideoView.Options());
+            VrVideoView.Options options = new VrVideoView.Options();
+//            options.inputFormat = 2;
+            videoWidgetView.loadVideo(fileUri, options);
         } catch (IOException e) {
             e.printStackTrace();
         }

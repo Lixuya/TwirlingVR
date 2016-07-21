@@ -1,4 +1,4 @@
-package com.twirling.SDTL.utils;
+package com.twirling.SDTL.download;
 
 import android.app.DownloadManager;
 import android.app.IntentService;
@@ -13,6 +13,8 @@ import android.os.Message;
 import com.twirling.SDTL.App;
 import com.twirling.SDTL.data.RealmHelper;
 import com.twirling.SDTL.model.VideoItem;
+import com.twirling.SDTL.Constants;
+import com.twirling.SDTL.utils.TextUtil;
 
 /**
  * Created by MagicBean on 2016/03/14 15:15:56
