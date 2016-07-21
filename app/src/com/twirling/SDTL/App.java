@@ -2,6 +2,7 @@ package com.twirling.SDTL;
 
 import android.app.Activity;
 import android.app.Application;
+import android.app.DownloadManager;
 import android.database.ContentObserver;
 import android.os.Bundle;
 
@@ -116,5 +117,9 @@ public class App extends Application {
 
     public Activity getCurrentShowActivity() {
         return mCurrentActivity.get();
+    }
+
+    public static DownloadManager getDownloadManager() {
+        return (DownloadManager) App.getInst().getSystemService(App.getInst().getApplicationContext().DOWNLOAD_SERVICE);
     }
 }

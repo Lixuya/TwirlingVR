@@ -1,6 +1,5 @@
 package com.twirling.SDTL.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v4.app.FragmentManager;
@@ -91,7 +90,8 @@ public class MainActivity extends AppCompatActivity {
                     result.getMiniDrawer().setSelection(2);
                 } else if (pageIndex == 2) {
                     title = "关于";
-                    menuItem.setTitle("");
+                    result.setSelection(3);
+                    result.getMiniDrawer().setSelection(3);
                 }
                 try {
                     menuItem.setTitle(title);
@@ -127,9 +127,9 @@ public class MainActivity extends AppCompatActivity {
                 .addDrawerItems(
                         new PrimaryDrawerItem().withName(R.string.download).withIcon(FontAwesome.Icon.faw_cloud_download).withIdentifier(1),
                         new PrimaryDrawerItem().withName(R.string.local).withIcon(FontAwesome.Icon.faw_play_circle).withIdentifier(2),
+                        new PrimaryDrawerItem().withName(R.string.homepage).withIcon(FontAwesome.Icon.faw_home).withIdentifier(3),
 //                        new PrimaryDrawerItem().withName(R.string.atmos).withIcon(FontAwesome.Icon.faw_headphones).withIdentifier(3),
                         new SectionDrawerItem().withName(R.string.drawer_item_section_header),
-                        new SecondaryDrawerItem().withName(R.string.homepage).withIcon(FontAwesome.Icon.faw_home).withIdentifier(4),
                         new SecondaryDrawerItem().withName(R.string.audio).withIcon(FontAwesome.Icon.faw_headphones).withIdentifier(5),
                         new SecondaryDrawerItem().withName(R.string.products).withIcon(GoogleMaterial.Icon.gmd_comment_video).withIdentifier(6),
                         new SecondaryDrawerItem().withName(R.string.blog).withIcon(FontAwesome.Icon.faw_desktop).withIdentifier(7),
@@ -147,9 +147,9 @@ public class MainActivity extends AppCompatActivity {
                                 viewPager.setCurrentItem(1);
                                 break;
                             case 3:
-                                Intent intent = new Intent(getBaseContext(), AudioActivity.class);
-                                startActivity(intent);
-                                break;
+//                                Intent intent = new Intent(getBaseContext(), AudioActivity.class);
+//                                startActivity(intent);
+//                                break;
                             case 4:
                             case 5:
                             case 6:

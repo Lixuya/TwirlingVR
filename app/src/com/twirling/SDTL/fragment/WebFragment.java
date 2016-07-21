@@ -65,6 +65,7 @@ public class WebFragment extends Fragment {
         String url = "";
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1);  // , 1是可选写的
         switch (index) {
+            case 3:
             case 4:
                 url = "http://www.twirlingvr.com/index.html";
                 lp.setMargins(0, -250, 0, 0);
