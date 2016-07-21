@@ -50,7 +50,7 @@ public class DownloadReceiver extends BroadcastReceiver {
                         .filter(new Func1<VideoItem, Boolean>() {
                             @Override
                             public Boolean call(VideoItem item) {
-                                return item != null;
+                                return item != null ;
                             }
                         })
                         .filter(new Func1<VideoItem, Boolean>() {

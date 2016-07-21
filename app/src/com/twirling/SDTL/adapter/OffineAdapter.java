@@ -14,14 +14,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.twirling.SDTL.App;
+import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.R;
 import com.twirling.SDTL.activity.AudioActivity;
 import com.twirling.SDTL.activity.SimpleVrVideoActivity;
 import com.twirling.SDTL.data.RealmHelper;
+import com.twirling.SDTL.download.DownloadChangeObserver;
 import com.twirling.SDTL.model.VideoItem;
 import com.twirling.SDTL.module.ModuleAlertDialog;
-import com.twirling.SDTL.Constants;
-import com.twirling.SDTL.download.DownloadChangeObserver;
 import com.twirling.SDTL.utils.FileUtil;
 
 import java.io.File;
@@ -73,6 +73,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
                         holder.downloadId = RealmHelper.getIns().selectVideoItem(item.getVideo()).getDownloadId();
                         final String androidOffline = item.getAndroidoffline();
                         final String videoName = item.getVideo();
+                        // 删除下载中文件
                         Observable.just(holder.downloadId)
                                 .filter(new Func1<Long, Boolean>() {
                                     @Override
@@ -86,10 +87,16 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
                                     public void call(Long aLong) {
                                         DownloadManager dm = App.getDownloadManager();
                                         dm.remove(RealmHelper.getIns().selectVideoItem(item.getVideo()).getDownloadId());
+                                        //
+                                        RealmHelper.getIns().deleteVideoItem(item);
+                                        datas.clear();
+                                        datas.addAll(RealmHelper.getIns().selectVideoList());
+                                        notifyDataSetChanged();
                                     }
                                 });
+                        // 主线程更新列表，io删除
                         Observable.just(item)
-                                .observeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
                                 .filter(new Func1<VideoItem, Boolean>() {
                                     @Override
                                     public Boolean call(VideoItem item) {
@@ -99,27 +106,28 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
                                 .map(new Func1<VideoItem, VideoItem>() {
                                     @Override
                                     public VideoItem call(VideoItem item) {
+                                        // 删除数据库下载记录
+                                        RealmHelper.getIns().deleteVideoItem(item);
+                                        datas.clear();
+                                        datas.addAll(RealmHelper.getIns().selectVideoList());
+                                        notifyDataSetChanged();
+                                        return item;
+                                    }
+                                })
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(Schedulers.io())
+                                .subscribe(new Action1<VideoItem>() {
+                                    @Override
+                                    public void call(VideoItem item) {
                                         String fileFolder = androidOffline.substring(0, androidOffline.length() - 4);
                                         FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "video.mp4"));
                                         FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "audio.mp4"));
                                         FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "data.json"));
                                         FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "image.jpg"));
                                         FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + videoName));
-                                        return item;
-                                    }
-                                })
-                                .subscribeOn(AndroidSchedulers.mainThread())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new Action1<VideoItem>() {
-                                    @Override
-                                    public void call(VideoItem item) {
-                                        // 删除数据库下载记录
-                                        RealmHelper.getIns().deleteVideoItem(item);
-                                        datas.clear();
-                                        datas.addAll(RealmHelper.getIns().selectVideoList());
-                                        notifyDataSetChanged();
                                     }
                                 });
+
                     }
                 }.setMessage("确定删除 " + item.getName() + " 吗");
             }
