@@ -46,9 +46,16 @@
             android:theme="@style/Theme.AppCompat.MyDesign">
             <category android:name="com.google.intent.category.CARDBOARD" />
         </activity>
-
+        <activity
+            android:name=".activity.HLSActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.MyDesign" />
         <activity
             android:name=".activity.RTMPActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.MyDesign" />
+        <activity
+            android:name=".activity.LoginActivtity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.MyDesign" />
 

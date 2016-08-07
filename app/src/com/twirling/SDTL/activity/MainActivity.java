@@ -1,5 +1,6 @@
 package com.twirling.SDTL.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v4.app.FragmentManager;
@@ -23,9 +24,11 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.MiniDrawer;
 import com.mikepenz.materialdrawer.interfaces.ICrossfader;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.mikepenz.materialdrawer.model.interfaces.Nameable;
 import com.mikepenz.materialdrawer.util.DrawerUIUtils;
 import com.mikepenz.materialize.util.UIUtils;
@@ -109,10 +112,29 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         //
+        String mobile = "匿名访客";
+        final IProfile profile = new ProfileDrawerItem()
+                .withName(mobile)
+//                .withEmail("mikepenz@gmail.com")
+                .withIcon(FontAwesome.Icon.faw_user_secret);
         headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
+                .addProfiles(profile)
                 .withHeaderBackground(R.drawable.fl_drawer_head)
                 .withSavedInstance(savedInstanceState)
+                .withOnAccountHeaderProfileImageListener(new AccountHeader.OnAccountHeaderProfileImageListener() {
+                    @Override
+                    public boolean onProfileImageClick(View view, IProfile profile, boolean current) {
+                        Intent intent = new Intent(MainActivity.this, LoginActivtity.class);
+                       startActivity(intent);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onProfileImageLongClick(View view, IProfile profile, boolean current) {
+                        return false;
+                    }
+                })
                 .build();
 
         //Create the drawer
@@ -128,13 +150,14 @@ public class MainActivity extends AppCompatActivity {
                         new PrimaryDrawerItem().withName(R.string.download).withIcon(FontAwesome.Icon.faw_cloud_download).withIdentifier(1),
                         new PrimaryDrawerItem().withName(R.string.local).withIcon(FontAwesome.Icon.faw_play_circle).withIdentifier(2),
                         new PrimaryDrawerItem().withName(R.string.homepage).withIcon(FontAwesome.Icon.faw_home).withIdentifier(3),
+                        new PrimaryDrawerItem().withName(R.string.hls).withIcon(GoogleMaterial.Icon.gmd_comment_video).withIdentifier(4),
 //                        new PrimaryDrawerItem().withName(R.string.atmos).withIcon(FontAwesome.Icon.faw_headphones).withIdentifier(3),
                         new SectionDrawerItem().withName(R.string.drawer_item_section_header),
                         new SecondaryDrawerItem().withName(R.string.audio).withIcon(FontAwesome.Icon.faw_headphones).withIdentifier(5),
-                        new SecondaryDrawerItem().withName(R.string.products).withIcon(GoogleMaterial.Icon.gmd_comment_video).withIdentifier(6),
+                        new SecondaryDrawerItem().withName(R.string.products).withIcon(GoogleMaterial.Icon.gmd_playlist_plus).withIdentifier(6),
                         new SecondaryDrawerItem().withName(R.string.blog).withIcon(FontAwesome.Icon.faw_desktop).withIdentifier(7),
-                        new SecondaryDrawerItem().withName(R.string.cloud).withIcon(FontAwesome.Icon.faw_cloud).withIdentifier(8),
-                        new SecondaryDrawerItem().withName(R.string.contact).withIcon(GoogleMaterial.Icon.gmd_code_smartphone).withIdentifier(9)
+                        new SecondaryDrawerItem().withName(R.string.cloud).withIcon(FontAwesome.Icon.faw_cloud).withIdentifier(8)
+//                        new SecondaryDrawerItem().withName(R.string.contact).withIcon(GoogleMaterial.Icon.gmd_code_smartphone).withIdentifier(9)
                 ) // add the items we want to use with our Drawer
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -146,11 +169,11 @@ public class MainActivity extends AppCompatActivity {
                             case 2:
                                 viewPager.setCurrentItem(1);
                                 break;
-                            case 3:
-//                                Intent intent = new Intent(getBaseContext(), AudioActivity.class);
-//                                startActivity(intent);
-//                                break;
                             case 4:
+                                Intent intent = new Intent(getBaseContext(), HLSActivity.class);
+                                startActivity(intent);
+                                break;
+                            case 3:
                             case 5:
                             case 6:
                             case 7:

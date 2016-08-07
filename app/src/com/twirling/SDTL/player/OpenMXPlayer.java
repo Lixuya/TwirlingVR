@@ -125,7 +125,6 @@ public class OpenMXPlayer implements Runnable {
 
     public void pause() {
         state.set(PlayerStates.READY_TO_PLAY);
-
     }
 
     public void seek(long pos) {
@@ -161,7 +160,9 @@ public class OpenMXPlayer implements Runnable {
         android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO);
         // profileId
         audioProcess.Init(11, FRAME_LENGTH, 3, 44100);
-        // extractor gets information about the stream
+        audioProcess.Set(false, 0, false, false, 1.0f);
+        // extractor gets infor
+        // mation about the stream
         extractor = new MediaExtractor();
         // try to set the source, this might fail
         try {

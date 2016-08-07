@@ -10,6 +10,7 @@ public class Constants {
     public static final String MIME_ZIP = "application/zip";
     //
     public static final String PATH_SERVER = "http://www.twirlingvr.com/";
+    public static final String PATH_JAVA = "http://120.27.136.111:23223/";
     // 图片
     public static final String PAPH_IMAGE = PATH_SERVER + "APP_Videos/images/";
     // 在线

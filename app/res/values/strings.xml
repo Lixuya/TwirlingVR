@@ -33,6 +33,7 @@
 
     <!-- Drawer Items -->
     <string name="download">在线播放</string>
+    <string name="hls">在线直播</string>
     <string name="local">本地播放</string>
     <string name="atmos">立体声</string>
     <string name="homepage">拓灵主页</string>

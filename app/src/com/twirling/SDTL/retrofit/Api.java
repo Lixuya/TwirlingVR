@@ -17,4 +17,6 @@ public interface Api {
     @GET("App_Run/app_video_deal.aspx")
     Observable<DataArray> getVideoList(@QueryMap Map<String, Object> params);
 
+    @GET("/springDemo/login")
+    Observable<DataArray> login(@QueryMap Map<String, Object> params);
 }

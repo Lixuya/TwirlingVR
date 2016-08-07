@@ -73,6 +73,11 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
                         holder.downloadId = RealmHelper.getIns().selectVideoItem(item.getVideo()).getDownloadId();
                         final String androidOffline = item.getAndroidoffline();
                         final String videoName = item.getVideo();
+                        //
+                        RealmHelper.getIns().deleteVideoItem(item);
+                        datas.clear();
+                        datas.addAll(RealmHelper.getIns().selectVideoList());
+                        notifyDataSetChanged();
                         // 删除下载中文件
                         Observable.just(holder.downloadId)
                                 .filter(new Func1<Long, Boolean>() {
@@ -86,36 +91,18 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
                                     @Override
                                     public void call(Long aLong) {
                                         DownloadManager dm = App.getDownloadManager();
-                                        dm.remove(RealmHelper.getIns().selectVideoItem(item.getVideo()).getDownloadId());
-                                        //
-                                        RealmHelper.getIns().deleteVideoItem(item);
-                                        datas.clear();
-                                        datas.addAll(RealmHelper.getIns().selectVideoList());
-                                        notifyDataSetChanged();
+                                        dm.remove(RealmHelper.getIns().selectVideoItem(videoName).getDownloadId());
                                     }
                                 });
                         // 主线程更新列表，io删除
                         Observable.just(item)
-                                .observeOn(AndroidSchedulers.mainThread())
                                 .filter(new Func1<VideoItem, Boolean>() {
                                     @Override
                                     public Boolean call(VideoItem item) {
                                         return holder.downloadId == 1 && androidOffline.length() != 0;
                                     }
                                 })
-                                .map(new Func1<VideoItem, VideoItem>() {
-                                    @Override
-                                    public VideoItem call(VideoItem item) {
-                                        // 删除数据库下载记录
-                                        RealmHelper.getIns().deleteVideoItem(item);
-                                        datas.clear();
-                                        datas.addAll(RealmHelper.getIns().selectVideoList());
-                                        notifyDataSetChanged();
-                                        return item;
-                                    }
-                                })
                                 .subscribeOn(Schedulers.io())
-                                .observeOn(Schedulers.io())
                                 .subscribe(new Action1<VideoItem>() {
                                     @Override
                                     public void call(VideoItem item) {

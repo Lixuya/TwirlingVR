@@ -1,0 +1,102 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/login_background"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingLeft="28dp"
+    android:paddingRight="28dp"
+    tools:context=".activity.LoginActivtity">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="200dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="65dp"
+        android:background="@mipmap/banner" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="50dp">
+
+        <EditText
+            android:id="@+id/edt_cellphone"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:background="@null"
+            android:hint="手机号"
+            android:inputType="number"
+            android:maxLength="11"
+            android:text=""
+            android:textColor="#ffffff"
+            android:textColorHighlight="#a0ffffff"
+            android:textColorHint="#a0ffffff"
+            android:textColorLink="#a0ffffff"
+            android:textCursorDrawable="@null"
+            android:textSize="12dp" />
+
+        <View
+            android:id="@+id/line1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/edt_cellphone"
+            android:background="#90ffffff" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp">
+
+        <EditText
+            android:id="@+id/edt_password"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@null"
+            android:hint="密码"
+            android:inputType="textPassword"
+            android:maxLength="15"
+            android:text=""
+            android:textColor="#ffffff"
+            android:textColorHint="#a0ffffff"
+            android:textCursorDrawable="@null"
+            android:textSize="12dp" />
+
+        <View
+            android:id="@+id/line2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/edt_password"
+            android:background="#90ffffff" />
+    </RelativeLayout>
+
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/selector_login"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:shadowRadius="0"
+        android:singleLine="true"
+        android:text="登录"
+        android:textColor="#ffffff"
+        android:textSize="15dp" />
+
+    <com.twirling.SDTL.widget.WidgetOAuth
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="30dp" />
+</LinearLayout>
