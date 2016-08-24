@@ -55,9 +55,9 @@ public class DownloadService extends IntentService {
             mime = Constants.MIME_MP4;
             name = videoName;
         } else if (videoItem.getIsatmos() == 1) {
-            url = Constants.PAPH_DOWNLOAD + videoItem.getAndroidoffline();
+            url = Constants.PAPH_DOWNLOAD + "";//videoItem.getAndroidoffline();
             mime = Constants.MIME_ZIP;
-            name = videoItem.getAndroidoffline();
+            name = "";// videoItem.getAndroidoffline();
         }
         //
         if (!TextUtil.isValidate(url) || !TextUtil.isValidate(videoName)) {

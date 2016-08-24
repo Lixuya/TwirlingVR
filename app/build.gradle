@@ -62,34 +62,34 @@ android {
 //        sourceCompatibility JavaVersion.VERSION_1_8
 //        targetCompatibility JavaVersion.VERSION_1_8
 //    }
-    productFlavors {
-        arm {
-            ndk {
-                abiFilter "armeabi"
-            }
-        }
-        armv7 {
-            ndk {
-                abiFilter "armeabi-v7a"
-            }
-        }
-        armv8 {
-            ndk {
-                abiFilter "armeabi"
-            }
-        }
-        x86 {
-            ndk {
-                abiFilter "armeabi"
-            }
-        }
-        mips {
-            ndk {
-                abiFilter "armeabi"
-            }
-        }
-        fat
-    }
+//    productFlavors {
+//        arm {
+//            ndk {
+//                abiFilter "armeabi"
+//            }
+//        }
+//        armv7 {
+//            ndk {
+//                abiFilter "armeabi-v7a"
+//            }
+//        }
+//        armv8 {
+//            ndk {
+//                abiFilter "armeabi"
+//            }
+//        }
+//        x86 {
+//            ndk {
+//                abiFilter "armeabi"
+//            }
+//        }
+//        mips {
+//            ndk {
+//                abiFilter "armeabi"
+//            }
+//        }
+//        fat
+//    }
     lintOptions {
         abortOnError false
     }
@@ -108,7 +108,7 @@ dependencies {
     compile(name: 'common', ext: 'aar')
     compile(name: 'commonwidget', ext: 'aar')
     compile(name: 'videowidget', ext: 'aar')
-    compile(name: 'base', ext: 'aar')
+//    compile(name: 'base', ext: 'aar')
     //
     compile "com.android.support:appcompat-v7:${versions.supportLib}"
     compile "com.android.support:cardview-v7:${versions.supportLib}"

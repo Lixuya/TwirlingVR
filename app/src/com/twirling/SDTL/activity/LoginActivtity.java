@@ -9,7 +9,7 @@ import android.widget.EditText;
 
 import com.jakewharton.rxbinding.view.RxView;
 import com.twirling.SDTL.R;
-import com.twirling.SDTL.model.DataArray;
+import com.twirling.SDTL.model.User;
 import com.twirling.SDTL.retrofit.RetrofitManager;
 
 import java.util.HashMap;
@@ -58,9 +58,9 @@ public class LoginActivtity extends AppCompatActivity {
         params.put("password", password);
         RetrofitManager.getService().login(params)
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Action1<DataArray>() {
+                .subscribe(new Action1<User>() {
                     @Override
-                    public void call(DataArray dataArray) {
+                    public void call(User dataArray) {
                         Log.w("tag", dataArray.toString());
                     }
                 });

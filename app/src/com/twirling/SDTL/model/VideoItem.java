@@ -12,11 +12,13 @@ import io.realm.annotations.PrimaryKey;
 public class VideoItem extends RealmObject implements Parcelable {
     @PrimaryKey
     private String name = "";
-    private String image = "",
-            video = "",
-            videoUri = "",
-            describe = "",
-            androidoffline = "";
+    private String image = "";
+    private String video = "";
+    private String videoUri = "";
+
+    private String movieId = "";
+    private String describe = "";
+    private String sort = "";
     private int isatmos = 0;
     private long downloadTime = 0;
 
@@ -28,14 +30,6 @@ public class VideoItem extends RealmObject implements Parcelable {
         this.describe = describe;
     }
 
-    public String getAndroidoffline() {
-        return androidoffline;
-    }
-
-    public void setAndroidoffline(String androidoffline) {
-        this.androidoffline = androidoffline;
-    }
-
     public int getIsatmos() {
         return isatmos;
     }
@@ -44,6 +38,21 @@ public class VideoItem extends RealmObject implements Parcelable {
         this.isatmos = isatmos;
     }
 
+    public String getMovieId() {
+        return movieId;
+    }
+
+    public void setMovieId(String movieId) {
+        this.movieId = movieId;
+    }
+
+    public String getSort() {
+        return sort;
+    }
+
+    public void setSort(String sort) {
+        this.sort = sort;
+    }
     private long downloadId = 0;
 
     protected VideoItem(Parcel in) {
@@ -52,7 +61,8 @@ public class VideoItem extends RealmObject implements Parcelable {
         video = in.readString();
         videoUri = in.readString();
         describe = in.readString();
-        androidoffline = in.readString();
+        movieId = in.readString();
+        sort = in.readString();
         //
         downloadTime = in.readLong();
         downloadId = in.readLong();
@@ -114,7 +124,8 @@ public class VideoItem extends RealmObject implements Parcelable {
         dest.writeString(image);
         dest.writeString(video);
         dest.writeString(videoUri);
-        dest.writeString(androidoffline);
+        dest.writeString(movieId);
+        dest.writeString(sort);
         dest.writeString(describe);
         dest.writeInt(isatmos);
         dest.writeLong(downloadTime);
@@ -137,7 +148,8 @@ public class VideoItem extends RealmObject implements Parcelable {
             videoItem.image = in.readString();
             videoItem.video = in.readString();
             videoItem.videoUri = in.readString();
-            videoItem.androidoffline = in.readString();
+            videoItem.movieId = in.readString();
+            videoItem.sort = in.readString();
             videoItem.describe = in.readString();
             videoItem.isatmos = in.readInt();
             videoItem.downloadTime = in.readLong();
@@ -159,7 +171,8 @@ public class VideoItem extends RealmObject implements Parcelable {
                 + getVideo() + " :video "//
                 + getDownloadTime() + " :time " //
                 + getIsatmos() + " :isatmos "//
-                + getAndroidoffline() + " :androidoffline "//
+                + getMovieId() + " :movieid "//
+                + getSort() + " :sort "//
                 + getDescribe() + " :describe ";
         return str;
     }

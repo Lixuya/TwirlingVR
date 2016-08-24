@@ -71,7 +71,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
                     protected void onConfirm() {
                         // 如果下载中，取消下载
                         holder.downloadId = RealmHelper.getIns().selectVideoItem(item.getVideo()).getDownloadId();
-                        final String androidOffline = item.getAndroidoffline();
+                        final String androidOffline = "";//item.getAndroidoffline();
                         final String videoName = item.getVideo();
                         //
                         RealmHelper.getIns().deleteVideoItem(item);

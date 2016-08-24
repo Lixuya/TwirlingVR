@@ -95,7 +95,7 @@ public class RetrofitManager {
     }
 
     public static String getServerUrl() {
-        String url = Constants.PATH_JAVA;
+        String url = Constants.PATH_SERVER_API;
         if (!url.endsWith("/")) {
             url += "/";
         }

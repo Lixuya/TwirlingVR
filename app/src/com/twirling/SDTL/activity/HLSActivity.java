@@ -98,9 +98,9 @@ public class HLSActivity extends AppCompatActivity {
         //
         loadVideoStatus = LOAD_VIDEO_STATUS_UNKNOWN;
         //
-//        String uri = "http://yahooios2-i.akamaihd.net/hls/live/224964/iosstream/adinsert_test/master.m3u8";
-//        fileUri = Uri.parse(uri);
-        fileUri = Uri.parse("http://2997.liveplay.myqcloud.com/2997_6f17418e442511e6a2cba4dcbef5e35a.m3u8");
+        String uri = "http://yahooios2-i.akamaihd.net/hls/live/224964/iosstream/adinsert_test/master.m3u8";
+        fileUri = Uri.parse(uri);
+//        fileUri = Uri.parse("http://2997.liveplay.myqcloud.com/2997_6f17418e442511e6a2cba4dcbef5e35a.m3u8");
 
 //        fileUri = Uri.parse("http://live.lecloud.com/live/playerPage/getView?activityId=A2016080500000k8");
 //        fileUri = Uri.parse("http://2997.liveplay.myqcloud.com/live/2997_4313ae5e426d11e6a2cba4dcbef5e35a.flv");

@@ -23,11 +23,5 @@
         android:layout_height="wrap_content"
         android:text="@string/loading_video"
         android:textSize="@dimen/caption_text_size" />
-
-    <com.google.vr.sdk.base.GvrView
-        android:id="@+id/gvrview"
-        android:layout_width="1dp"
-        android:layout_height="1dp"
-        android:visibility="invisible" />
 </LinearLayout>
 
