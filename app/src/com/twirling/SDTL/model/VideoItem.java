@@ -15,9 +15,7 @@ public class VideoItem extends RealmObject implements Parcelable {
     private String image = "";
     private String video = "";
     private String folder = "";
-    private String videoUri = "";
     private String appAndroidOffline = "";
-    private String movieId = "";
     private String describe = "";
     private String sort = "";
     private int vrAduio = 0;
@@ -39,14 +37,6 @@ public class VideoItem extends RealmObject implements Parcelable {
         this.vrAduio = vrAduio;
     }
 
-    public String getMovieId() {
-        return movieId;
-    }
-
-    public void setMovieId(String movieId) {
-        this.movieId = movieId;
-    }
-
     public String getSort() {
         return sort;
     }
@@ -61,9 +51,7 @@ public class VideoItem extends RealmObject implements Parcelable {
         name = in.readString();
         image = in.readString();
         video = in.readString();
-        videoUri = in.readString();
         describe = in.readString();
-        movieId = in.readString();
         sort = in.readString();
         folder = in.readString();
         //
@@ -126,8 +114,6 @@ public class VideoItem extends RealmObject implements Parcelable {
         dest.writeString(name);
         dest.writeString(image);
         dest.writeString(video);
-        dest.writeString(videoUri);
-        dest.writeString(movieId);
         dest.writeString(appAndroidOffline);
         dest.writeString(sort);
         dest.writeString(folder);
@@ -137,14 +123,6 @@ public class VideoItem extends RealmObject implements Parcelable {
         dest.writeLong(downloadId);
     }
 
-    public String getVideoUri() {
-        return videoUri;
-    }
-
-    public void setVideoUri(String videoUri) {
-        this.videoUri = videoUri;
-    }
-
     public static final Creator<VideoItem> CREATOR = new Creator<VideoItem>() {
         @Override
         public VideoItem createFromParcel(Parcel in) {
@@ -152,8 +130,6 @@ public class VideoItem extends RealmObject implements Parcelable {
             videoItem.name = in.readString();
             videoItem.image = in.readString();
             videoItem.video = in.readString();
-            videoItem.videoUri = in.readString();
-            videoItem.movieId = in.readString();
             videoItem.sort = in.readString();
             videoItem.appAndroidOffline = in.readString();
             videoItem.describe = in.readString();
@@ -178,7 +154,6 @@ public class VideoItem extends RealmObject implements Parcelable {
                 + getVideo() + " :video "//
                 + getDownloadTime() + " :time " //
                 + getVrAduio() + " :vrAduio "//
-                + getMovieId() + " :movieid "//
                 + getAppAndroidOffline() + " :appAndroidOffline "//
                 + getSort() + " :sort "//
                 + getDescribe() + " :describe ";
