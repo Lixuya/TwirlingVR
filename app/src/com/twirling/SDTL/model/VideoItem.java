@@ -57,8 +57,8 @@ public class VideoItem extends RealmObject implements Parcelable {
         Image = in.readString();
         Sort = in.readString();
         VrAudio = in.readInt();
-        AppAndroidOnline = in.readString();
         AppAndroidOffline = in.readString();
+        AppAndroidOnline = in.readString();
         Describe = in.readString();
         downloadTime = in.readLong();
         downloadId = in.readLong();
@@ -121,8 +121,8 @@ public class VideoItem extends RealmObject implements Parcelable {
         dest.writeString(Image);
         dest.writeString(Sort);
         dest.writeInt(VrAudio);
-        dest.writeString(AppAndroidOnline);
         dest.writeString(AppAndroidOffline);
+        dest.writeString(AppAndroidOnline);
         dest.writeString(Describe);
         dest.writeLong(downloadTime);
         dest.writeLong(downloadId);
