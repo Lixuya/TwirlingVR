@@ -48,7 +48,7 @@ public class DownloadService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         VideoItem videoItem = intent.getParcelableExtra("videoItem");
-        String videoName = videoItem.getVideo();
+        String videoName = videoItem.getAppAndroidOnline();
         String url = "";
         if (videoItem.getVrAduio() == 0) {
             url = Constants.PAPH_VIDEO + videoName;

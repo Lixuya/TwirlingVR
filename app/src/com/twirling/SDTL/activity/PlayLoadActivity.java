@@ -1,10 +1,11 @@
 package com.twirling.SDTL.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -13,12 +14,12 @@ import android.widget.ProgressBar;
 import com.bumptech.glide.Glide;
 import com.jakewharton.rxbinding.view.RxView;
 import com.twirling.SDTL.App;
+import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.R;
 import com.twirling.SDTL.data.RealmHelper;
-import com.twirling.SDTL.model.VideoItem;
-import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.download.DownloadChangeObserver;
 import com.twirling.SDTL.download.DownloadService;
+import com.twirling.SDTL.model.VideoItem;
 
 import java.util.concurrent.TimeUnit;
 
@@ -28,7 +29,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 
 
-public class PlayLoadActivity extends Activity {
+public class PlayLoadActivity extends AppCompatActivity {
     @BindView(R.id.button)
     ImageView load;
 
@@ -63,8 +64,9 @@ public class PlayLoadActivity extends Activity {
 //        StatusBarUtil.setTransparent(PlayLoadActivity.this);
         //
         final VideoItem videoItem = (VideoItem) getIntent().getExtras().getParcelable("videoItem");
-        videoName = videoItem.getVideo();
-        imageUrl = Constants.PAPH_IMAGE + videoItem.getImage();
+        videoName = videoItem.getAppAndroidOnline();
+        imageUrl = Constants.PATH_RESOURCE + videoItem.getFolder() + Constants.PAPH_IMAGE + videoItem.getImage();
+        Log.e("www",imageUrl);
         //
         Glide.with(getBaseContext()).load(imageUrl).into(iv_video_image);
         RxView.clicks(load)
@@ -90,7 +92,7 @@ public class PlayLoadActivity extends Activity {
                     @Override
                     public void call(Void aVoid) {
                         Intent intent = new Intent();
-                        intent.putExtra("videoItem", Constants.PAPH_VIDEO + videoItem.getFolder() + "/video/" + videoItem.getVideo());
+                        intent.putExtra("videoItem", Constants.PAPH_VIDEO + videoItem.getFolder() + "/video/" + videoItem.getAppAndroidOnline());
                         intent.setClass(PlayLoadActivity.this, SimpleVrVideoActivity.class);
                         startActivity(intent);
                     }

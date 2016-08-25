@@ -13,11 +13,11 @@ public class Constants {
     public static final String PATH_RESOURCE = "http://yun-twirlingvr.oss-cn-hangzhou.aliyuncs.com/";
     public static final String PATH_JAVA = "http://120.27.136.111:23223/";
     // 图片
-    public static final String PAPH_IMAGE = "/image";
+    public static final String PAPH_IMAGE = "image/";
     // 在线
-    public static final String PAPH_VIDEO = "/video";
+    public static final String PAPH_VIDEO = "video/";
     // 下载
-    public static final String PAPH_DOWNLOAD = "/download";
+    public static final String PAPH_DOWNLOAD = "download/";
     //
     public static final String PAPH_DOWNLOAD_LOCAL = Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOWNLOADS + "/";
     //

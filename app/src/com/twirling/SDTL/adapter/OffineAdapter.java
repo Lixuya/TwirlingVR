@@ -68,9 +68,9 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
                     @Override
                     protected void onConfirm() {
                         // 如果下载中，取消下载
-                        holder.downloadId = RealmHelper.getIns().selectVideoItem(item.getVideo()).getDownloadId();
+                        holder.downloadId = RealmHelper.getIns().selectVideoItem(item.getAppAndroidOnline()).getDownloadId();
                         final String androidOffline = item.getAppAndroidOffline();
-                        final String videoName = item.getVideo();
+                        final String videoName = item.getAppAndroidOnline();
                         //
                         RealmHelper.getIns().deleteVideoItem(item);
                         datas.clear();
@@ -123,7 +123,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
                 int isAtoms = item.getVrAduio();
                 if (isAtoms == 0) {
                     Intent intent = new Intent(holder.itemView.getContext(), SimpleVrVideoActivity.class);
-                    intent.putExtra("videoItem", Constants.PAPH_DOWNLOAD_LOCAL + item.getVideo());
+                    intent.putExtra("videoItem", Constants.PAPH_DOWNLOAD_LOCAL + item.getAppAndroidOnline());
                     holder.itemView.getContext().startActivity(intent);
                 } else if (isAtoms == 1 && holder.downloadId == 1) {
                     Intent intent = new Intent(holder.itemView.getContext(), AudioActivity.class);

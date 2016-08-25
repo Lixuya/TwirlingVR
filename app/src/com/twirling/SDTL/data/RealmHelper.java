@@ -42,7 +42,7 @@ public class RealmHelper {
             @Override
             public void execute(Realm realm) {
                 VideoItem videoItem = realm.where(VideoItem.class)
-                        .equalTo("video", videoName)
+                        .equalTo("appAndroidOnline", videoName)
                         .findFirst();
                 if (videoItem == null) {
                     return;
@@ -80,7 +80,7 @@ public class RealmHelper {
 
     public VideoItem selectVideoItem(final String videoName) {
         VideoItem videoItem = realm.where(VideoItem.class)
-                .equalTo("video", videoName)
+                .equalTo("appAndroidOnline", videoName)
                 .notEqualTo("downloadId", 0)
                 .findFirst();
         return videoItem;
@@ -96,7 +96,7 @@ public class RealmHelper {
         VideoItem videoItem = realm.where(VideoItem.class)
                 .equalTo("downloadId", downloadId)
                 .findFirst();
-        return videoItem.getVideo();
+        return videoItem.getAppAndroidOnline();
     }
 
     public VideoItem selectVideoItem(long downloadId) {
@@ -108,7 +108,7 @@ public class RealmHelper {
 
     public void deleteVideoItem(String videoName) {
         realm.beginTransaction();
-        VideoItem videoItem = Realm.getDefaultInstance().where(VideoItem.class).equalTo("videoName", videoName).findFirst();
+        VideoItem videoItem = Realm.getDefaultInstance().where(VideoItem.class).equalTo("appAndroidOnline", videoName).findFirst();
         videoItem.deleteFromRealm();
         realm.commitTransaction();
     }
