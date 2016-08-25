@@ -62,7 +62,7 @@ public class DownloadReceiver extends BroadcastReceiver {
                         .filter(new Func1<VideoItem, Boolean>() {
                             @Override
                             public Boolean call(VideoItem item) {
-                                return item.getVrAduio() == 1;
+                                return item.getVrAudio() == 1;
                             }
                         })
                         .map(new Func1<VideoItem, Pair<String, String>>() {

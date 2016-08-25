@@ -64,9 +64,9 @@ public class PlayLoadActivity extends AppCompatActivity {
 //        StatusBarUtil.setTransparent(PlayLoadActivity.this);
         //
         final VideoItem videoItem = (VideoItem) getIntent().getExtras().getParcelable("videoItem");
+        Log.e("PlayLoadActivity",videoItem.toString());
         videoName = videoItem.getAppAndroidOnline();
         imageUrl = Constants.PATH_RESOURCE + videoItem.getFolder() + Constants.PAPH_IMAGE + videoItem.getImage();
-        Log.e("www",imageUrl);
         //
         Glide.with(getBaseContext()).load(imageUrl).into(iv_video_image);
         RxView.clicks(load)
@@ -92,7 +92,7 @@ public class PlayLoadActivity extends AppCompatActivity {
                     @Override
                     public void call(Void aVoid) {
                         Intent intent = new Intent();
-                        intent.putExtra("videoItem", Constants.PAPH_VIDEO + videoItem.getFolder() + "/video/" + videoItem.getAppAndroidOnline());
+                        intent.putExtra("videoItem", Constants.PATH_RESOURCE + videoItem.getFolder() + Constants.PAPH_VIDEO + videoItem.getAppAndroidOnline());
                         intent.setClass(PlayLoadActivity.this, SimpleVrVideoActivity.class);
                         startActivity(intent);
                     }

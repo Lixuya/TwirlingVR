@@ -18,7 +18,7 @@ public class VideoItem extends RealmObject implements Parcelable {
     private String appAndroidOffline = "";
     private String describe = "";
     private String sort = "";
-    private int vrAduio = 0;
+    private int vrAudio = 0;
     private long downloadTime = 0;
 
     public String getDescribe() {
@@ -29,12 +29,12 @@ public class VideoItem extends RealmObject implements Parcelable {
         this.describe = describe;
     }
 
-    public int getVrAduio() {
-        return vrAduio;
+    public int getVrAudio() {
+        return vrAudio;
     }
 
-    public void setVrAduio(int vrAduio) {
-        this.vrAduio = vrAduio;
+    public void setVrAudio(int vrAudio) {
+        this.vrAudio = vrAudio;
     }
 
     public String getSort() {
@@ -56,7 +56,7 @@ public class VideoItem extends RealmObject implements Parcelable {
         folder = in.readString();
         downloadTime = in.readLong();
         downloadId = in.readLong();
-        vrAduio = in.readInt();
+        vrAudio = in.readInt();
     }
 
     public long getDownloadTime() {
@@ -116,7 +116,7 @@ public class VideoItem extends RealmObject implements Parcelable {
         dest.writeString(sort);
         dest.writeString(folder);
         dest.writeString(describe);
-        dest.writeInt(vrAduio);
+        dest.writeInt(vrAudio);
         dest.writeLong(downloadTime);
         dest.writeLong(downloadId);
     }
@@ -131,7 +131,7 @@ public class VideoItem extends RealmObject implements Parcelable {
             videoItem.sort = in.readString();
             videoItem.appAndroidOffline = in.readString();
             videoItem.describe = in.readString();
-            videoItem.vrAduio = in.readInt();
+            videoItem.vrAudio = in.readInt();
             videoItem.downloadTime = in.readLong();
             videoItem.downloadId = in.readLong();
             videoItem.folder = in.readString();
@@ -146,15 +146,16 @@ public class VideoItem extends RealmObject implements Parcelable {
 
     @Override
     public String toString() {
-        String str = getDownloadId() + " :downloadId "//
-                + getName() + " :name " //
-                + getImage() + " :image "//
-                + getAppAndroidOnline() + " :appAndroidOnline "//
-                + getDownloadTime() + " :time " //
-                + getVrAduio() + " :vrAduio "//
-                + getAppAndroidOffline() + " :appAndroidOffline "//
-                + getSort() + " :sort "//
-                + getDescribe() + " :describe ";
+        String str = "downloadId: " + getDownloadId() +//
+                " name: " + getName() +  //
+                " image: " + getImage() + //
+                " appAndroidOnline: " + getAppAndroidOnline() + //
+                " time: " + getDownloadTime() +  //
+                " vrAudio: " + getVrAudio() + //
+                " appAndroidOffline: " + getAppAndroidOffline() +//
+                " sort: " + getSort() + //
+                " describe: " + getDescribe() +//
+                " folder: " + getFolder();
         return str;
     }
 

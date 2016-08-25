@@ -107,6 +107,7 @@ public class SimpleVrVideoActivity extends AppCompatActivity {
             videoWidgetView.setInfoButtonEnabled(false);
             VrVideoView.Options options = new VrVideoView.Options();
 //            options.inputFormat = 2;
+            Log.e("www", fileUri.toString());
             videoWidgetView.loadVideo(fileUri, options);
         } catch (IOException e) {
             e.printStackTrace();

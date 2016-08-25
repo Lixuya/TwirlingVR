@@ -120,7 +120,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
         holder.cv_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {//
-                int isAtoms = item.getVrAduio();
+                int isAtoms = item.getVrAudio();
                 if (isAtoms == 0) {
                     Intent intent = new Intent(holder.itemView.getContext(), SimpleVrVideoActivity.class);
                     intent.putExtra("videoItem", Constants.PAPH_DOWNLOAD_LOCAL + item.getAppAndroidOnline());
