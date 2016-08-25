@@ -50,11 +50,11 @@ public class DownloadService extends IntentService {
         VideoItem videoItem = intent.getParcelableExtra("videoItem");
         String videoName = videoItem.getVideo();
         String url = "";
-        if (videoItem.getIsatmos() == 0) {
+        if (videoItem.getVrAduio() == 0) {
             url = Constants.PAPH_VIDEO + videoName;
             mime = Constants.MIME_MP4;
             name = videoName;
-        } else if (videoItem.getIsatmos() == 1) {
+        } else if (videoItem.getVrAduio() == 1) {
             url = Constants.PAPH_DOWNLOAD + "";//videoItem.getAndroidoffline();
             mime = Constants.MIME_ZIP;
             name = "";// videoItem.getAndroidoffline();

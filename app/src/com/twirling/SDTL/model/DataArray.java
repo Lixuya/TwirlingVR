@@ -9,13 +9,13 @@ import java.util.List;
 public class DataArray {
     private String status = "";
     private String msg = "";
-    private List<VideoItem> content = new ArrayList<VideoItem>();
+    private List<VideoItem> data = new ArrayList<VideoItem>();
 
-    public List<VideoItem> getContent() {
-        return content;
+    public List<VideoItem> getData() {
+        return data;
     }
 
-    public void setContent(List<VideoItem> content) {
-        this.content = content;
+    public void setData(List<VideoItem> data) {
+        this.data = data;
     }
 }

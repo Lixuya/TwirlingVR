@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         final VideoItem item = datas.get(position);
         String imageName = item.getImage();
         String title = item.getName();
-        Glide.with(holder.itemView.getContext()).load(Constants.PAPH_IMAGE + imageName).into(holder.iv_background);
+        String path = Constants.PATH_RESOURCE + item.getFolder() + Constants.PAPH_IMAGE + imageName;
+        Glide.with(holder.itemView.getContext()).load(path).into(holder.iv_background);
         holder.tv_title.setText(title);
 //        holder.iv_delete.setBackgroundResource(R.drawable.download);
         holder.cv_card.setOnClickListener(new View.OnClickListener() {

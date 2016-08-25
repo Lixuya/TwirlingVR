@@ -64,7 +64,7 @@ public class AudioActivity extends AppCompatActivity{
         ButterKnife.bind(this);
         // initData
         VideoItem videoItem = getIntent().getParcelableExtra("videoItem");
-        String name = "";//videoItem.getAndroidoffline().split("\\.")[0];
+        String name = videoItem.getAppAndroidOffline().split("\\.")[0];
         videoUri = Uri.parse(Constants.URI_DOWNLOAD_LOCAL + name + "video.mp4");
         audioPath = Constants.URI_DOWNLOAD_LOCAL + name + "audio.mp4";
         jsonName = name + "data.json";

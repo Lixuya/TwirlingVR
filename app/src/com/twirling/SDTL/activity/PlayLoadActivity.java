@@ -90,7 +90,7 @@ public class PlayLoadActivity extends Activity {
                     @Override
                     public void call(Void aVoid) {
                         Intent intent = new Intent();
-                        intent.putExtra("videoItem", Constants.PAPH_VIDEO + videoItem.getVideo());
+                        intent.putExtra("videoItem", Constants.PAPH_VIDEO + videoItem.getFolder() + "/video/" + videoItem.getVideo());
                         intent.setClass(PlayLoadActivity.this, SimpleVrVideoActivity.class);
                         startActivity(intent);
                     }

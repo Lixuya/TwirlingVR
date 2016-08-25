@@ -56,20 +56,20 @@ public class DownloadReceiver extends BroadcastReceiver {
                         .filter(new Func1<VideoItem, Boolean>() {
                             @Override
                             public Boolean call(VideoItem item) {
-                                return !TextUtils.isEmpty(item.getAndroidoffline());
+                                return !TextUtils.isEmpty(item.getAppAndroidOffline());
                             }
                         })
                         .filter(new Func1<VideoItem, Boolean>() {
                             @Override
                             public Boolean call(VideoItem item) {
-                                return item.getIsatmos() == 1;
+                                return item.getVrAduio() == 1;
                             }
                         })
                         .map(new Func1<VideoItem, Pair<String, String>>() {
                             @Override
                             public Pair<String, String> call(VideoItem item) {
-                                String androidOffine = item.getAndroidoffline();
-                                String fileFolder = androidOffine.substring(0, item.getAndroidoffline().length() - 4);
+                                String androidOffine = item.getAppAndroidOffline();
+                                String fileFolder = androidOffine.substring(0, item.getAppAndroidOffline().length() - 4);
                                 return new Pair<String, String>(androidOffine, fileFolder);
                             }
                         })

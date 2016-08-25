@@ -4,7 +4,6 @@ import android.app.DownloadManager;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,10 +57,9 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
     public void onBindViewHolder(final OffineAdapter.ViewHolder holder, int position) {
         final VideoItem item = datas.get(position);
         holder.downloadId = item.getDownloadId();
-        Log.w("downloadId", holder.downloadId + "");
-        Glide.with(holder.itemView.getContext()).load(Constants.PAPH_IMAGE + item.getImage()).into(holder.iv_background);
+        String path = Constants.PATH_RESOURCE + item.getFolder() + Constants.PAPH_IMAGE + item.getImage();
+        Glide.with(holder.itemView.getContext()).load(path).into(holder.iv_background);
         holder.tv_title.setText(item.getName());
-        //
         holder.iv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,7 +69,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
                     protected void onConfirm() {
                         // 如果下载中，取消下载
                         holder.downloadId = RealmHelper.getIns().selectVideoItem(item.getVideo()).getDownloadId();
-                        final String androidOffline = "";//item.getAndroidoffline();
+                        final String androidOffline = item.getAppAndroidOffline();
                         final String videoName = item.getVideo();
                         //
                         RealmHelper.getIns().deleteVideoItem(item);
@@ -122,7 +120,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
         holder.cv_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {//
-                int isAtoms = item.getIsatmos();
+                int isAtoms = item.getVrAduio();
                 if (isAtoms == 0) {
                     Intent intent = new Intent(holder.itemView.getContext(), SimpleVrVideoActivity.class);
                     intent.putExtra("videoItem", Constants.PAPH_DOWNLOAD_LOCAL + item.getVideo());
