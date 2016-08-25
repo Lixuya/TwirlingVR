@@ -11,52 +11,56 @@ import io.realm.annotations.PrimaryKey;
  */
 public class VideoItem extends RealmObject implements Parcelable {
     @PrimaryKey
-    private String name = "";
-    private String image = "";
-    private String appAndroidOnline = "";
-    private String folder = "";
-    private String appAndroidOffline = "";
-    private String describe = "";
-    private String sort = "";
-    private int vrAudio = 0;
+    private int ID = 0;
+    private int UserID = 0;
+    private String Name = "";
+    private String Folder = "";
+    private String Image = "";
+    private String Sort = "";
+    private int VrAudio = 0;
+    private String AppAndroidOffline = "";
+    private String AppAndroidOnline = "";
+    private String Describe = "";
     private long downloadTime = 0;
 
     public String getDescribe() {
-        return describe;
+        return Describe;
     }
 
     public void setDescribe(String describe) {
-        this.describe = describe;
+        this.Describe = describe;
     }
 
     public int getVrAudio() {
-        return vrAudio;
+        return VrAudio;
     }
 
     public void setVrAudio(int vrAudio) {
-        this.vrAudio = vrAudio;
+        this.VrAudio = vrAudio;
     }
 
     public String getSort() {
-        return sort;
+        return Sort;
     }
 
     public void setSort(String sort) {
-        this.sort = sort;
+        this.Sort = sort;
     }
 
     private long downloadId = 0;
 
     protected VideoItem(Parcel in) {
-        name = in.readString();
-        image = in.readString();
-        appAndroidOnline = in.readString();
-        describe = in.readString();
-        sort = in.readString();
-        folder = in.readString();
+        ID = in.readInt();
+        UserID = in.readInt();
+        Name = in.readString();
+        Image = in.readString();
+        AppAndroidOnline = in.readString();
+        Describe = in.readString();
+        Sort = in.readString();
+        Folder = in.readString();
         downloadTime = in.readLong();
         downloadId = in.readLong();
-        vrAudio = in.readInt();
+        VrAudio = in.readInt();
     }
 
     public long getDownloadTime() {
@@ -79,27 +83,27 @@ public class VideoItem extends RealmObject implements Parcelable {
     }
 
     public String getName() {
-        return name;
+        return Name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.Name = name;
     }
 
     public String getImage() {
-        return image;
+        return Image;
     }
 
     public void setImage(String image) {
-        this.image = image;
+        this.Image = image;
     }
 
     public String getAppAndroidOnline() {
-        return appAndroidOnline;
+        return AppAndroidOnline;
     }
 
     public void setAppAndroidOnline(String appAndroidOnline) {
-        this.appAndroidOnline = appAndroidOnline;
+        this.AppAndroidOnline = appAndroidOnline;
     }
 
     @Override
@@ -109,14 +113,16 @@ public class VideoItem extends RealmObject implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(name);
-        dest.writeString(image);
-        dest.writeString(appAndroidOnline);
-        dest.writeString(appAndroidOffline);
-        dest.writeString(sort);
-        dest.writeString(folder);
-        dest.writeString(describe);
-        dest.writeInt(vrAudio);
+        dest.writeInt(ID);
+        dest.writeInt(UserID);
+        dest.writeString(Name);
+        dest.writeString(Image);
+        dest.writeString(AppAndroidOnline);
+        dest.writeString(AppAndroidOffline);
+        dest.writeString(Sort);
+        dest.writeString(Folder);
+        dest.writeString(Describe);
+        dest.writeInt(VrAudio);
         dest.writeLong(downloadTime);
         dest.writeLong(downloadId);
     }
@@ -125,16 +131,18 @@ public class VideoItem extends RealmObject implements Parcelable {
         @Override
         public VideoItem createFromParcel(Parcel in) {
             VideoItem videoItem = new VideoItem();
-            videoItem.name = in.readString();
-            videoItem.image = in.readString();
-            videoItem.appAndroidOnline = in.readString();
-            videoItem.sort = in.readString();
-            videoItem.appAndroidOffline = in.readString();
-            videoItem.describe = in.readString();
-            videoItem.vrAudio = in.readInt();
+            videoItem.ID = in.readInt();
+            videoItem.UserID = in.readInt();
+            videoItem.Name = in.readString();
+            videoItem.Image = in.readString();
+            videoItem.AppAndroidOnline = in.readString();
+            videoItem.Sort = in.readString();
+            videoItem.AppAndroidOffline = in.readString();
+            videoItem.Describe = in.readString();
+            videoItem.VrAudio = in.readInt();
             videoItem.downloadTime = in.readLong();
             videoItem.downloadId = in.readLong();
-            videoItem.folder = in.readString();
+            videoItem.Folder = in.readString();
             return videoItem;
         }
 
@@ -147,31 +155,47 @@ public class VideoItem extends RealmObject implements Parcelable {
     @Override
     public String toString() {
         String str = "downloadId: " + getDownloadId() +//
-                " name: " + getName() +  //
-                " image: " + getImage() + //
-                " appAndroidOnline: " + getAppAndroidOnline() + //
+                " Name: " + getName() +  //
+                " Image: " + getImage() + //
+                " AppAndroidOnline: " + getAppAndroidOnline() + //
                 " time: " + getDownloadTime() +  //
-                " vrAudio: " + getVrAudio() + //
-                " appAndroidOffline: " + getAppAndroidOffline() +//
-                " sort: " + getSort() + //
-                " describe: " + getDescribe() +//
-                " folder: " + getFolder();
+                " VrAudio: " + getVrAudio() + //
+                " AppAndroidOffline: " + getAppAndroidOffline() +//
+                " Sort: " + getSort() + //
+                " Describe: " + getDescribe() +//
+                " Folder: " + getFolder();
         return str;
     }
 
     public String getAppAndroidOffline() {
-        return appAndroidOffline;
+        return AppAndroidOffline;
     }
 
     public void setAppAndroidOffline(String appAndroidOffline) {
-        this.appAndroidOffline = appAndroidOffline;
+        this.AppAndroidOffline = appAndroidOffline;
     }
 
     public String getFolder() {
-        return folder;
+        return Folder;
     }
 
     public void setFolder(String folder) {
-        this.folder = folder;
+        this.Folder = folder;
+    }
+
+    public int getUserID() {
+        return UserID;
+    }
+
+    public void setUserID(int userID) {
+        UserID = userID;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 }

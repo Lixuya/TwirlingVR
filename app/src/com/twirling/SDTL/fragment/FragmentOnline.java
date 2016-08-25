@@ -81,7 +81,7 @@ public class FragmentOnline extends Fragment {
                     @Override
                     public void call(DataArray dataArray) {
                         datas.clear();
-                        Log.w("www", dataArray.getData().toString());
+                        Log.w("FragmentOnline", dataArray.getData().toString());
                         datas.addAll(dataArray.getData());
                         mAdapter.notifyDataSetChanged();
                     }
