@@ -53,14 +53,15 @@ public class VideoItem extends RealmObject implements Parcelable {
         ID = in.readInt();
         UserID = in.readInt();
         Name = in.readString();
-        Image = in.readString();
-        AppAndroidOnline = in.readString();
-        Describe = in.readString();
-        Sort = in.readString();
         Folder = in.readString();
+        Image = in.readString();
+        Sort = in.readString();
+        VrAudio = in.readInt();
+        AppAndroidOnline = in.readString();
+        AppAndroidOffline = in.readString();
+        Describe = in.readString();
         downloadTime = in.readLong();
         downloadId = in.readLong();
-        VrAudio = in.readInt();
     }
 
     public long getDownloadTime() {
@@ -116,13 +117,13 @@ public class VideoItem extends RealmObject implements Parcelable {
         dest.writeInt(ID);
         dest.writeInt(UserID);
         dest.writeString(Name);
+        dest.writeString(Folder);
         dest.writeString(Image);
+        dest.writeString(Sort);
+        dest.writeInt(VrAudio);
         dest.writeString(AppAndroidOnline);
         dest.writeString(AppAndroidOffline);
-        dest.writeString(Sort);
-        dest.writeString(Folder);
         dest.writeString(Describe);
-        dest.writeInt(VrAudio);
         dest.writeLong(downloadTime);
         dest.writeLong(downloadId);
     }
@@ -134,15 +135,15 @@ public class VideoItem extends RealmObject implements Parcelable {
             videoItem.ID = in.readInt();
             videoItem.UserID = in.readInt();
             videoItem.Name = in.readString();
+            videoItem.Folder = in.readString();
             videoItem.Image = in.readString();
-            videoItem.AppAndroidOnline = in.readString();
             videoItem.Sort = in.readString();
-            videoItem.AppAndroidOffline = in.readString();
-            videoItem.Describe = in.readString();
             videoItem.VrAudio = in.readInt();
+            videoItem.AppAndroidOffline = in.readString();
+            videoItem.AppAndroidOnline = in.readString();
+            videoItem.Describe = in.readString();
             videoItem.downloadTime = in.readLong();
             videoItem.downloadId = in.readLong();
-            videoItem.Folder = in.readString();
             return videoItem;
         }
 
