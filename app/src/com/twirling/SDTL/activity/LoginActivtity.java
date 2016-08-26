@@ -8,8 +8,10 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.jakewharton.rxbinding.view.RxView;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.R;
-import com.twirling.SDTL.model.User;
+import com.twirling.SDTL.model.DataArray;
 import com.twirling.SDTL.retrofit.RetrofitManager;
 
 import java.util.HashMap;
@@ -18,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
@@ -25,7 +28,6 @@ import rx.schedulers.Schedulers;
  * Created by 谢秋鹏 on 2016/8/5.
  */
 public class LoginActivtity extends AppCompatActivity {
-
     @BindView(R.id.edt_cellphone)
     EditText edt_cellphone;
 
@@ -52,16 +54,31 @@ public class LoginActivtity extends AppCompatActivity {
     }
 
     private void login() {
+        final String mobile = edt_cellphone.getText().toString();
         String password = edt_password.getText().toString();
         HashMap<String, Object> params = new HashMap<>();
-        params.put("mobile", edt_cellphone.getText());
+        params.put("mobile", mobile);
         params.put("password", password);
         RetrofitManager.getService().login(params)
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Action1<User>() {
+                .subscribe(new Action1<DataArray>() {
                     @Override
-                    public void call(User dataArray) {
-                        Log.w("tag", dataArray.toString());
+                    public void call(DataArray dataArray) {
+                        if (dataArray.getStatus() == 200) {
+                            Constants.USER_MOBILE = mobile;
+                            Constants.USER_IMAGE = FontAwesome.Icon.faw_user;
+                            finish();
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Log.e("LoginActivity", throwable.toString());
+                    }
+                }, new Action0() {
+                    @Override
+                    public void call() {
+                        // Toast.makeText(LoginActivtity.this, dataArray.toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }

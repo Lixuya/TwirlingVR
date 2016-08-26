@@ -32,6 +32,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.mikepenz.materialdrawer.model.interfaces.Nameable;
 import com.mikepenz.materialdrawer.util.DrawerUIUtils;
 import com.mikepenz.materialize.util.UIUtils;
+import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.R;
 import com.twirling.SDTL.adapter.ViewPagerAdapter;
 import com.twirling.SDTL.fragment.FragmentDownload;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager = null;
     private WebFragment webFragment = null;
     private ModuleAlertDialog dialog = null;
+    private ModuleAlertDialog dialog2 = null;
     private MenuItem menuItem;
 
     private void onToolbarItemClicked(MenuItem menuItem) {
@@ -61,6 +63,16 @@ public class MainActivity extends AppCompatActivity {
 //        ButterKnife.bind(this);
         //
         dialog = new ModuleAlertDialog(MainActivity.this);
+        dialog2 = new ModuleAlertDialog(MainActivity.this) {
+            @Override
+            protected void onConfirm() {
+                Constants.USER_MOBILE = Constants.USER_MOBILE_DEFAULT;
+                Constants.USER_IMAGE = Constants.USER_IMAGE_DEFAULT;
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(intent);
+                result.closeDrawer();
+            }
+        };
         //
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -112,11 +124,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         //
-        String mobile = "匿名访客";
-        final IProfile profile = new ProfileDrawerItem()
-                .withName(mobile)
-//                .withEmail("mikepenz@gmail.com")
-                .withIcon(FontAwesome.Icon.faw_user_secret);
+        IProfile profile = new ProfileDrawerItem()
+                .withName(Constants.USER_MOBILE.equals(Constants.USER_MOBILE_DEFAULT) ? "匿名访客" : Constants.USER_MOBILE)
+                .withIcon(Constants.USER_IMAGE);
         headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
                 .addProfiles(profile)
@@ -125,8 +135,12 @@ public class MainActivity extends AppCompatActivity {
                 .withOnAccountHeaderProfileImageListener(new AccountHeader.OnAccountHeaderProfileImageListener() {
                     @Override
                     public boolean onProfileImageClick(View view, IProfile profile, boolean current) {
-                        Intent intent = new Intent(MainActivity.this, LoginActivtity.class);
-                       startActivity(intent);
+                        if (Constants.USER_MOBILE == Constants.USER_MOBILE_DEFAULT) {
+                            Intent intent = new Intent(MainActivity.this, LoginActivtity.class);
+                            startActivity(intent);
+                        } else {
+                            dialog2.setMessage("确定登出账户吗？");
+                        }
                         return false;
                     }
 
@@ -252,5 +266,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         dialog.setMessage("确定关闭app吗");
+    }
+
+    @Override
+    protected void onResume() {
+        IProfile profile = new ProfileDrawerItem()
+                .withName(Constants.USER_MOBILE.equals(Constants.USER_MOBILE_DEFAULT) ? "匿名访客" : Constants.USER_MOBILE)
+//                .withEmail("mikepenz@gmail.com")
+                .withIcon(Constants.USER_IMAGE);
+        headerResult.removeProfile(0);
+        headerResult.addProfiles(profile);
+        super.onResume();
     }
 }

@@ -2,7 +2,6 @@ package com.twirling.SDTL.retrofit;
 
 
 import com.twirling.SDTL.model.DataArray;
-import com.twirling.SDTL.model.User;
 
 import java.util.Map;
 
@@ -19,5 +18,5 @@ public interface Api {
     Observable<DataArray> getVideoList(@QueryMap Map<String, Object> params);
 
     @GET("Login/login")
-    Observable<User> login(@QueryMap Map<String, Object> params);
+    Observable<DataArray> login(@QueryMap Map<String, Object> params);
 }

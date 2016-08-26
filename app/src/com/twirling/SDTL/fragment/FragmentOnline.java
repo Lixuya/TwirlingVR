@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
+import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.R;
 import com.twirling.SDTL.adapter.MainAdapter;
 import com.twirling.SDTL.model.DataArray;
@@ -73,7 +74,7 @@ public class FragmentOnline extends Fragment {
 
     private void loadData(final int page) {
         HashMap<String, Object> params = new HashMap<>();
-        params.put("mobile", "13661126580");
+        params.put("mobile", Constants.USER_MOBILE);
         RetrofitManager.getService().getVideoList(params)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
