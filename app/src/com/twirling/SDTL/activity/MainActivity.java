@@ -127,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
         IProfile profile = new ProfileDrawerItem()
                 .withName(Constants.USER_MOBILE.equals(Constants.USER_MOBILE_DEFAULT) ? "匿名访客" : Constants.USER_MOBILE)
                 .withIcon(Constants.USER_IMAGE);
+        //
         headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
                 .addProfiles(profile)

@@ -278,6 +278,7 @@ public class Elements {
         private int endTime;
         private int trigger;
         private int channels;
+        private int profileID;
         private String metadata;
 
         public String getId() {
@@ -382,6 +383,14 @@ public class Elements {
 
         public void setMetadata(String metadata) {
             this.metadata = metadata;
+        }
+
+        public int getProfileID() {
+            return profileID;
+        }
+
+        public void setProfileID(int profileID) {
+            this.profileID = profileID;
         }
     }
 }

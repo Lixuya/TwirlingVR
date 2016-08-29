@@ -2,25 +2,31 @@ package com.twirling.SDTL.activity;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.google.vr.sdk.base.Eye;
+import com.google.vr.sdk.base.GvrActivity;
+import com.google.vr.sdk.base.GvrView;
+import com.google.vr.sdk.base.HeadTransform;
+import com.google.vr.sdk.base.Viewport;
 import com.google.vr.sdk.widgets.video.VrVideoEventListener;
 import com.google.vr.sdk.widgets.video.VrVideoView;
 import com.jakewharton.rxbinding.widget.RxSeekBar;
-import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.R;
 import com.twirling.SDTL.model.DownloadJson;
 import com.twirling.SDTL.model.Elements;
 import com.twirling.SDTL.model.VideoItem;
 import com.twirling.SDTL.player.OpenMXPlayer;
+import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.utils.FileUtil;
 
 import java.io.IOException;
+
+import javax.microedition.khronos.egl.EGLConfig;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,7 +37,7 @@ import rx.functions.Action1;
 /**
  * Created by 谢秋鹏 on 2016/6/8.
  */
-public class AudioActivity extends AppCompatActivity{
+public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer {
     private float[] headView;
     //    private float[] modelPosition;
     private float[] headRotation;
@@ -45,6 +51,7 @@ public class AudioActivity extends AppCompatActivity{
     private int loadVideoStatus = LOAD_VIDEO_STATUS_UNKNOWN;
     private boolean isPaused = false;
     private Uri videoUri = null;
+    private int profileId = 11;
     private String audioPath = "";
     private String jsonName = "";
     float[][] metadata = null;
@@ -56,6 +63,8 @@ public class AudioActivity extends AppCompatActivity{
     VrVideoView video_view;
     @BindView(R.id.seek_bar)
     SeekBar seekBar;
+    @BindView(R.id.gvrview)
+    GvrView gvrView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +79,21 @@ public class AudioActivity extends AppCompatActivity{
         jsonName = name + "data.json";
         loadJson(jsonName);
         //
+        gvrView.setEGLConfigChooser(8, 8, 8, 8, 16, 8);
+        gvrView.setRenderer(this);
+        gvrView.setTransitionViewEnabled(true);
+        gvrView.setOnCardboardBackButtonListener(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        onBackPressed();
+                    }
+                });
+        setGvrView(gvrView);
+        //
         openMXPlayer = new OpenMXPlayer();
         openMXPlayer.setDataSource(audioPath);
+        openMXPlayer.setProfileId(profileId);
         headView = new float[16];
         headRotation = new float[4];
         headRotationEular = new float[3];
@@ -137,6 +159,46 @@ public class AudioActivity extends AppCompatActivity{
             }
         });
         loadVideoStatus = LOAD_VIDEO_STATUS_UNKNOWN;
+    }
+
+    @Override
+    public void onNewFrame(HeadTransform headTransform) {
+        headTransform.getHeadView(headView, 0);
+        headTransform.getQuaternion(headRotation, 0);
+        headTransform.getEulerAngles(headRotationEular, 0);
+        openMXPlayer.getDaa().setGyroscope(headRotationEular);
+        openMXPlayer.getDaa().setMetadataFromJson(metadata);
+    }
+
+    @Override
+    public void onDrawEye(Eye eye) {
+//        Log.i(TAG, "onDrawEye");
+    }
+
+    @Override
+    public void onFinishFrame(Viewport viewport) {
+//        Log.i(TAG, "onFinishFrame");
+    }
+
+    @Override
+    public void onSurfaceChanged(int i, int i1) {
+        Log.i(TAG, "onSurfaceChanged");
+    }
+
+    @Override
+    public void onCardboardTrigger() {
+        Log.i(TAG, "onCardboardTrigger");
+        super.onCardboardTrigger();
+    }
+
+    @Override
+    public void onSurfaceCreated(EGLConfig eglConfig) {
+        Log.i(TAG, "onSurfaceCreated");
+    }
+
+    @Override
+    public void onRendererShutdown() {
+
     }
 
     private void updateStatusText() {
@@ -205,5 +267,6 @@ public class AudioActivity extends AppCompatActivity{
             }
         }
         int channels = sgb.getChannels();
+        profileId = sgb.getProfileID();
     }
 }

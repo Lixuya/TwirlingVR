@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp">
-o
+
     <com.google.vr.sdk.widgets.video.VrVideoView
         android:id="@+id/video_view"
         android:layout_width="match_parent"
@@ -23,5 +23,11 @@ o
         android:layout_height="wrap_content"
         android:text="@string/loading_video"
         android:textSize="@dimen/caption_text_size" />
+
+    <com.google.vr.sdk.base.GvrView
+        android:id="@+id/gvrview"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:visibility="invisible" />
 </LinearLayout>
 

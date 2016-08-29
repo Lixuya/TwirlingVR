@@ -100,13 +100,9 @@ public class SimpleVrVideoActivity extends AppCompatActivity {
         //
         String uri = getIntent().getStringExtra("videoItem");
         fileUri = Uri.parse(uri);
-//        fileUri = Uri.parse("http://2997.liveplay.myqcloud.com/2997_4313ae5e426d11e6a2cba4dcbef5e35a.m3u8");
-//        fileUri = Uri.parse("http://2997.liveplay.myqcloud.com/live/2997_4313ae5e426d11e6a2cba4dcbef5e35a.flv");
-//        fileUri = Uri.parse(" http://2997.liveplay.myqcloud.com/live/2997_4313ae5e426d11e6a2cba4dcbef5e35a_900.flv");
         try {
             videoWidgetView.setInfoButtonEnabled(false);
             VrVideoView.Options options = new VrVideoView.Options();
-//            options.inputFormat = 2;
             Log.e("www", fileUri.toString());
             videoWidgetView.loadVideo(fileUri, options);
         } catch (IOException e) {
