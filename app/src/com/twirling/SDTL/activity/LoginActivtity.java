@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.jakewharton.rxbinding.view.RxView;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
@@ -61,13 +62,19 @@ public class LoginActivtity extends AppCompatActivity {
         params.put("password", password);
         RetrofitManager.getService().login(params)
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<DataArray>() {
                     @Override
                     public void call(DataArray dataArray) {
                         if (dataArray.getStatus() == 200) {
+                            Toast.makeText(LoginActivtity.this, "登陆成功", Toast.LENGTH_SHORT).show();
                             Constants.USER_MOBILE = mobile;
                             Constants.USER_IMAGE = FontAwesome.Icon.faw_user;
                             finish();
+                        } else if (dataArray.getStatus() == 400) {
+                            Toast.makeText(LoginActivtity.this, "账号密码错误", Toast.LENGTH_SHORT).show();
+                        } else if (dataArray.getStatus() == -1) {
+                            Toast.makeText(LoginActivtity.this, "手机号密码不能为空", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, new Action1<Throwable>() {
