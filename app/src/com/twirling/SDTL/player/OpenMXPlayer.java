@@ -39,6 +39,7 @@ import java.nio.ByteBuffer;
 
 public class OpenMXPlayer implements Runnable {
     public final String LOG_TAG = "OpenMXPlayer";
+    private int profileId = 11;
     private static final int FRAME_LENGTH = 512;
     private MediaExtractor extractor;
     private MediaCodec codec;
@@ -93,6 +94,10 @@ public class OpenMXPlayer implements Runnable {
      */
     public void setDataSource(String src) {
         sourcePath = src;
+    }
+
+    public void setProfileId(int profileId) {
+        this.profileId = profileId;
     }
 
     public void setDataSource(Context context, int resid) {
@@ -159,7 +164,7 @@ public class OpenMXPlayer implements Runnable {
     public void run() {
         android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO);
         // profileId
-        audioProcess.Init(11, FRAME_LENGTH, 3, 44100);
+        audioProcess.Init(profileId, FRAME_LENGTH, 3, 44100);
         audioProcess.Set(false, 0, false, false, 1.0f);
         // extractor gets infor
         // mation about the stream
