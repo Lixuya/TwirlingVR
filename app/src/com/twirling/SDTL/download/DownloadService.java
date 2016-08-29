@@ -51,13 +51,13 @@ public class DownloadService extends IntentService {
         String videoName = videoItem.getAppAndroidOnline();
         String url = "";
         if (videoItem.getVrAudio() == 0) {
-            url = Constants.PAPH_VIDEO + videoName;
+            url = Constants.PATH_RESOURCE + videoItem.getFolder() + Constants.PAPH_VIDEO + videoName;
             mime = Constants.MIME_MP4;
             name = videoName;
         } else if (videoItem.getVrAudio() == 1) {
-            url = Constants.PAPH_DOWNLOAD + "";//videoItem.getAndroidoffline();
+            url = Constants.PATH_RESOURCE + videoItem.getFolder() + Constants.PAPH_DOWNLOAD + videoItem.getAppAndroidOffline();
             mime = Constants.MIME_ZIP;
-            name = "";// videoItem.getAndroidoffline();
+            name = videoItem.getAppAndroidOffline();
         }
         //
         if (!TextUtil.isValidate(url) || !TextUtil.isValidate(videoName)) {
