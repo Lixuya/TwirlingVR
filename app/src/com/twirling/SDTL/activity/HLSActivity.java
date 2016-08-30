@@ -11,11 +11,18 @@ import android.widget.Toast;
 import com.google.vr.sdk.widgets.video.VrVideoEventListener;
 import com.google.vr.sdk.widgets.video.VrVideoView;
 import com.twirling.SDTL.R;
+import com.twirling.SDTL.model.DataArray;
+import com.twirling.SDTL.model.LiveItem;
+import com.twirling.SDTL.retrofit.RetrofitManager;
 
 import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 public class HLSActivity extends AppCompatActivity {
     //
@@ -29,6 +36,8 @@ public class HLSActivity extends AppCompatActivity {
     private int loadVideoStatus = LOAD_VIDEO_STATUS_UNKNOWN;
     private Uri fileUri;
     private boolean isPaused = false;
+    //
+//    private List<Object> datas = new ArrayList<Object>();
     //
     @BindView(R.id.status_text)
     TextView statusText;
@@ -96,23 +105,42 @@ public class HLSActivity extends AppCompatActivity {
             }
         });
         //
-        loadVideoStatus = LOAD_VIDEO_STATUS_UNKNOWN;
-        //
-        String uri = "http://yahooios2-i.akamaihd.net/hls/live/224964/iosstream/adinsert_test/master.m3u8";
-        fileUri = Uri.parse(uri);
-//        fileUri = Uri.parse("http://2997.liveplay.myqcloud.com/2997_6f17418e442511e6a2cba4dcbef5e35a.m3u8");
+        loadVideo();
+    }
 
-//        fileUri = Uri.parse("http://live.lecloud.com/live/playerPage/getView?activityId=A2016080500000k8");
-//        fileUri = Uri.parse("http://2997.liveplay.myqcloud.com/live/2997_4313ae5e426d11e6a2cba4dcbef5e35a.flv");
-        try {
-            videoWidgetView.setInfoButtonEnabled(false);
-            VrVideoView.Options options = new VrVideoView.Options();
-            options.inputFormat = VrVideoView.Options.FORMAT_HLS;
-            options.inputType = VrVideoView.Options.TYPE_MONO;
-            videoWidgetView.loadVideo(fileUri, options);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void loadVideo() {
+        loadVideoStatus = LOAD_VIDEO_STATUS_UNKNOWN;
+        RetrofitManager.getService().getLiveList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<DataArray<LiveItem>>() {
+                    @Override
+                    public void call(DataArray<LiveItem> dataArray) {
+                        String uri = dataArray.getData().get(0).getHls();
+                        Log.w(HLSActivity.TAG, uri);
+                        fileUri = Uri.parse(uri);
+                        //
+                        try {
+                            videoWidgetView.setInfoButtonEnabled(false);
+                            VrVideoView.Options options = new VrVideoView.Options();
+                            options.inputFormat = VrVideoView.Options.FORMAT_HLS;
+                            options.inputType = VrVideoView.Options.TYPE_MONO;
+                            videoWidgetView.loadVideo(fileUri, options);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Log.e("HLSActivity", throwable.toString());
+                    }
+                }, new Action0() {
+                    @Override
+                    public void call() {
+                        // Toast.makeText(LoginActivtity.this, dataArray.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     @Override

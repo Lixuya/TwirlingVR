@@ -2,6 +2,7 @@ package com.twirling.SDTL.activity;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -75,7 +76,12 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         VideoItem videoItem = getIntent().getParcelableExtra("videoItem");
         String name = videoItem.getAppAndroidOffline().split("\\.")[0];
         videoUri = Uri.parse(Constants.URI_DOWNLOAD_LOCAL + name + "video.mp4");
-        audioPath = Constants.URI_DOWNLOAD_LOCAL + name + "audio.mp4";
+        if (videoItem.getVrAudio() == 2) {
+            audioPath = Constants.URI_DOWNLOAD_LOCAL + name + "sound.wav";
+        } else if (videoItem.getVrAudio() == 1) {
+            audioPath = Constants.URI_DOWNLOAD_LOCAL + name + "audio.mp4";
+        }
+        Log.w(TAG, videoUri + "  " + audioPath);
         jsonName = name + "data.json";
         loadJson(jsonName);
         //
@@ -167,7 +173,9 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         headTransform.getQuaternion(headRotation, 0);
         headTransform.getEulerAngles(headRotationEular, 0);
         openMXPlayer.getDaa().setGyroscope(headRotationEular);
-        openMXPlayer.getDaa().setMetadataFromJson(metadata);
+        if (metadata != null) {
+            openMXPlayer.getDaa().setMetadataFromJson(metadata);
+        }
     }
 
     @Override
@@ -254,7 +262,13 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         String response = FileUtil.readFromSDCard(fileName);
         DownloadJson dj = JSON.parseObject(response, DownloadJson.class);
         Elements.SoundGroupBean sgb = dj.getElements().getSound_group().get(0);
+        int channels = sgb.getChannels();
+        profileId = sgb.getProfileID();
+        //
         String md = sgb.getMetadata();
+        if (TextUtils.isEmpty(md)) {
+            return;
+        }
         String[] strs = md.split(";");
         String[][] strings = new String[strs.length][];
         for (int i = 0; i < strs.length; i++) {
@@ -266,7 +280,5 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
                 metadata[i][j] = Float.valueOf(strings[i][j].replace(",", ""));
             }
         }
-        int channels = sgb.getChannels();
-        profileId = sgb.getProfileID();
     }
 }

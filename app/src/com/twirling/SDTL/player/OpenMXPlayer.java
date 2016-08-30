@@ -54,8 +54,8 @@ public class OpenMXPlayer implements Runnable {
     Handler handler = new Handler();
 
     private SurroundAudio daa = null;
-    String mime = null;
-    int sampleRate = 0,
+    private String mime = null;
+    private int sampleRate = 0,
             channels = 0,
             bitrate = 0;
     public long presentationTimeUs = 0,
@@ -106,6 +106,7 @@ public class OpenMXPlayer implements Runnable {
     }
 
     public void play() {
+        Log.w(LOG_TAG, profileId + " " + sourcePath);
         if (state.get() == PlayerStates.STOPPED) {
             stop = false;
             new Thread(this).start();

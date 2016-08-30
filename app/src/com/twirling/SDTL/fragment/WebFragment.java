@@ -71,22 +71,23 @@ public class WebFragment extends Fragment {
                 break;
             case 4:
             case 5:
+            case 6:
                 url = "http://yun.twirlingvr.com/audio.html?ch=707562";
                 lp.setMargins(0, -220, 0, 0);
                 break;
-            case 6:
+            case 7:
                 url = "http://www.twirlingvr.com/service.html";
                 lp.setMargins(0, -220, 0, 0);
                 break;
-            case 7:
+            case 8:
                 url = "http://www.twirlingvr.com/App_Web/blog/essaylist.html?ch=time";
                 lp.setMargins(0, 0, 0, 0);
                 break;
-            case 8:
+            case 9:
                 url = "http://yun.twirlingvr.com";
                 lp.setMargins(0, -250, 0, 0);
                 break;
-            case 9:
+            case 10:
                 url = "http://www.twirlingvr.com/index.html#contact";
                 lp.setMargins(0, -250, 0, 0);
                 break;

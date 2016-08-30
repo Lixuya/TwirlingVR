@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         //
         IProfile profile = new ProfileDrawerItem()
                 .withName(Constants.USER_MOBILE.equals(Constants.USER_MOBILE_DEFAULT) ? "匿名访客" : Constants.USER_MOBILE)
-                .withIcon(Constants.USER_IMAGE);
+                .withIcon(Constants.USER_IMAGE.equals(Constants.USER_IMAGE_DEFAULT) ? Constants.USER_IMAGE_DEFAULT : Constants.USER_IMAGE);
         //
         headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
@@ -177,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        Log.w("MainActivity", position + "");
                         switch (position) {
                             case 1:
                                 viewPager.setCurrentItem(0);
@@ -214,18 +215,11 @@ public class MainActivity extends AppCompatActivity {
         //get the CrossfadeDrawerLayout which will be used as alternative DrawerLayout for the Drawer
         //the CrossfadeDrawerLayout library can be found here: https://github.com/mikepenz/CrossfadeDrawerLayout
         crossfadeDrawerLayout = (CrossfadeDrawerLayout) result.getDrawerLayout();
-
         //define maxDrawerWidth
         crossfadeDrawerLayout.setMaxWidthPx(DrawerUIUtils.getOptimalDrawerWidth(this));
+        //
         //add second view (which is the miniDrawer)
-        final MiniDrawer miniResult = result.getMiniDrawer();
-        //build the view for the MiniDrawer
-        View view = miniResult.build(this);
-        //set the background of the MiniDrawer as this would be transparent
-        view.setBackgroundColor(UIUtils.getThemeColorFromAttrOrRes(this, com.mikepenz.materialdrawer.R.attr.material_drawer_background, com.mikepenz.materialdrawer.R.color.material_drawer_background));
-        //we do not have the MiniDrawer view during CrossfadeDrawerLayout creation so we will add it here
-        crossfadeDrawerLayout.getSmallView().addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-
+        MiniDrawer miniResult = result.getMiniDrawer();
         //define the crossfader to be used with the miniDrawer. This is required to be able to automatically toggle open / close
         miniResult.withCrossFader(new ICrossfader() {
             @Override
@@ -244,6 +238,12 @@ public class MainActivity extends AppCompatActivity {
                 return crossfadeDrawerLayout.isCrossfaded();
             }
         });
+        //build the view for the MiniDrawer
+        View view = miniResult.build(this);
+        //set the background of the MiniDrawer as this would be transparent
+        view.setBackgroundColor(UIUtils.getThemeColorFromAttrOrRes(this, com.mikepenz.materialdrawer.R.attr.material_drawer_background, com.mikepenz.materialdrawer.R.color.material_drawer_background));
+        //we do not have the MiniDrawer view during CrossfadeDrawerLayout creation so we will add it here
+        crossfadeDrawerLayout.getSmallView().addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     }
 
     @Override
@@ -273,8 +273,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         IProfile profile = new ProfileDrawerItem()
                 .withName(Constants.USER_MOBILE.equals(Constants.USER_MOBILE_DEFAULT) ? "匿名访客" : Constants.USER_MOBILE)
-//                .withEmail("mikepenz@gmail.com")
-                .withIcon(Constants.USER_IMAGE);
+                .withIcon(Constants.USER_IMAGE.equals(Constants.USER_IMAGE_DEFAULT) ? Constants.USER_IMAGE_DEFAULT : Constants.USER_IMAGE);
         headerResult.removeProfile(0);
         headerResult.addProfiles(profile);
         super.onResume();

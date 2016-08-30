@@ -2,6 +2,8 @@ package com.twirling.SDTL.retrofit;
 
 
 import com.twirling.SDTL.model.DataArray;
+import com.twirling.SDTL.model.LiveItem;
+import com.twirling.SDTL.model.VideoItem;
 
 import java.util.Map;
 
@@ -15,7 +17,11 @@ import rx.Observable;
 public interface Api {
     // 获取视频列表
     @GET("AppVideo/makelist")
-    Observable<DataArray> getVideoList(@QueryMap Map<String, Object> params);
+    Observable<DataArray<VideoItem>> getVideoList(@QueryMap Map<String, Object> params);
+
+    // 获取视频列表
+    @GET("AppHLS/makelist")
+    Observable<DataArray<LiveItem>> getLiveList();
 
     @GET("Login/login")
     Observable<DataArray> login(@QueryMap Map<String, Object> params);

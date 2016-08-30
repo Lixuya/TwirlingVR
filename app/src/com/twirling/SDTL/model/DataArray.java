@@ -1,21 +1,20 @@
 package com.twirling.SDTL.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by 谢秋鹏 on 2016/5/26.
  */
-public class DataArray {
+public class DataArray<T> {
     private int status = 0;
     private String msg = "";
-    private List<VideoItem> data = new ArrayList<VideoItem>();
+    private List<T> data = null;
 
-    public List<VideoItem> getData() {
+    public List<T> getData() {
         return data;
     }
 
-    public void setData(List<VideoItem> data) {
+    public void setData(List<T> data) {
         this.data = data;
     }
 
@@ -29,6 +28,6 @@ public class DataArray {
 
     @Override
     public String toString() {
-        return msg.toString() + "  " + status;
+        return msg.toString() + "  " + status + " " + data.toString();
     }
 }
