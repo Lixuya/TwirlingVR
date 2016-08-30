@@ -106,7 +106,7 @@ public class OpenMXPlayer implements Runnable {
     }
 
     public void play() {
-        Log.w(LOG_TAG, profileId + " " + sourcePath);
+        Log.w(LOG_TAG, profileId + " " + sourcePath);//
         if (state.get() == PlayerStates.STOPPED) {
             stop = false;
             new Thread(this).start();
@@ -271,18 +271,16 @@ public class OpenMXPlayer implements Runnable {
         int noOutputCounter = 0;
         int noOutputCounterLimit = 10;
         state.set(PlayerStates.PLAYING);
-        //
         while (!sawOutputEOS && noOutputCounter < noOutputCounterLimit && !stop) {
             // pause implementation
-            Log.i("angle", state.get() + "");
             waitPlay();
             noOutputCounter++;
-            Log.w("angle", noOutputCounter + " " + state.get() + "");
             // read a buffer before feeding it to the decoder
             readBuffer(sawInputEOS, codecInputBuffers, kTimeOutUs);
             // decode to PCM and push it to the AudioTrack player
             MediaCodec.BufferInfo info = new MediaCodec.BufferInfo();
             int res = codec.dequeueOutputBuffer(info, kTimeOutUs);
+        //    Log.i(LOG_TAG, state.get() + "" + res);
             //
             if (res >= 0) {
                 if (info.size > 0) {
@@ -299,7 +297,6 @@ public class OpenMXPlayer implements Runnable {
                 daa.setAudioPlayTime(presentationTimeUs / 1000f / 1000f);
                 audio = daa.audioProcess(audio);
 
-                // 播放
                 if (chunk.length > 0) {
                     audioTrack.write(audio, 0, FRAME_LENGTH * 2 * loopNum);
                 }

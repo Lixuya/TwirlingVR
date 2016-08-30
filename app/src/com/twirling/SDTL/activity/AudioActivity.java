@@ -81,7 +81,6 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         } else if (videoItem.getVrAudio() == 1) {
             audioPath = Constants.URI_DOWNLOAD_LOCAL + name + "audio.mp4";
         }
-        Log.w(TAG, videoUri + "  " + audioPath);
         jsonName = name + "data.json";
         loadJson(jsonName);
         //
@@ -103,6 +102,8 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         headView = new float[16];
         headRotation = new float[4];
         headRotationEular = new float[3];
+        //
+        Log.w(TAG, profileId + " " + videoUri + "  " + audioPath);
         //
         RxSeekBar.userChanges(seekBar)
 //                .throttleFirst(1500, TimeUnit.MILLISECONDS)

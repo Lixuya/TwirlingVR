@@ -91,7 +91,7 @@
 
     <meta-data
         android:name="UMENG_APPKEY"
-        android:value="57690c95e0f55ad5d4002412"></meta-data>
+        android:value="57690c95e0f55ad5d4002412"/>
     <meta-data
         android:name="UMENG_CHANNEL"
         android:value="Channel ID" />
