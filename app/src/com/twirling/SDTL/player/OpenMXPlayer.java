@@ -154,6 +154,9 @@ public class OpenMXPlayer implements Runnable {
 
     @Override
     public void run() {
+        if (profileId == 0){
+            return;
+        }
         android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO);
         // profileId
         audioProcess.Init(profileId, FRAME_LENGTH, 3, 44100);

@@ -118,6 +118,7 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
                         if (Math.ceil(openMXPlayer.presentationTimeUs) == Math.ceil(openMXPlayer.duration)) {
                             openMXPlayer.clearSource();
                             openMXPlayer = new OpenMXPlayer();
+                            openMXPlayer.setProfileId(profileId);
                             openMXPlayer.setDataSource(audioPath);
                             openMXPlayer.play();
                         }
@@ -240,6 +241,16 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         Log.i(TAG, "onResume");
         video_view.resumeRendering();
         openMXPlayer.play();
+//        Observable.just("")
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Action1<String>() {
+//                    @Override
+//                    public void call(String s) {
+//
+//
+//                    }
+//                });
         updateStatusText();
         super.onResume();
     }
