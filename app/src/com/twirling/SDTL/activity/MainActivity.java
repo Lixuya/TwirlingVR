@@ -160,7 +160,8 @@ public class MainActivity extends AppCompatActivity {
                 .withDrawerLayout(R.layout.crossfade_drawer)
                 .withDrawerWidthDp(72)
                 .withGenerateMiniDrawer(true)
-                .withAccountHeader(headerResult) //set the AccountHeader we created earlier for the header
+                //set the AccountHeader we created earlier for the header
+                .withAccountHeader(headerResult)
                 .addDrawerItems(
                         new PrimaryDrawerItem().withName(R.string.download).withIcon(FontAwesome.Icon.faw_cloud_download).withIdentifier(1),
                         new PrimaryDrawerItem().withName(R.string.local).withIcon(FontAwesome.Icon.faw_play_circle).withIdentifier(2),

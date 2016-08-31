@@ -17,15 +17,13 @@ import com.google.vr.sdk.base.Viewport;
 import com.google.vr.sdk.widgets.video.VrVideoEventListener;
 import com.google.vr.sdk.widgets.video.VrVideoView;
 import com.jakewharton.rxbinding.widget.RxSeekBar;
+import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.R;
 import com.twirling.SDTL.model.DownloadJson;
 import com.twirling.SDTL.model.Elements;
 import com.twirling.SDTL.model.VideoItem;
 import com.twirling.SDTL.player.OpenMXPlayer;
-import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.utils.FileUtil;
-
-import java.io.IOException;
 
 import javax.microedition.khronos.egl.EGLConfig;
 
@@ -39,24 +37,19 @@ import rx.functions.Action1;
  * Created by 谢秋鹏 on 2016/6/8.
  */
 public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer {
+    //
+    private String TAG = "AudioActivity";
     private float[] headView;
-    //    private float[] modelPosition;
     private float[] headRotation;
     private float[] headRotationEular;
     private OpenMXPlayer openMXPlayer = null;
-    private String TAG = "AudioActivity";
     //
-    public static final int LOAD_VIDEO_STATUS_UNKNOWN = 0;
-    public static final int LOAD_VIDEO_STATUS_SUCCESS = 1;
-    public static final int LOAD_VIDEO_STATUS_ERROR = 2;
-    private int loadVideoStatus = LOAD_VIDEO_STATUS_UNKNOWN;
     private boolean isPaused = false;
     private Uri videoUri = null;
     private int profileId = 11;
     private String audioPath = "";
     private String jsonName = "";
     float[][] metadata = null;
-    int index = 0;
     //
     @BindView(R.id.status_text)
     TextView statusText;
@@ -72,6 +65,17 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_audio);
         ButterKnife.bind(this);
+        initData();
+        //
+        initView();
+        //
+        openMXPlayer = new OpenMXPlayer();
+        openMXPlayer.setProfileId(profileId);
+        openMXPlayer.setDataSource(audioPath);
+        Log.w(TAG, profileId + " " + videoUri + "  " + audioPath);
+    }
+
+    private void initData() {
         // initData
         VideoItem videoItem = getIntent().getParcelableExtra("videoItem");
         String name = videoItem.getAppAndroidOffline().split("\\.")[0];
@@ -83,6 +87,12 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         }
         jsonName = name + "data.json";
         loadJson(jsonName);
+    }
+
+    private void initView() {
+        headView = new float[16];
+        headRotation = new float[4];
+        headRotationEular = new float[3];
         //
         gvrView.setEGLConfigChooser(8, 8, 8, 8, 16, 8);
         gvrView.setRenderer(this);
@@ -96,25 +106,14 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
                 });
         setGvrView(gvrView);
         //
-        openMXPlayer = new OpenMXPlayer();
-        openMXPlayer.setDataSource(audioPath);
-        openMXPlayer.setProfileId(profileId);
-        headView = new float[16];
-        headRotation = new float[4];
-        headRotationEular = new float[3];
-        //
-        Log.w(TAG, profileId + " " + videoUri + "  " + audioPath);
-        //
         RxSeekBar.userChanges(seekBar)
-//                .throttleFirst(1500, TimeUnit.MILLISECONDS)
                 .subscribeOn(AndroidSchedulers.mainThread())
-//                .observeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Integer>() {
                     @Override
                     public void call(Integer progress) {
                         video_view.seekTo(progress);
-                        //
+                        //seetPlayer
                         float percent = (float) progress / video_view.getDuration() * 100f;
                         if (Math.ceil(openMXPlayer.presentationTimeUs) == Math.ceil(openMXPlayer.duration)) {
                             openMXPlayer.clearSource();
@@ -132,20 +131,18 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         try {
             video_view.setInfoButtonEnabled(false);
             video_view.loadVideo(videoUri, new VrVideoView.Options());
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         video_view.setEventListener(new VrVideoEventListener() {
             @Override
             public void onLoadSuccess() {
-                loadVideoStatus = LOAD_VIDEO_STATUS_SUCCESS;
                 seekBar.setMax((int) video_view.getDuration());
                 updateStatusText();
             }
 
             @Override
             public void onLoadError(String errorMessage) {
-                loadVideoStatus = LOAD_VIDEO_STATUS_ERROR;
                 Toast.makeText(getBaseContext(), "Error loading video: " + errorMessage, Toast.LENGTH_LONG).show();
             }
 
@@ -165,7 +162,6 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
 //                video_view.seekTo(0);
             }
         });
-        loadVideoStatus = LOAD_VIDEO_STATUS_UNKNOWN;
     }
 
     @Override
