@@ -72,7 +72,6 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         openMXPlayer = new OpenMXPlayer();
         openMXPlayer.setProfileId(profileId);
         openMXPlayer.setDataSource(audioPath);
-        Log.w(TAG, profileId + " " + videoUri + "  " + audioPath);
     }
 
     private void initData() {
@@ -87,6 +86,7 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         }
         jsonName = name + "data.json";
         loadJson(jsonName);
+        Log.w(TAG, videoUri + "  " + audioPath + " " + profileId);
     }
 
     private void initView() {
@@ -123,11 +123,8 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
                         }
                         openMXPlayer.seek(percent);
                         updateStatusText();
-//                        Log.e("angle", "video:" + (float) video_view.getCurrentPosition() / 1000f
-//                                + " audio: " + ((float) openMXPlayer.presentationTimeUs / 1000f / 1000f));
                     }
                 });
-        //
         try {
             video_view.setInfoButtonEnabled(false);
             video_view.loadVideo(videoUri, new VrVideoView.Options());
