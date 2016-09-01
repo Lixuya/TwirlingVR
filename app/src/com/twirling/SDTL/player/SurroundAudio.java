@@ -160,7 +160,7 @@ public class SurroundAudio {
             }
             //metadata output
             metadata[n++] = r;
-            metadata[n++] = azi + (float) Math.PI;
+            metadata[n++] = azi;
             metadata[n++] = elv;
         }
     }

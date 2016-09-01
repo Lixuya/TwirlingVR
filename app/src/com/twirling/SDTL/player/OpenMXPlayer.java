@@ -154,13 +154,7 @@ public class OpenMXPlayer implements Runnable {
 
     @Override
     public void run() {
-        if (profileId == 0){
-            return;
-        }
         android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO);
-        // profileId
-        audioProcess.Init(profileId, FRAME_LENGTH, 3, 44100);
-        audioProcess.Set(false, 0, false, false, 1.0f);
         // extractor gets infor
         // mation about the stream
         extractor = new MediaExtractor();
@@ -180,6 +174,14 @@ public class OpenMXPlayer implements Runnable {
         }
         // Read track header
         readTrackHeader();
+        // profileId
+        Log.d(LOG_TAG, "AudioProcess:" + mime
+                + " sampleRate:" + sampleRate
+                + " channels:" + channels
+                + " bitrate:" + bitrate
+                + " duration:" + duration);
+        audioProcess.Init(profileId, FRAME_LENGTH, channels, sampleRate);
+        audioProcess.Set(false, 0, false, false, 1.0f);
 
         // configure AudioTrack
         int channelConfiguration = channels == 1 ? AudioFormat.CHANNEL_OUT_MONO : AudioFormat.CHANNEL_OUT_STEREO;
@@ -211,10 +213,13 @@ public class OpenMXPlayer implements Runnable {
             Log.e(LOG_TAG, "Reading format parameters exception:" + e.getMessage());
             // don't exit, tolerate this error, we'll fail later if this is critical
         }
-        Log.d(LOG_TAG, "Track info: mime:" + mime + " sampleRate:" + sampleRate + " channels:" + channels + " bitrate:" + bitrate + " duration:" + duration);
+        Log.d(LOG_TAG, "Track info: mime:" + mime
+                + " sampleRate:" + sampleRate
+                + " channels:" + channels
+                + " bitrate:" + bitrate
+                + " duration:" + duration);
         // check we have audio content we know
         if (format == null || !mime.startsWith("audio/")) {
-
             return;
         }
         // create the actual decoder, using the mime to select
@@ -225,11 +230,9 @@ public class OpenMXPlayer implements Runnable {
         }
         // check we have a valid codec instance
         if (codec == null) {
-
             return;
         }
         //state.set(PlayerStates.READY_TO_PLAY);
-
         //
         codec.configure(format, null, null, 0);
         codec.start();
@@ -325,6 +328,7 @@ public class OpenMXPlayer implements Runnable {
         duration = 0;
         state.set(PlayerStates.STOPPED);
         stop = true;
+        audioProcess.Release();
     }
 
     public static String listCodecs() {
@@ -367,6 +371,5 @@ public class OpenMXPlayer implements Runnable {
                 Log.e(LOG_TAG, "inputBufIndex " + inputBufIndex);
             }
         }
-
     }
 }
