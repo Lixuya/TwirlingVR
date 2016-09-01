@@ -40,8 +40,8 @@ import java.nio.ByteBuffer;
 public class AudioPlayer {
     private static final String LOG_TAG = "AudioPlayer";
     private static final int FRAME_LENGTH = 512;
-    private static int profileId = 11;
-    private static String sourcePath = null;
+    private int profileId = 11;
+    private String sourcePath = null;
     //
     private MediaExtractor extractor;
     private MediaCodec codec;
@@ -92,15 +92,11 @@ public class AudioPlayer {
         sourcePath = src;
     }
 
-    public void setDataSource(Context context, int resid) {
-        mContext = context;
-        sourceRawResId = resid;
-    }
 
     public void play() {
         if (state.get() == PlayerStates.STOPPED) {
             stop = false;
-            new Thread(this).start();
+            run();
         }
         if (state.get() == PlayerStates.READY_TO_PLAY) {
             state.set(PlayerStates.PLAYING);
@@ -137,7 +133,6 @@ public class AudioPlayer {
         seek(pos);
     }
 
-
     /**
      * A pause mechanism that would block current thread when pause flag is set (READY_TO_PLAY)
      */
@@ -152,7 +147,6 @@ public class AudioPlayer {
         }
     }
 
-    @Override
     public void run() {
         android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO);
         // profileId
@@ -162,14 +156,11 @@ public class AudioPlayer {
         // mation about the stream
         extractor = new MediaExtractor();
         // try to set the source, this might fail
+        int count = extractor.getTrackCount();
+        Log.e(LOG_TAG, "TrackCount:" + count);
         try {
             if (sourcePath != null) {
                 extractor.setDataSource(sourcePath);
-            }
-            if (sourceRawResId != -1) {
-                AssetFileDescriptor fd = mContext.getResources().openRawResourceFd(sourceRawResId);
-                extractor.setDataSource(fd.getFileDescriptor(), fd.getStartOffset(), fd.getDeclaredLength());
-                fd.close();
             }
         } catch (Exception e) {
             Log.e(LOG_TAG, "exception:" + e.getMessage());
@@ -196,7 +187,6 @@ public class AudioPlayer {
     private void readTrackHeader() {
         MediaFormat format = null;
         try {
-//            int count = extractor.getTrackCount();
             format = extractor.getTrackFormat(0);
             mime = format.getString(MediaFormat.KEY_MIME);
             sampleRate = format.getInteger(MediaFormat.KEY_SAMPLE_RATE);
@@ -208,7 +198,11 @@ public class AudioPlayer {
             Log.e(LOG_TAG, "Reading format parameters exception:" + e.getMessage());
             // don't exit, tolerate this error, we'll fail later if this is critical
         }
-        Log.d(LOG_TAG, "Track info: mime:" + mime + " sampleRate:" + sampleRate + " channels:" + channels + " bitrate:" + bitrate + " duration:" + duration);
+        Log.d(LOG_TAG, "Track info: mime:" + mime
+                + " sampleRate:" + sampleRate
+                + " channels:" + channels
+                + " bitrate:" + bitrate
+                + " duration:" + duration);
         // check we have audio content we know
         if (format == null || !mime.startsWith("audio/")) {
             return;
@@ -309,7 +303,6 @@ public class AudioPlayer {
             audioTrack = null;
         }
         sourcePath = null;
-        sourceRawResId = -1;
         duration = 0;
         mime = null;
         sampleRate = 0;
@@ -351,7 +344,6 @@ public class AudioPlayer {
                 } else {
                     presentationTimeUs = extractor.getSampleTime();
                     final int percent = (duration == 0) ? 0 : (int) (100 * presentationTimeUs / duration);
-
                 }
                 codec.queueInputBuffer(inputBufIndex, 0, sampleSize, presentationTimeUs, sawInputEOS ? MediaCodec.BUFFER_FLAG_END_OF_STREAM : 0);
                 if (!sawInputEOS) {
