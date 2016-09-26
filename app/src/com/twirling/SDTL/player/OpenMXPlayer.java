@@ -175,7 +175,8 @@ public class OpenMXPlayer implements Runnable {
         // Read track header
         readTrackHeader();
         // profileId
-        Log.d(LOG_TAG, "AudioProcess:" + mime
+        Log.d(LOG_TAG, "AudioProcess: " + sourcePath
+                + " mime:" + mime
                 + " sampleRate:" + sampleRate
                 + " channels:" + channels
                 + " bitrate:" + bitrate
@@ -184,10 +185,15 @@ public class OpenMXPlayer implements Runnable {
         audioProcess.Set(false, 0, false, false, 1.0f);
 
         // configure AudioTrack
-        int channelConfiguration = channels == 1 ? AudioFormat.CHANNEL_OUT_MONO : AudioFormat.CHANNEL_OUT_STEREO;
+        int channelConfiguration = AudioFormat.CHANNEL_OUT_STEREO;
         int minSize = AudioTrack.getMinBufferSize(sampleRate, channelConfiguration, AudioFormat.ENCODING_PCM_16BIT);
-        audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, sampleRate, channelConfiguration,
-                AudioFormat.ENCODING_PCM_16BIT, minSize, AudioTrack.MODE_STREAM);
+        //
+        audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
+                sampleRate,
+                channelConfiguration,
+                AudioFormat.ENCODING_PCM_16BIT,
+                minSize,
+                AudioTrack.MODE_STREAM);
         // start playing, we will feed the AudioTrack later
         audioTrack.play();
         //

@@ -17,7 +17,7 @@ public class VideoItem extends RealmObject implements Parcelable {
     private String Folder = "";
     private String Image = "";
     private String Sort = "";
-    private int VrAudio = 0;
+    private int VrAudio = -1;
     private String AppAndroidOffline = "";
     private String AppAndroidOnline = "";
     private String Describe = "";

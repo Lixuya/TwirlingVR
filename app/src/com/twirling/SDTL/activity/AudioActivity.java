@@ -79,9 +79,9 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         VideoItem videoItem = getIntent().getParcelableExtra("videoItem");
         String name = videoItem.getAppAndroidOffline().split("\\.")[0];
         videoUri = Uri.parse(Constants.URI_DOWNLOAD_LOCAL + name + "video.mp4");
-        if (videoItem.getVrAudio() == 2) {
+        if (videoItem.getVrAudio() == 12 || videoItem.getVrAudio() == 0) {
             audioPath = Constants.URI_DOWNLOAD_LOCAL + name + "sound.wav";
-        } else if (videoItem.getVrAudio() == 1) {
+        } else if (videoItem.getVrAudio() == 3) {
             audioPath = Constants.URI_DOWNLOAD_LOCAL + name + "audio.mp4";
         }
         jsonName = name + "data.json";
@@ -241,16 +241,6 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         Log.i(TAG, "onResume");
         video_view.resumeRendering();
         openMXPlayer.play();
-//        Observable.just("")
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Action1<String>() {
-//                    @Override
-//                    public void call(String s) {
-//
-//
-//                    }
-//                });
         updateStatusText();
         super.onResume();
     }

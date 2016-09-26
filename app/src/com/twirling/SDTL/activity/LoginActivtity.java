@@ -69,7 +69,7 @@ public class LoginActivtity extends AppCompatActivity {
                         if (dataArray.getStatus() == 200) {
                             Toast.makeText(LoginActivtity.this, "登陆成功", Toast.LENGTH_SHORT).show();
                             Constants.USER_MOBILE = mobile;
-                            Constants.USER_IMAGE = FontAwesome.Icon.faw_user;
+                            Constants.USER_IMAGE = FontAwesome.Icon.faw_mobile;
                             finish();
                         } else if (dataArray.getStatus() == 400) {
                             Toast.makeText(LoginActivtity.this, "账号密码错误", Toast.LENGTH_SHORT).show();
