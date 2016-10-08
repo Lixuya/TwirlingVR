@@ -121,11 +121,11 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
             @Override
             public void onClick(View v) {//
                 int vrAudio = item.getVrAudio();
-                if (vrAudio == 0) {
+                if (vrAudio == -1) {
                     Intent intent = new Intent(holder.itemView.getContext(), SimpleVrVideoActivity.class);
                     intent.putExtra("videoItem", Constants.PAPH_DOWNLOAD_LOCAL + item.getAppAndroidOnline());
                     holder.itemView.getContext().startActivity(intent);
-                } else if (vrAudio != 0 && holder.downloadId == 1) {
+                } else if (vrAudio != -1 && holder.downloadId == 1) {
                     Intent intent = new Intent(holder.itemView.getContext(), AudioActivity.class);
                     intent.putExtra("videoItem", item);
                     holder.itemView.getContext().startActivity(intent);

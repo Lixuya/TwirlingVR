@@ -22,7 +22,7 @@ public class SurroundAudio {
     private int channels = 0;
     private float[] metadata = null;
     private float[][] metadataFromJson = null;
-    private float postgain = 0.5f;
+    private float postgain = 1f;
 
     private SurroundAudio() {
     }
@@ -120,7 +120,7 @@ public class SurroundAudio {
         int i, c, n;
         float azi, elv, r;
         // output
-        if (metadataFromJson == null) {
+        if (metadataFromJson == null || channels == 8) {
             return;
         }
         int metadataLen = metadataFromJson.length;

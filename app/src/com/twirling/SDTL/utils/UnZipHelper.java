@@ -14,18 +14,18 @@ import java.util.zip.ZipInputStream;
 /**
  * @author jon
  */
-public class Decompress {
+public class UnZipHelper {
     private String _zipFile;
     private String _location;
     private InputStream fin;
 
-    public Decompress(String zipFile, String location) {
+    public UnZipHelper(String zipFile, String location) {
         _zipFile = zipFile;
         _location = location;
         _dirChecker("");
     }
 
-    public Decompress(InputStream stream, String location) {
+    public UnZipHelper(InputStream stream, String location) {
         fin = stream;
         _location = location;
         _dirChecker("");

@@ -13,7 +13,7 @@ import com.twirling.SDTL.App;
 import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.data.RealmHelper;
 import com.twirling.SDTL.model.VideoItem;
-import com.twirling.SDTL.utils.Decompress;
+import com.twirling.SDTL.utils.UnZipHelper;
 import com.twirling.SDTL.utils.FileUtil;
 
 import java.io.File;
@@ -78,7 +78,7 @@ public class DownloadReceiver extends BroadcastReceiver {
                         .subscribe(new Action1<Pair<String, String>>() {
                             @Override
                             public void call(Pair<String, String> pair) {
-                                new Decompress(Constants.PAPH_DOWNLOAD_LOCAL + pair.first, Constants.PAPH_DOWNLOAD_LOCAL + pair.second).unzip();
+                                new UnZipHelper(Constants.PAPH_DOWNLOAD_LOCAL + pair.first, Constants.PAPH_DOWNLOAD_LOCAL + pair.second).unzip();
                                 FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + pair.first));
                                 FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + pair.second));
                             }

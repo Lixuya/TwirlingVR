@@ -29,7 +29,6 @@ import android.media.MediaCodecInfo;
 import android.media.MediaCodecList;
 import android.media.MediaExtractor;
 import android.media.MediaFormat;
-import android.os.Handler;
 import android.util.Log;
 
 import com.twirling.audio.AudioProcess;
@@ -50,7 +49,6 @@ public class OpenMXPlayer implements Runnable {
     private Context mContext;
     private boolean stop = false;
     private AudioProcess audioProcess = null;
-    Handler handler = new Handler();
 
     private SurroundAudio daa = null;
     String mime = null;
@@ -174,23 +172,17 @@ public class OpenMXPlayer implements Runnable {
         }
         // Read track header
         readTrackHeader();
-        // profileId
-        Log.d(LOG_TAG, "AudioProcess: " + sourcePath
-                + " mime:" + mime
-                + " sampleRate:" + sampleRate
-                + " channels:" + channels
-                + " bitrate:" + bitrate
-                + " duration:" + duration);
+        //
         audioProcess.Init(profileId, FRAME_LENGTH, channels, sampleRate);
         audioProcess.Set(false, 0, false, false, 1.0f);
-
         // configure AudioTrack
-        int channelConfiguration = AudioFormat.CHANNEL_OUT_STEREO;
-        int minSize = AudioTrack.getMinBufferSize(sampleRate, channelConfiguration, AudioFormat.ENCODING_PCM_16BIT);
+        int minSize = AudioTrack.getMinBufferSize(sampleRate,
+                AudioFormat.CHANNEL_OUT_STEREO,
+                AudioFormat.ENCODING_PCM_16BIT);
         //
         audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
                 sampleRate,
-                channelConfiguration,
+                AudioFormat.CHANNEL_OUT_STEREO,
                 AudioFormat.ENCODING_PCM_16BIT,
                 minSize,
                 AudioTrack.MODE_STREAM);
@@ -244,6 +236,14 @@ public class OpenMXPlayer implements Runnable {
         codec.start();
         //
         daa.setChannels(channels);
+        // profileId
+        Log.d(LOG_TAG, "AudioProcess: " + sourcePath
+                + " mime:" + mime
+                + " sampleRate:" + sampleRate
+                + " channels:" + channels
+                + " bitrate:" + bitrate
+                + " duration:" + duration
+                + " profileId:" + profileId);
     }
 
     private void startDecoding(ByteBuffer[] codecInputBuffers, ByteBuffer[] codecOutputBuffers) {
@@ -276,14 +276,14 @@ public class OpenMXPlayer implements Runnable {
                 buf.get(chunk);
                 buf.clear();
                 int loopNum = chunk.length / 2 / channels / FRAME_LENGTH;
-                // TODO
+//                // TODO
                 short[] audio = daa.byte2Short(chunk, loopNum);
-                daa.setAudioPlayTime(presentationTimeUs / 1000f / 1000f);
-                audio = daa.audioProcess(audio);
+//                daa.setAudioPlayTime(presentationTimeUs / 1000f / 1000f);
+//                audio = daa.audioProcess(audio);
 
                 // 播放
                 if (chunk.length > 0) {
-                    audioTrack.write(audio, 0, FRAME_LENGTH * 2 * loopNum);
+                    audioTrack.write(chunk, 0, FRAME_LENGTH * 2 * loopNum);
                 }
                 if ((info.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) {
                     Log.d(LOG_TAG, "end while");

@@ -19,8 +19,8 @@ import java.util.Map;
  */
 public class App extends Application {
     public static App INS;
-    //    private static User user;
     private WeakReference<Activity> mCurrentActivity;
+    //
     public static Map<Long, ContentObserver> observers = new HashMap<Long, ContentObserver>();
 
     @Override
@@ -87,33 +87,6 @@ public class App extends Application {
     public static App getInst() {
         return INS;
     }
-
-//    public User getUser() {
-//        if (user == null) {
-//            user = UserManager.getIns().getUser();
-//        }
-//        return user;
-//    }
-//
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
-//
-//    public void toLogin() {
-//        setUser(null);
-//        UserManager.getIns().clearToken();
-//        if (mCurrentActivity != null) {
-//            Activity act = mCurrentActivity.get();
-//            if (act != null) {
-//                Intent intent = new Intent(this, LoginActivity.class);
-////                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-////                intent.putExtra("fromHome", true);
-//                act.startActivity(intent);
-//            }
-//        }
-//    }
-//
-//    public static long downloadId;
 
     public Activity getCurrentShowActivity() {
         return mCurrentActivity.get();

@@ -47,6 +47,8 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
     private boolean isPaused = false;
     private Uri videoUri = null;
     private int profileId = 11;
+    private int channels = 8;
+
     private String audioPath = "";
     private String jsonName = "";
     float[][] metadata = null;
@@ -79,13 +81,19 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         VideoItem videoItem = getIntent().getParcelableExtra("videoItem");
         String name = videoItem.getAppAndroidOffline().split("\\.")[0];
         videoUri = Uri.parse(Constants.URI_DOWNLOAD_LOCAL + name + "video.mp4");
-        if (videoItem.getVrAudio() == 12 || videoItem.getVrAudio() == 0) {
+        //
+        jsonName = name + "data.json";
+        loadJson(jsonName);
+        //
+        boolean isWave = videoItem.getVrAudio() == 12 || videoItem.getVrAudio() == 0 || channels == 8;
+        if (isWave) {
             audioPath = Constants.URI_DOWNLOAD_LOCAL + name + "sound.wav";
         } else if (videoItem.getVrAudio() == 3) {
             audioPath = Constants.URI_DOWNLOAD_LOCAL + name + "audio.mp4";
+        } else {
+            audioPath = Constants.URI_DOWNLOAD_LOCAL + name + "audio.mp4";
         }
-        jsonName = name + "data.json";
-        loadJson(jsonName);
+        //
         Log.w(TAG, videoUri + "  " + audioPath + " " + profileId);
     }
 
@@ -257,7 +265,7 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         String response = FileUtil.readFromSDCard(fileName);
         DownloadJson dj = JSON.parseObject(response, DownloadJson.class);
         Elements.SoundGroupBean sgb = dj.getElements().getSound_group().get(0);
-        int channels = sgb.getChannels();
+        channels = sgb.getChannels();
         profileId = sgb.getProfileID();
         //
         String md = sgb.getMetadata();

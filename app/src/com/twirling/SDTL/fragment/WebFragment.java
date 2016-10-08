@@ -61,6 +61,7 @@ public class WebFragment extends Fragment {
         super.onResume();
     }
 
+    @SuppressWarnings("ResourceType")
     public void loadPage(int index) {
         String url = "";
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1);  // , 1是可选写的
