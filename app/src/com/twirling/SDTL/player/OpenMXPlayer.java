@@ -52,9 +52,9 @@ public class OpenMXPlayer implements Runnable {
 
     private SurroundAudio daa = null;
     String mime = null;
-    int sampleRate = 0,
-            channels = 0,
-            bitrate = 0;
+    int sampleRate = -1,
+            channels = -1,
+            bitrate = -1;
     public long presentationTimeUs = 0,
             duration = 0;
 
@@ -190,36 +190,75 @@ public class OpenMXPlayer implements Runnable {
         audioTrack.play();
         //
         extractor.selectTrack(0);
-        // start decoding
-        ByteBuffer[] codecInputBuffers = codec.getInputBuffers();
-        ByteBuffer[] codecOutputBuffers = codec.getOutputBuffers();
-        startDecoding(codecInputBuffers, codecOutputBuffers);
+        //
+        startDecoding();
     }
+
 
     private void readTrackHeader() {
         MediaFormat format = null;
+        int count = -1,
+                buffSize = -1,
+                profile = -1,
+                adt = -1,
+                mask = -1,
+                level = -1;
+        String channelCount = "";
         try {
-//            int count = extractor.getTrackCount();
+            count = extractor.getTrackCount();
             format = extractor.getTrackFormat(0);
             mime = format.getString(MediaFormat.KEY_MIME);
             sampleRate = format.getInteger(MediaFormat.KEY_SAMPLE_RATE);
             channels = format.getInteger(MediaFormat.KEY_CHANNEL_COUNT);
             // if duration is 0, we are probably playing a live stream
             duration = format.getLong(MediaFormat.KEY_DURATION);
+            buffSize = format.getInteger(MediaFormat.KEY_MAX_INPUT_SIZE);
             bitrate = format.getInteger(MediaFormat.KEY_BIT_RATE);
         } catch (Exception e) {
             Log.e(LOG_TAG, "Reading format parameters exception:" + e.getMessage());
-            // don't exit, tolerate this error, we'll fail later if this is critical
+        }
+        try {
+            adt = format.getInteger(MediaFormat.KEY_IS_ADTS);
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "adt exception:" + e.getMessage());
+        }
+        try {
+            profile = format.getInteger(MediaFormat.KEY_AAC_PROFILE);
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "profile exception:" + e.getMessage());
+        }
+        try {
+            channelCount = format.getString(MediaFormat.KEY_AAC_MAX_OUTPUT_CHANNEL_COUNT);
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "channelCount exception:" + e.getMessage());
+        }
+        try {
+            level = format.getInteger(MediaFormat.KEY_FLAC_COMPRESSION_LEVEL);
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "level exception:" + e.getMessage());
+        }
+        try {
+            mask = format.getInteger(MediaFormat.KEY_CHANNEL_MASK);
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "mask exception:" + e.getMessage());
         }
         Log.d(LOG_TAG, "Track info: mime:" + mime
+                + " count:" + count
                 + " sampleRate:" + sampleRate
                 + " channels:" + channels
+                + " duration:" + duration
+                + " buffSize:" + buffSize
                 + " bitrate:" + bitrate
-                + " duration:" + duration);
+                + " adt:" + adt
+                + " profile:" + profile
+                + " channelCount:" + channelCount
+                + " level:" + level
+                + " mask:" + mask);
         // check we have audio content we know
         if (format == null || !mime.startsWith("audio/")) {
             return;
         }
+
         // create the actual decoder, using the mime to select
         try {
             codec = MediaCodec.createDecoderByType(mime);
@@ -230,7 +269,7 @@ public class OpenMXPlayer implements Runnable {
         if (codec == null) {
             return;
         }
-        //state.set(PlayerStates.READY_TO_PLAY);
+        state.set(PlayerStates.READY_TO_PLAY);
         //
         codec.configure(format, null, null, 0);
         codec.start();
@@ -238,15 +277,14 @@ public class OpenMXPlayer implements Runnable {
         daa.setChannels(channels);
         // profileId
         Log.d(LOG_TAG, "AudioProcess: " + sourcePath
-                + " mime:" + mime
-                + " sampleRate:" + sampleRate
-                + " channels:" + channels
-                + " bitrate:" + bitrate
-                + " duration:" + duration
                 + " profileId:" + profileId);
     }
 
-    private void startDecoding(ByteBuffer[] codecInputBuffers, ByteBuffer[] codecOutputBuffers) {
+    private void startDecoding() {
+        // start decoding
+        ByteBuffer[] codecInputBuffers = codec.getInputBuffers();
+        ByteBuffer[] codecOutputBuffers = codec.getOutputBuffers();
+        //
         final long kTimeOutUs = 1000;
         boolean sawInputEOS = false;
         boolean sawOutputEOS = false;
@@ -263,6 +301,7 @@ public class OpenMXPlayer implements Runnable {
             // read a buffer before feeding it to the decoder
             readBuffer(sawInputEOS, codecInputBuffers, kTimeOutUs);
             // decode to PCM and push it to the AudioTrack player
+            //TODO
             MediaCodec.BufferInfo info = new MediaCodec.BufferInfo();
             int res = codec.dequeueOutputBuffer(info, kTimeOutUs);
             //
@@ -272,18 +311,19 @@ public class OpenMXPlayer implements Runnable {
                 }
                 int outputBufIndex = res;
                 ByteBuffer buf = codecOutputBuffers[outputBufIndex];
-                final byte[] chunk = new byte[info.size];
+                int deno = 2 * channels * FRAME_LENGTH;
+                int chunksize = info.size / deno * deno;
+                final byte[] chunk = new byte[chunksize];
                 buf.get(chunk);
                 buf.clear();
-                int loopNum = chunk.length / 2 / channels / FRAME_LENGTH;
-//                // TODO
+                int loopNum = chunk.length / deno;
+                // TODO
                 short[] audio = daa.byte2Short(chunk, loopNum);
-//                daa.setAudioPlayTime(presentationTimeUs / 1000f / 1000f);
-//                audio = daa.audioProcess(audio);
-
+                daa.setAudioPlayTime(presentationTimeUs / 1000f / 1000f);
+                daa.audioProcess(audio);
                 // 播放
                 if (chunk.length > 0) {
-                    audioTrack.write(chunk, 0, FRAME_LENGTH * 2 * loopNum);
+                    audioTrack.write(audio, 0, FRAME_LENGTH * 2 * loopNum);
                 }
                 if ((info.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) {
                     Log.d(LOG_TAG, "end while");
@@ -307,7 +347,6 @@ public class OpenMXPlayer implements Runnable {
             }
         }
         clearSource();
-
     }
 
     // clear source and the other globals
@@ -355,27 +394,34 @@ public class OpenMXPlayer implements Runnable {
     }
 
     private void readBuffer(boolean sawInputEOS, ByteBuffer[] codecInputBuffers, long kTimeOutUs) {
-        if (!sawInputEOS) {
-            int inputBufIndex = codec.dequeueInputBuffer(kTimeOutUs);
-            if (inputBufIndex >= 0) {
-                ByteBuffer dstBuf = codecInputBuffers[inputBufIndex];
-                int sampleSize = extractor.readSampleData(dstBuf, 0);
-                if (sampleSize < 0) {
-                    Log.d(LOG_TAG, "saw input EOS. Stopping playback");
-                    sawInputEOS = true;
-                    sampleSize = 0;
-                } else {
-                    presentationTimeUs = extractor.getSampleTime();
-                    final int percent = (duration == 0) ? 0 : (int) (100 * presentationTimeUs / duration);
-
-                }
-                codec.queueInputBuffer(inputBufIndex, 0, sampleSize, presentationTimeUs, sawInputEOS ? MediaCodec.BUFFER_FLAG_END_OF_STREAM : 0);
-                if (!sawInputEOS) {
-                    extractor.advance();
-                }
+        if (sawInputEOS) {
+            return;
+        }
+        int inputBufIndex = codec.dequeueInputBuffer(kTimeOutUs);
+        Log.d(LOG_TAG, "inputBufIndex " + inputBufIndex);
+        if (inputBufIndex >= 0) {
+            ByteBuffer dstBuf = codecInputBuffers[inputBufIndex];
+            int sampleSize = extractor.readSampleData(dstBuf, 0);
+            Log.d(LOG_TAG, "sampleSize " + sampleSize);
+            if (sampleSize < 0) {
+                Log.d(LOG_TAG, "saw input EOS. Stopping playback");
+                sawInputEOS = true;
+                sampleSize = 0;
             } else {
-                Log.e(LOG_TAG, "inputBufIndex " + inputBufIndex);
+                presentationTimeUs = extractor.getSampleTime();
+                Log.d(LOG_TAG, "presentationTimeUs " + presentationTimeUs);
+                int percent = (duration == 0) ? 0 : (int) (100 * presentationTimeUs / duration);
             }
+            codec.queueInputBuffer(inputBufIndex,
+                    0,
+                    sampleSize,
+                    presentationTimeUs,
+                    sawInputEOS ? MediaCodec.BUFFER_FLAG_END_OF_STREAM : 0);
+            if (!sawInputEOS) {
+                extractor.advance();
+            }
+        } else {
+            Log.e(LOG_TAG, "inputBufIndex " + inputBufIndex);
         }
     }
 }

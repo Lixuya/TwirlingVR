@@ -44,14 +44,14 @@ public class SurroundAudio {
     }
 
     //
-    public short[] audioProcess(short[] audioFlat) {
+    public void audioProcess(short[] audioFlat) {
         // TODO
-        short[] audioOutputBufShort = new short[FRAME_LENGTH * 2 * loopNum];
+        //short[] audioOutputBufShort = new short[FRAME_LENGTH * 2 * loopNum];
         int n_acc = 0;
         int n_acc_out = 0;
         int ii = 0;
         if (metadata == null) {
-            return audioOutputBufShort;
+            return ;
         }
         // 0度方向
         float[] audioInput = new float[FRAME_LENGTH * channels];
@@ -64,12 +64,19 @@ public class SurroundAudio {
 //            for (int i = 0; i < metadata.length; i++) {
 //                Log.w("angle", metadata[i] + "");
 //            }
-            audioProcess.Process(yaw, pitch, audioInput, audioOutput, metadata);
+
+            //audioProcess.Process(yaw, pitch, audioInput, audioOutput, metadata);
+            for (ii = 0; ii < FRAME_LENGTH ; ii++) {
+                audioOutput[ii*2] = audioInput[ii*channels];
+                audioOutput[ii*2+1] = audioInput[ii*channels+1];
+            }
+
             for (ii = 0; ii < FRAME_LENGTH * 2; ii++) {
-                audioOutputBufShort[n_acc_out++] = (short) (audioOutput[ii] * postgain);
+                audioFlat[n_acc_out++] = (short) (audioOutput[ii] * postgain);
             }
         }
-        return audioOutputBufShort;
+
+        return ;
     }
 
     // byte2short

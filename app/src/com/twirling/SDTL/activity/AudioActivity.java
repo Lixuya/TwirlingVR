@@ -105,13 +105,6 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         gvrView.setEGLConfigChooser(8, 8, 8, 8, 16, 8);
         gvrView.setRenderer(this);
         gvrView.setTransitionViewEnabled(true);
-        gvrView.setOnCardboardBackButtonListener(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        onBackPressed();
-                    }
-                });
         setGvrView(gvrView);
         //
         RxSeekBar.userChanges(seekBar)
@@ -165,7 +158,7 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
 
             @Override
             public void onCompletion() {
-//                video_view.seekTo(0);
+                video_view.seekTo(0);
             }
         });
     }
