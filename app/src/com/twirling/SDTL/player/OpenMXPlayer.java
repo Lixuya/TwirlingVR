@@ -313,7 +313,6 @@ public class OpenMXPlayer implements Runnable {
                 int outputBufIndex = res;
                 ByteBuffer buf = codecOutputBuffers[outputBufIndex];
                 int deno = 2 * channels * FRAME_LENGTH;
-//                int chunksize = info.size / deno * deno;
                 //
                 int chucksize = ((int) Math.ceil(info.size / (float) deno)) * deno;
                 byte[] chunk2 = new byte[chucksize];
@@ -321,7 +320,7 @@ public class OpenMXPlayer implements Runnable {
                 buf.get(chunk);
                 buf.clear();
                 System.arraycopy(chunk, 0, chunk2, 0, chunk.length);
-                Log.w(LOG_TAG, "chunksize2 " + chunk.length + chunk2.length);
+                Log.w(LOG_TAG, "chunksize " + chunk.length + " chunk2size " + chunk2.length);
                 int loopNum = chucksize / deno;
                 Log.w(LOG_TAG, "loopNum " + loopNum);
                 // TODO
@@ -331,7 +330,7 @@ public class OpenMXPlayer implements Runnable {
                 // short 双声道
                 int writeSize = chucksize / channels / 2 * 2;
                 int diff = (chucksize - info.size) / channels / 2 * 2;
-                Log.w(LOG_TAG, "writeSize " + writeSize);
+                Log.w(LOG_TAG, "writeSize " + writeSize + " diff " + diff);
                 // 播放
                 if (chunk.length > 0) {
                     audioTrack.write(audio, 0, writeSize - diff);
