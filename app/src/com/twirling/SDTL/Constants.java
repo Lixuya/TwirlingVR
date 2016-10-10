@@ -12,7 +12,7 @@ public class Constants {
     public static final String MIME_ZIP = "application/zip";
     //
     public static final String PATH_SERVER_API = "http://yun-dev.twirlingvr.com/Admin";
-    public static final String PATH_RESOURCE = "http://yun-twirlingvr.oss-cn-hangzhou.aliyuncs.com/";
+    public static final String PATH_RESOURCE = "https://yun-twirlingvr.oss-cn-hangzhou.aliyuncs.com/";
     public static final String PATH_JAVA = "http://120.27.136.111:23223/";
     // 图片
     public static final String PAPH_IMAGE = "image/";

@@ -59,14 +59,15 @@ public class SurroundAudio {
                 audioInput[ii] = audioFlat[n_acc++];
             }
 //            Log.i("angle", "eular = " + yaw + ", " + pitch);
-            for (int i = 0; i < metadata.length; i++) {
-                Log.w("angle", metadata[i] + "");
-            }
+//            for (int i = 0; i < metadata.length; i++) {
+//                Log.w("angle", metadata[i] + "");
+//            }
             audioProcess.Process(yaw, pitch, audioInput, audioOutput, metadata);
-            for (ii = 0; ii < FRAME_LENGTH; ii++) {
-                audioOutput[ii * 2] = audioInput[ii * channels];
-                audioOutput[ii * 2 + 1] = audioInput[ii * channels + 1];
-            }
+            // 转成双声道
+//            for (ii = 0; ii < FRAME_LENGTH; ii++) {
+//                audioOutput[ii * 2] = audioInput[ii * channels];
+//                audioOutput[ii * 2 + 1] = audioInput[ii * channels + 1];
+//            }
             for (ii = 0; ii < FRAME_LENGTH * 2; ii++) {
                 audioFlat[n_acc_out++] = (short) (audioOutput[ii] * postgain);
             }

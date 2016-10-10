@@ -214,6 +214,7 @@ public class OpenMXPlayer implements Runnable {
             duration = format.getLong(MediaFormat.KEY_DURATION);
             buffSize = format.getInteger(MediaFormat.KEY_MAX_INPUT_SIZE);
             bitrate = format.getInteger(MediaFormat.KEY_BIT_RATE);
+//            format.setInteger(MediaFormat.KEY_MAX_INPUT_SIZE, 65541);
         } catch (Exception e) {
             Log.e(LOG_TAG, "Reading format parameters exception:" + e.getMessage());
         }
@@ -262,6 +263,8 @@ public class OpenMXPlayer implements Runnable {
         // create the actual decoder, using the mime to select
         try {
             codec = MediaCodec.createDecoderByType(mime);
+//            codec = MediaCodec.createByCodecName("OMX.google.raw.decoder");
+//            codec = MediaCodec.createByCodecName("OMX.SEC.aac.enc");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -286,7 +289,6 @@ public class OpenMXPlayer implements Runnable {
         ByteBuffer[] codecOutputBuffers = codec.getOutputBuffers();
         //
         MediaCodec.BufferInfo info = new MediaCodec.BufferInfo();
-//        info.set(info.offset, 16384, info.presentationTimeUs, info.flags);
         //
         final long kTimeOutUs = 1000;
         boolean sawInputEOS = false;
@@ -297,43 +299,53 @@ public class OpenMXPlayer implements Runnable {
         //
         while (!sawOutputEOS && noOutputCounter < noOutputCounterLimit && !stop) {
             // pause implementation
-            Log.i("angle", "state " + state.get());
             waitPlay();
             noOutputCounter++;
-            Log.w("angle", "noOutputCounter " + noOutputCounter);
+            Log.w("angle", "noOutputCounter " + noOutputCounter + " " + info.size);
             // read a buffer before feeding it to the decoder
             readBuffer(sawInputEOS, codecInputBuffers, kTimeOutUs, info);
             // decode to PCM and push it to the AudioTrack player
             int res = codec.dequeueOutputBuffer(info, kTimeOutUs);
+            Log.e("angle", "res " + info.size + " " + res);
             //
             if (res >= 0) {
+//                info.set(info.offset, info.size * channels, info.presentationTimeUs, info.flags);
                 if (info.size > 0) {
                     noOutputCounter = 0;
                 }
                 int outputBufIndex = res;
                 ByteBuffer buf = codecOutputBuffers[outputBufIndex];
-                int deno = 2 * channels * FRAME_LENGTH;
+                Log.i(LOG_TAG, "buf capacity " + buf.capacity() + " info.size " + info.size);
+                final byte[] chunk = new byte[info.size];
                 //
+                int deno = 2 * channels * FRAME_LENGTH;
                 int chucksize = ((int) Math.ceil(info.size / (float) deno)) * deno;
                 byte[] chunk2 = new byte[chucksize];
-                final byte[] chunk = new byte[info.size];
+                //
                 buf.get(chunk);
                 buf.clear();
                 System.arraycopy(chunk, 0, chunk2, 0, chunk.length);
-                Log.w(LOG_TAG, "chunksize " + chunk.length + " chunk2size " + chunk2.length);
+                //
+                Log.w(LOG_TAG, "chunksize " + chunk.length
+                        + " chunk2size " + chunk2.length
+                        + " diffsize " + (chunk2.length - chunk.length));
                 int loopNum = chucksize / deno;
                 Log.w(LOG_TAG, "loopNum " + loopNum);
+                // short 双声道
+                float writeSize = chucksize / channels / 2 * 2;
+                float infoSize = chunk.length / channels / 2 * 2;
+                float diff = (chucksize - chunk.length) / channels / 2 * 2;
+                Log.w(LOG_TAG, "writeSize " + writeSize
+                        + " infoSize " + infoSize
+                        + " diff " + diff);
                 // TODO
                 short[] audio = daa.byte2Short(chunk2, loopNum);
                 daa.setAudioPlayTime(presentationTimeUs / 1000f / 1000f);
                 daa.audioProcess(audio);
-                // short 双声道
-                int writeSize = chucksize / channels / 2 * 2;
-                int diff = (chucksize - info.size) / channels / 2 * 2;
-                Log.w(LOG_TAG, "writeSize " + writeSize + " diff " + diff);
+
                 // 播放
                 if (chunk.length > 0) {
-                    audioTrack.write(audio, 0, writeSize - diff);
+                    audioTrack.write(audio, 0, (int) infoSize);
 //                    audioTrack.write(chunk, 0, chunk.length);
                 }
                 if ((info.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) {
@@ -439,5 +451,9 @@ public class OpenMXPlayer implements Runnable {
         } else {
             Log.e(LOG_TAG, "inputBufIndex " + inputBufIndex);
         }
+    }
+
+    private void samsungAdapter() {
+
     }
 }
