@@ -186,9 +186,9 @@ public class OpenMXPlayer implements Runnable {
                 AudioFormat.ENCODING_PCM_16BIT,
                 minSize,
                 AudioTrack.MODE_STREAM);
+        Log.w(LOG_TAG, "audioTrack " + sampleRate + " " + minSize);
         // start playing, we will feed the AudioTrack later
         audioTrack.play();
-        //
         extractor.selectTrack(0);
         //
         startDecoding();
@@ -285,6 +285,9 @@ public class OpenMXPlayer implements Runnable {
         ByteBuffer[] codecInputBuffers = codec.getInputBuffers();
         ByteBuffer[] codecOutputBuffers = codec.getOutputBuffers();
         //
+        MediaCodec.BufferInfo info = new MediaCodec.BufferInfo();
+//        info.set(info.offset, 16384, info.presentationTimeUs, info.flags);
+        //
         final long kTimeOutUs = 1000;
         boolean sawInputEOS = false;
         boolean sawOutputEOS = false;
@@ -294,15 +297,13 @@ public class OpenMXPlayer implements Runnable {
         //
         while (!sawOutputEOS && noOutputCounter < noOutputCounterLimit && !stop) {
             // pause implementation
-            Log.i("angle", state.get() + "");
+            Log.i("angle", "state " + state.get());
             waitPlay();
             noOutputCounter++;
-            Log.w("angle", noOutputCounter + " " + state.get() + "");
+            Log.w("angle", "noOutputCounter " + noOutputCounter);
             // read a buffer before feeding it to the decoder
-            readBuffer(sawInputEOS, codecInputBuffers, kTimeOutUs);
+            readBuffer(sawInputEOS, codecInputBuffers, kTimeOutUs, info);
             // decode to PCM and push it to the AudioTrack player
-            //TODO
-            MediaCodec.BufferInfo info = new MediaCodec.BufferInfo();
             int res = codec.dequeueOutputBuffer(info, kTimeOutUs);
             //
             if (res >= 0) {
@@ -312,18 +313,29 @@ public class OpenMXPlayer implements Runnable {
                 int outputBufIndex = res;
                 ByteBuffer buf = codecOutputBuffers[outputBufIndex];
                 int deno = 2 * channels * FRAME_LENGTH;
-                int chunksize = info.size / deno * deno;
-                final byte[] chunk = new byte[chunksize];
+//                int chunksize = info.size / deno * deno;
+                //
+                int chucksize = ((int) Math.ceil(info.size / (float) deno)) * deno;
+                byte[] chunk2 = new byte[chucksize];
+                final byte[] chunk = new byte[info.size];
                 buf.get(chunk);
                 buf.clear();
-                int loopNum = chunk.length / deno;
+                System.arraycopy(chunk, 0, chunk2, 0, chunk.length);
+                Log.w(LOG_TAG, "chunksize2 " + chunk.length + chunk2.length);
+                int loopNum = chucksize / deno;
+                Log.w(LOG_TAG, "loopNum " + loopNum);
                 // TODO
-                short[] audio = daa.byte2Short(chunk, loopNum);
+                short[] audio = daa.byte2Short(chunk2, loopNum);
                 daa.setAudioPlayTime(presentationTimeUs / 1000f / 1000f);
                 daa.audioProcess(audio);
+                // short 双声道
+                int writeSize = chucksize / channels / 2 * 2;
+                int diff = (chucksize - info.size) / channels / 2 * 2;
+                Log.w(LOG_TAG, "writeSize " + writeSize);
                 // 播放
                 if (chunk.length > 0) {
-                    audioTrack.write(audio, 0, FRAME_LENGTH * 2 * loopNum);
+                    audioTrack.write(audio, 0, writeSize - diff);
+//                    audioTrack.write(chunk, 0, chunk.length);
                 }
                 if ((info.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) {
                     Log.d(LOG_TAG, "end while");
@@ -393,7 +405,7 @@ public class OpenMXPlayer implements Runnable {
         return results;
     }
 
-    private void readBuffer(boolean sawInputEOS, ByteBuffer[] codecInputBuffers, long kTimeOutUs) {
+    private void readBuffer(boolean sawInputEOS, ByteBuffer[] codecInputBuffers, long kTimeOutUs, MediaCodec.BufferInfo info) {
         if (sawInputEOS) {
             return;
         }
@@ -401,15 +413,20 @@ public class OpenMXPlayer implements Runnable {
         Log.d(LOG_TAG, "inputBufIndex " + inputBufIndex);
         if (inputBufIndex >= 0) {
             ByteBuffer dstBuf = codecInputBuffers[inputBufIndex];
-            int sampleSize = extractor.readSampleData(dstBuf, 0);
-            Log.d(LOG_TAG, "sampleSize " + sampleSize);
+            Log.i(LOG_TAG, "dstBuf capacity " + dstBuf.capacity() + " offset " + info.offset);
+            // TODO
+            int sampleSize = extractor.readSampleData(dstBuf, info.offset);
+            int index = extractor.getSampleTrackIndex();
+            Log.w(LOG_TAG, "sampleSize " + sampleSize
+                    + " index " + index);
+            //
             if (sampleSize < 0) {
                 Log.d(LOG_TAG, "saw input EOS. Stopping playback");
                 sawInputEOS = true;
                 sampleSize = 0;
             } else {
                 presentationTimeUs = extractor.getSampleTime();
-                Log.d(LOG_TAG, "presentationTimeUs " + presentationTimeUs);
+                Log.v(LOG_TAG, "presentationTimeUs " + presentationTimeUs);
                 int percent = (duration == 0) ? 0 : (int) (100 * presentationTimeUs / duration);
             }
             codec.queueInputBuffer(inputBufIndex,
