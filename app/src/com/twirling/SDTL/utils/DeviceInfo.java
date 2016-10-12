@@ -9,6 +9,7 @@ public class DeviceInfo {
     public String deviceType = "android";
     public int deviceAppVersion;
     public String deviceModel;
+    public String deviceBrand = "";
 
     public DeviceInfo(String deviceId, String deviceOsVersion, int deviceAppVersion, String deviceModel) {
         this.deviceId = deviceId;
@@ -17,4 +18,16 @@ public class DeviceInfo {
         this.deviceModel = deviceModel;
     }
 
+    public void setDeviceBrand(String deviceBrand) {
+        this.deviceBrand = deviceBrand;
+    }
+
+    @Override
+    public String toString() {
+        return "deviceId " + deviceId
+                + " deviceOsVersion " + deviceOsVersion
+                + " deviceAppVersion " + deviceAppVersion
+                + " deviceModel " + deviceModel
+                + " deviceBrand " + deviceBrand;
+    }
 }

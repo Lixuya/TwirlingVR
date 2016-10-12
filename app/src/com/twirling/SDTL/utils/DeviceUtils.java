@@ -22,6 +22,7 @@ public class DeviceUtils {
             e.printStackTrace();
         }
         DeviceInfo mDeviceInfo = new DeviceInfo(tm.getDeviceId(), modelVerson, appVersion, modelName);
+        mDeviceInfo.setDeviceBrand(android.os.Build.BRAND);
         return mDeviceInfo;
     }
 }

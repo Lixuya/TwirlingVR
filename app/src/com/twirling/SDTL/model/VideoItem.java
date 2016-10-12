@@ -19,6 +19,7 @@ public class VideoItem extends RealmObject implements Parcelable {
     private String Sort = "";
     private int VrAudio = -1;
     private String AppAndroidOffline = "";
+    private String AppIOSOffline = "";
     private String AppAndroidOnline = "";
     private String Describe = "";
     private long downloadTime = 0;
@@ -126,6 +127,7 @@ public class VideoItem extends RealmObject implements Parcelable {
         dest.writeString(Describe);
         dest.writeLong(downloadTime);
         dest.writeLong(downloadId);
+        dest.writeString(AppIOSOffline);
     }
 
     public static final Creator<VideoItem> CREATOR = new Creator<VideoItem>() {
@@ -144,6 +146,7 @@ public class VideoItem extends RealmObject implements Parcelable {
             videoItem.Describe = in.readString();
             videoItem.downloadTime = in.readLong();
             videoItem.downloadId = in.readLong();
+            videoItem.AppIOSOffline = in.readString();
             return videoItem;
         }
 
@@ -164,7 +167,8 @@ public class VideoItem extends RealmObject implements Parcelable {
                 " AppAndroidOffline: " + getAppAndroidOffline() +//
                 " Sort: " + getSort() + //
                 " Describe: " + getDescribe() +//
-                " Folder: " + getFolder();
+                " Folder: " + getFolder() +
+                " AppIOSOffline " + getAppIOSOffline();
         return str;
     }
 
@@ -198,5 +202,13 @@ public class VideoItem extends RealmObject implements Parcelable {
 
     public void setID(int ID) {
         this.ID = ID;
+    }
+
+    public String getAppIOSOffline() {
+        return AppIOSOffline;
+    }
+
+    public void setAppIOSOffline(String appIOSOffline) {
+        AppIOSOffline = appIOSOffline;
     }
 }

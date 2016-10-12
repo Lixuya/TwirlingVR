@@ -86,20 +86,26 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
                                 })
                                 .subscribeOn(AndroidSchedulers.mainThread())
                                 .subscribe(new Action1<Long>() {
-                                    @Override
-                                    public void call(Long aLong) {
-                                        DownloadManager dm = App.getDownloadManager();
-                                        dm.remove(RealmHelper.getIns().selectVideoItem(videoName).getDownloadId());
-                                    }
-                                });
+                                               @Override
+                                               public void call(Long aLong) {
+                                                   DownloadManager dm = App.getDownloadManager();
+                                                   dm.remove(RealmHelper.getIns().selectVideoItem(videoName).getDownloadId());
+                                               }
+                                           }, new Action1<Throwable>() {
+                                               @Override
+                                               public void call(Throwable throwable) {
+                                               }
+                                           }
+                                );
                         // 主线程更新列表，io删除
                         Observable.just(item)
                                 .filter(new Func1<VideoItem, Boolean>() {
                                     @Override
                                     public Boolean call(VideoItem item) {
-                                        return holder.downloadId == 1 && androidOffline.length() != 0;
+                                        return holder.downloadId == 1 && item.getAppAndroidOffline().length() != 0;
                                     }
                                 })
+                                .observeOn(AndroidSchedulers.mainThread())
                                 .subscribeOn(Schedulers.io())
                                 .subscribe(new Action1<VideoItem>() {
                                     @Override

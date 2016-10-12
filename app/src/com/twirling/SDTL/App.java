@@ -27,6 +27,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         INS = this;
+//        Log.w("device", DeviceUtils.getDeviceInfo().toString());
         Logger.init("twirling").setLogLevel(BuildConfig.DEBUG ? LogLevel.FULL : LogLevel.NONE);
 //        SharePreHelper.getIns().initialize(this, null);
 //        initializeSocialSdk();

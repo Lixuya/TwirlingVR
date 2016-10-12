@@ -62,7 +62,6 @@ public class OpenMXPlayer implements Runnable {
         return daa;
     }
 
-
     public OpenMXPlayer() {
         audioProcess = new AudioProcess();
         daa = new SurroundAudio(audioProcess);
@@ -208,6 +207,7 @@ public class OpenMXPlayer implements Runnable {
             count = extractor.getTrackCount();
             format = extractor.getTrackFormat(0);
             mime = format.getString(MediaFormat.KEY_MIME);
+//            mime = "audio/x-wav";
             sampleRate = format.getInteger(MediaFormat.KEY_SAMPLE_RATE);
             channels = format.getInteger(MediaFormat.KEY_CHANNEL_COUNT);
             // if duration is 0, we are probably playing a live stream
@@ -264,7 +264,9 @@ public class OpenMXPlayer implements Runnable {
         try {
             codec = MediaCodec.createDecoderByType(mime);
 //            codec = MediaCodec.createByCodecName("OMX.google.raw.decoder");
+//            codec = MediaCodec.createByCodecName("OMX.google.aac.decoder");
 //            codec = MediaCodec.createByCodecName("OMX.SEC.aac.enc");
+//            codec = MediaCodec.createByCodecName("OMX.qcom.audio.decoder.aac");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -306,10 +308,11 @@ public class OpenMXPlayer implements Runnable {
             readBuffer(sawInputEOS, codecInputBuffers, kTimeOutUs, info);
             // decode to PCM and push it to the AudioTrack player
             int res = codec.dequeueOutputBuffer(info, kTimeOutUs);
+//            info.set(info.offset, info.size, info.presentationTimeUs, info.flags);
             Log.e("angle", "res " + info.size + " " + res);
             //
             if (res >= 0) {
-//                info.set(info.offset, info.size * channels, info.presentationTimeUs, info.flags);
+
                 if (info.size > 0) {
                     noOutputCounter = 0;
                 }

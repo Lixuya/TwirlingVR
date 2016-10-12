@@ -23,6 +23,7 @@ import com.twirling.SDTL.model.DownloadJson;
 import com.twirling.SDTL.model.Elements;
 import com.twirling.SDTL.model.VideoItem;
 import com.twirling.SDTL.player.OpenMXPlayer;
+import com.twirling.SDTL.utils.DeviceUtils;
 import com.twirling.SDTL.utils.FileUtil;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -85,7 +86,10 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         jsonName = name + "data.json";
         loadJson(jsonName);
         //
-        boolean isWave = videoItem.getVrAudio() == 12 || videoItem.getVrAudio() == 0 || channels == 8;
+        boolean isWave = videoItem.getVrAudio() == 12
+                || videoItem.getVrAudio() == 0
+                || channels == 8
+                || DeviceUtils.getDeviceInfo().deviceBrand.equals("samsung");
         if (isWave) {
             audioPath = Constants.URI_DOWNLOAD_LOCAL + name + "sound.wav";
         } else if (videoItem.getVrAudio() == 3) {

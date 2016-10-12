@@ -17,7 +17,12 @@ public class RealmHelper {
     private Realm realm = null;
 
     private RealmHelper() {
-        RealmConfiguration realmConfig = new RealmConfiguration.Builder(App.getInst().getApplicationContext()).build();
+        Realm.init(App.getInst().getApplicationContext());
+        RealmConfiguration realmConfig = new RealmConfiguration.Builder()
+                .deleteRealmIfMigrationNeeded()
+//                .schemaVersion(2) // Must be bumped when the schema changes
+//                .migration(new MyRealmMigration()) // Migration to run instead of throwing an exception
+                .build();
         Realm.setDefaultConfiguration(realmConfig);
         realm = Realm.getDefaultInstance();
     }
