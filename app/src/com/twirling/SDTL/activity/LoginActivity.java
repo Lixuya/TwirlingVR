@@ -27,9 +27,10 @@ import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by 谢秋鹏 on 2016/8/5.
+ * Created by xieqi on 2016/10/12.
  */
-public class LoginActivtity extends AppCompatActivity {
+
+public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.edt_cellphone)
     EditText edt_cellphone;
 
@@ -55,6 +56,7 @@ public class LoginActivtity extends AppCompatActivity {
                 });
     }
 
+
     private void login() {
         final String mobile = edt_cellphone.getText().toString();
         String password = edt_password.getText().toString();
@@ -68,27 +70,27 @@ public class LoginActivtity extends AppCompatActivity {
                     @Override
                     public void call(DataArray dataArray) {
                         if (dataArray.getStatus() == 200) {
-                            Toast.makeText(LoginActivtity.this, "登陆成功", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "登陆成功", Toast.LENGTH_SHORT).show();
                             Constants.USER_MOBILE = mobile;
                             Constants.USER_IMAGE = FontAwesome.Icon.faw_mobile;
                             SPUtil.setUserMobile(mobile);
                             SPUtil.setIsLogin(true);
                             finish();
                         } else if (dataArray.getStatus() == 400) {
-                            Toast.makeText(LoginActivtity.this, "账号密码错误", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "账号密码错误", Toast.LENGTH_SHORT).show();
                         } else if (dataArray.getStatus() == -1) {
-                            Toast.makeText(LoginActivtity.this, "手机号密码不能为空", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "手机号密码不能为空", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        Log.e("LoginActivity", throwable.toString());
+                        Log.e("WXEntryActivity", throwable.toString());
                     }
                 }, new Action0() {
                     @Override
                     public void call() {
-                        // Toast.makeText(LoginActivtity.this, dataArray.toString(), Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(WXEntryActivity.this, dataArray.toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }

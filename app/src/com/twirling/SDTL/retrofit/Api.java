@@ -4,6 +4,7 @@ package com.twirling.SDTL.retrofit;
 import com.twirling.SDTL.model.DataArray;
 import com.twirling.SDTL.model.LiveItem;
 import com.twirling.SDTL.model.VideoItem;
+import com.twirling.SDTL.oauth.WXBack;
 
 import java.util.Map;
 
@@ -25,4 +26,10 @@ public interface Api {
 
     @GET("Login/login")
     Observable<DataArray> login(@QueryMap Map<String, Object> params);
+
+    @GET("Login/login")
+    Observable<DataArray> loginWX(@QueryMap Map<String, Object> params);
+
+    @GET("https://api.weixin.qq.com/sns/oauth2/access_token")
+    Observable<WXBack> WXConfirm(@QueryMap Map<String, Object> params);
 }

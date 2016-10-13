@@ -22,7 +22,7 @@ public class SurroundAudio {
     private int channels = 0;
     private float[] metadata = null;
     private float[][] metadataFromJson = null;
-    private float postgain = 1f;
+    private float postgain = 0.6f;
 
     private SurroundAudio() {
     }

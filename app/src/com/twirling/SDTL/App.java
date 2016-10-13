@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -26,6 +27,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        CrashReport.initCrashReport(getApplicationContext(), "900055825", false);
         INS = this;
 //        Log.w("device", DeviceUtils.getDeviceInfo().toString());
         Logger.init("twirling").setLogLevel(BuildConfig.DEBUG ? LogLevel.FULL : LogLevel.NONE);

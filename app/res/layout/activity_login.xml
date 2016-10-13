@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:paddingLeft="28dp"
     android:paddingRight="28dp"
-    tools:context=".activity.LoginActivtity">
+    tools:context=".wxapi.WXEntryActivity">
 
     <ImageView
         android:id="@+id/logo"

@@ -138,7 +138,7 @@ public class HLSActivity extends AppCompatActivity {
                 }, new Action0() {
                     @Override
                     public void call() {
-                        // Toast.makeText(LoginActivtity.this, dataArray.toString(), Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(WXEntryActivity.this, dataArray.toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }

@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onProfileImageClick(View view, IProfile profile, boolean current) {
                         if (Constants.USER_MOBILE == Constants.USER_MOBILE_DEFAULT) {
-                            Intent intent = new Intent(MainActivity.this, LoginActivtity.class);
+                            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                             startActivity(intent);
                         } else {
                             dialog2.setMessage("确定登出账户吗？");

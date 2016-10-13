@@ -7,6 +7,8 @@ import java.util.List;
  */
 public class DataArray<T> {
     private int status = 0;
+
+
     private String msg = "";
     private List<T> data = null;
 
@@ -24,6 +26,10 @@ public class DataArray<T> {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getMsg() {
+        return msg;
     }
 
     @Override
