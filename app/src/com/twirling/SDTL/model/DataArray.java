@@ -7,8 +7,6 @@ import java.util.List;
  */
 public class DataArray<T> {
     private int status = 0;
-
-
     private String msg = "";
     private List<T> data = null;
 
@@ -34,6 +32,6 @@ public class DataArray<T> {
 
     @Override
     public String toString() {
-        return msg.toString() + "  " + status + " " + data.toString();
+        return msg.toString() + "  " + status + " " + data.size();
     }
 }

@@ -27,7 +27,7 @@ public interface Api {
     @GET("Login/login")
     Observable<DataArray> login(@QueryMap Map<String, Object> params);
 
-    @GET("Login/login")
+    @GET("Login/loginWX")
     Observable<DataArray> loginWX(@QueryMap Map<String, Object> params);
 
     @GET("https://api.weixin.qq.com/sns/oauth2/access_token")

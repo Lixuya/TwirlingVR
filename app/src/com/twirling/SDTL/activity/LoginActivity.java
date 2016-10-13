@@ -56,7 +56,6 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-
     private void login() {
         final String mobile = edt_cellphone.getText().toString();
         String password = edt_password.getText().toString();
