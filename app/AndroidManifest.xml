@@ -62,7 +62,8 @@
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent" />
 
         <service android:name=".download.DownloadService" />
         <receiver android:name=".download.DownloadReceiver">

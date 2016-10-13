@@ -84,16 +84,15 @@ public class LoginWX {
                                             Constants.USER_MOBILE = "";
                                             Constants.USER_IMAGE = FontAwesome.Icon.faw_wechat;
                                             SPUtil.setIsLogin(true);
+                                            activity.finish();
                                         } else if (dataArray.getStatus() == 400) {
                                             Toast.makeText(activity, dataArray.getMsg(), Toast.LENGTH_SHORT).show();
                                         }
-                                        activity.finish();
                                     }
                                 }, new Action1<Throwable>() {
                                     @Override
                                     public void call(Throwable throwable) {
                                         Logger.d(throwable.toString());
-                                        activity.finish();
                                     }
                                 });
                     }

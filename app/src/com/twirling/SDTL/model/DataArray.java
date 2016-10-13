@@ -32,6 +32,6 @@ public class DataArray<T> {
 
     @Override
     public String toString() {
-        return msg.toString() + "  " + status + " " + data.size();
+        return msg.toString() + "  " + status + " " + data;
     }
 }
