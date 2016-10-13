@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,26 +11,21 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.mikepenz.crossfadedrawerlayout.view.CrossfadeDrawerLayout;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.itemanimators.AlphaCrossFadeAnimator;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.MiniDrawer;
-import com.mikepenz.materialdrawer.interfaces.ICrossfader;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
-import com.mikepenz.materialdrawer.model.interfaces.Nameable;
-import com.mikepenz.materialdrawer.util.DrawerUIUtils;
-import com.mikepenz.materialize.util.UIUtils;
 import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.R;
 import com.twirling.SDTL.adapter.ViewPagerAdapter;
@@ -156,11 +150,8 @@ public class MainActivity extends AppCompatActivity {
         result = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
+                .withItemAnimator(new AlphaCrossFadeAnimator())
                 .withHasStableIds(true)
-                .withDrawerLayout(R.layout.crossfade_drawer)
-                .withDrawerWidthDp(72)
-                .withGenerateMiniDrawer(true)
-                //set the AccountHeader we created earlier for the header
                 .withAccountHeader(headerResult)
                 .addDrawerItems(
                         new PrimaryDrawerItem().withName(R.string.download).withIcon(FontAwesome.Icon.faw_cloud_download).withIdentifier(1),
@@ -201,50 +192,12 @@ public class MainActivity extends AppCompatActivity {
                                 webFragment.loadPage(position);
                                 break;
                         }
-                        if (drawerItem instanceof Nameable) {
-//                            Toast.makeText(getBaseContext(), ((Nameable) drawerItem).getName().getText(getBaseContext()), Toast.LENGTH_SHORT).show();
-                        }
-                        //we do not consume the event and want the Drawer to continue with the event chain
                         return false;
                     }
                 })
                 .withSavedInstance(savedInstanceState)
                 .withShowDrawerOnFirstLaunch(true)
                 .build();
-
-
-        //get the CrossfadeDrawerLayout which will be used as alternative DrawerLayout for the Drawer
-        //the CrossfadeDrawerLayout library can be found here: https://github.com/mikepenz/CrossfadeDrawerLayout
-        crossfadeDrawerLayout = (CrossfadeDrawerLayout) result.getDrawerLayout();
-        //define maxDrawerWidth
-        crossfadeDrawerLayout.setMaxWidthPx(DrawerUIUtils.getOptimalDrawerWidth(this));
-        //
-        //add second view (which is the miniDrawer)
-        MiniDrawer miniResult = result.getMiniDrawer();
-        //define the crossfader to be used with the miniDrawer. This is required to be able to automatically toggle open / close
-        miniResult.withCrossFader(new ICrossfader() {
-            @Override
-            public void crossfade() {
-                boolean isFaded = isCrossfaded();
-                crossfadeDrawerLayout.crossfade(400);
-
-                //only close the drawer if we were already faded and want to close it now
-                if (isFaded) {
-                    result.getDrawerLayout().closeDrawer(GravityCompat.START);
-                }
-            }
-
-            @Override
-            public boolean isCrossfaded() {
-                return crossfadeDrawerLayout.isCrossfaded();
-            }
-        });
-        //build the view for the MiniDrawer
-        View view = miniResult.build(this);
-        //set the background of the MiniDrawer as this would be transparent
-        view.setBackgroundColor(UIUtils.getThemeColorFromAttrOrRes(this, com.mikepenz.materialdrawer.R.attr.material_drawer_background, com.mikepenz.materialdrawer.R.color.material_drawer_background));
-        //we do not have the MiniDrawer view during CrossfadeDrawerLayout creation so we will add it here
-        crossfadeDrawerLayout.getSmallView().addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     }
 
     @Override
