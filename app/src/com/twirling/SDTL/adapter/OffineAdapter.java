@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.orhanobut.logger.Logger;
 import com.twirling.SDTL.App;
 import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.R;
@@ -94,6 +95,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
                                            }, new Action1<Throwable>() {
                                                @Override
                                                public void call(Throwable throwable) {
+                                                   Logger.e(throwable.toString());
                                                }
                                            }
                                 );
@@ -116,6 +118,11 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
                                         FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "data.json"));
                                         FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "image.jpg"));
                                         FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + videoName));
+                                    }
+                                }, new Action1<Throwable>() {
+                                    @Override
+                                    public void call(Throwable throwable) {
+                                        Logger.e(throwable.toString());
                                     }
                                 });
 

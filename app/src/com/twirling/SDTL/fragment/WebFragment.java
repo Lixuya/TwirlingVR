@@ -51,8 +51,13 @@ public class WebFragment extends Fragment {
         return rootView;
     }
 
+    @SuppressWarnings("ResourceType")
     @Override
     public void onStart() {
+        String url = "http://yun.twirlingvr.com/index.php";
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1);  // , 1是可选写的
+        lp.setMargins(0, -200, 0, 0);
+        webView.loadUrl(url);
         super.onStart();
     }
 
@@ -67,7 +72,7 @@ public class WebFragment extends Fragment {
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1);  // , 1是可选写的
         switch (index) {
             case 3:
-                url = "http://yun.twirlingvr.com";
+                url = "http://yun.twirlingvr.com/index.php";
                 lp.setMargins(0, -200, 0, 0);
                 break;
             case 4:
