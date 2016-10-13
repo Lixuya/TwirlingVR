@@ -92,15 +92,12 @@ public class MainActivity extends AppCompatActivity {
                 if (pageIndex == 0) {
                     title = "在线";
                     result.setSelection(1);
-                    result.getMiniDrawer().setSelection(1);
                 } else if (pageIndex == 1) {
                     title = "本地";
                     result.setSelection(2);
-                    result.getMiniDrawer().setSelection(2);
                 } else if (pageIndex == 2) {
                     title = "关于";
                     result.setSelection(3);
-                    result.getMiniDrawer().setSelection(3);
                 }
                 try {
                     menuItem.setTitle(title);
@@ -158,7 +155,6 @@ public class MainActivity extends AppCompatActivity {
                         new PrimaryDrawerItem().withName(R.string.local).withIcon(FontAwesome.Icon.faw_play_circle).withIdentifier(2),
                         new PrimaryDrawerItem().withName(R.string.homepage).withIcon(FontAwesome.Icon.faw_home).withIdentifier(3),
                         new PrimaryDrawerItem().withName(R.string.hls).withIcon(GoogleMaterial.Icon.gmd_comment_video).withIdentifier(4),
-//                        new PrimaryDrawerItem().withName(R.string.atmos).withIcon(FontAwesome.Icon.faw_headphones).withIdentifier(3),
                         new SectionDrawerItem().withName(R.string.drawer_item_section_header),
                         new SecondaryDrawerItem().withName(R.string.audio).withIcon(FontAwesome.Icon.faw_headphones).withIdentifier(5),
                         new SecondaryDrawerItem().withName(R.string.products).withIcon(GoogleMaterial.Icon.gmd_playlist_plus).withIdentifier(6),
@@ -188,8 +184,8 @@ public class MainActivity extends AppCompatActivity {
                             case 8:
                             case 9:
                             default:
-                                viewPager.setCurrentItem(2);
                                 webFragment.loadPage(position);
+                                viewPager.setCurrentItem(2);
                                 break;
                         }
                         return false;
