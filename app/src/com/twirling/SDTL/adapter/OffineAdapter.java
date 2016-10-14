@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.jakewharton.rxbinding.view.RxView;
 import com.twirling.SDTL.App;
 import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.R;
@@ -27,6 +28,7 @@ import com.twirling.SDTL.utils.FileUtil;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,23 +63,32 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
         String path = Constants.PATH_RESOURCE + item.getFolder() + Constants.PAPH_IMAGE + item.getImage();
         Glide.with(holder.itemView.getContext()).load(path).into(holder.iv_background);
         holder.tv_title.setText(item.getName());
-        holder.iv_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 删除本地文件
-                new ModuleAlertDialog(App.getInst().getCurrentShowActivity()) {
+        RxView.clicks(holder.iv_delete)
+                .throttleFirst(2, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Void>() {
                     @Override
-                    protected void onConfirm() {
-                        deletefile(item, holder);
-                        //
-                        RealmHelper.getIns().deleteVideoItem(item);
-                        datas.clear();
-                        datas.addAll(RealmHelper.getIns().selectVideoList());
-                        notifyDataSetChanged();
+                    public void call(Void aVoid) {
+                        // 删除本地文件
+                        new ModuleAlertDialog(App.getInst().getCurrentShowActivity()) {
+                            @Override
+                            protected void onConfirm() {
+                                deletefile(item, holder);
+                                //
+                                RealmHelper.getIns().deleteVideoItem(item);
+                                datas.clear();
+                                datas.addAll(RealmHelper.getIns().selectVideoList());
+                                notifyDataSetChanged();
+                            }
+                        }.setMessage("确定删除 " + item.getName() + " 吗");
                     }
-                }.setMessage("确定删除 " + item.getName() + " 吗");
-            }
-        });
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Log.e(getClass() + "", throwable.toString());
+                    }
+                });
         holder.cv_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {//
@@ -180,7 +191,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
                 .filter(new Func1<VideoItem, Boolean>() {
                     @Override
                     public Boolean call(VideoItem item) {
-                        return holder.downloadId == 1 && item.getAppAndroidOffline().length() != 0;
+                        return holder.downloadId == 1 && androidOffline.length() != 0;
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
