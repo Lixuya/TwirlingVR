@@ -1,8 +1,10 @@
 package com.twirling.SDTL.data;
 
 import com.twirling.SDTL.App;
+import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.model.VideoItem;
 
+import java.io.File;
 import java.util.List;
 
 import io.realm.Realm;
@@ -116,5 +118,14 @@ public class RealmHelper {
         VideoItem videoItem = Realm.getDefaultInstance().where(VideoItem.class).equalTo("AppAndroidOnline", videoName).findFirst();
         videoItem.deleteFromRealm();
         realm.commitTransaction();
+    }
+
+    public void exportDatabase() {
+        File exportRealmFile = new File(Constants.PAPH_DOWNLOAD_LOCAL, "export.realm");
+        if (exportRealmFile.exists()) {
+            exportRealmFile.delete();
+        }
+        realm.writeCopyTo(exportRealmFile);
+        realm.close();
     }
 }

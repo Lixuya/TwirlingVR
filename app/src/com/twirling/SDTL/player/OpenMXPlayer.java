@@ -31,6 +31,7 @@ import android.media.MediaExtractor;
 import android.media.MediaFormat;
 import android.util.Log;
 
+import com.orhanobut.logger.Logger;
 import com.twirling.audio.AudioProcess;
 
 import java.io.IOException;
@@ -303,13 +304,13 @@ public class OpenMXPlayer implements Runnable {
             // pause implementation
             waitPlay();
             noOutputCounter++;
-            Log.w("angle", "noOutputCounter " + noOutputCounter + " " + info.size);
+            Logger.w("noOutputCounter " + noOutputCounter + " " + info.size);
             // read a buffer before feeding it to the decoder
             readBuffer(sawInputEOS, codecInputBuffers, kTimeOutUs, info);
             // decode to PCM and push it to the AudioTrack player
             int res = codec.dequeueOutputBuffer(info, kTimeOutUs);
 //            info.set(info.offset, info.size, info.presentationTimeUs, info.flags);
-            Log.e("angle", "res " + info.size + " " + res);
+            Logger.e("res " + info.size + " " + res);
             //
             if (res >= 0) {
 
@@ -336,7 +337,7 @@ public class OpenMXPlayer implements Runnable {
                 Log.w(LOG_TAG, "loopNum " + loopNum);
                 // short 双声道
                 float writeSize = chucksize / channels / 2 * 2;
-                float infoSize = chunk.length / channels / 2 * 2;
+                float infoSize = info.size / channels / 2 * 2;
                 float diff = (chucksize - chunk.length) / channels / 2 * 2;
                 Log.w(LOG_TAG, "writeSize " + writeSize
                         + " infoSize " + infoSize

@@ -47,14 +47,9 @@ public class MainActivity extends AppCompatActivity {
     private ModuleAlertDialog dialog2 = null;
     private MenuItem menuItem;
 
-    private void onToolbarItemClicked(MenuItem menuItem) {
-//                startActivity(new Intent(MainActivity.this, ListShowActivity.class));
-    }
-
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-//        ButterKnife.bind(this);
         //
         dialog = new ModuleAlertDialog(MainActivity.this);
         dialog2 = new ModuleAlertDialog(MainActivity.this) {
@@ -72,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         //
-//      RxToolbar.itemClicks(toolbar).subscribe(this::onToolbarItemClicked);
         webFragment = new WebFragment();
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         FragmentManager manager = this.getSupportFragmentManager();
@@ -122,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
         headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
                 .addProfiles(profile)
+                .withOnlyMainProfileImageVisible(true)
                 .withHeaderBackground(R.drawable.fl_drawer_head)
                 .withSavedInstance(savedInstanceState)
                 .withOnAccountHeaderProfileImageListener(new AccountHeader.OnAccountHeaderProfileImageListener() {
@@ -211,6 +206,21 @@ public class MainActivity extends AppCompatActivity {
         if (menuItem == null) {
             menuItem = menu.getItem(0);
         }
+//        menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+//            @Override
+//            public boolean onMenuItemClick(MenuItem item) {
+//                Observable.just("")
+//                        .throttleFirst(2, TimeUnit.SECONDS)
+//                        .subscribeOn(AndroidSchedulers.mainThread())
+//                        .subscribe(new Action1<String>() {
+//                            @Override
+//                            public void call(String s) {
+//                                RealmHelper.getIns().exportDatabase();
+//                            }
+//                        });
+//                return true;
+//            }
+//        });
         return true;
     }
 
