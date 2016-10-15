@@ -14,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.mikepenz.crossfadedrawerlayout.view.CrossfadeDrawerLayout;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -166,8 +165,9 @@ public class MainActivity extends AppCompatActivity {
                         new PrimaryDrawerItem().withName(R.string.homepage).withIcon(FontAwesome.Icon.faw_home).withIdentifier(3),
                         new PrimaryDrawerItem().withName(R.string.hls).withIcon(GoogleMaterial.Icon.gmd_comment_video).withIdentifier(4),
                         new SectionDrawerItem().withName(R.string.drawer_item_section_header),
-                        new SecondaryDrawerItem().withName(R.string.audio).withIcon(FontAwesome.Icon.faw_headphones).withIdentifier(5),
-                        new SecondaryDrawerItem().withName(R.string.products).withIcon(GoogleMaterial.Icon.gmd_playlist_plus).withIdentifier(6),
+
+                        new SecondaryDrawerItem().withName(R.string.products).withIcon(GoogleMaterial.Icon.gmd_playlist_plus).withIdentifier(5),
+                        new SecondaryDrawerItem().withName(R.string.audio).withIcon(FontAwesome.Icon.faw_headphones).withIdentifier(6),
                         new SecondaryDrawerItem().withName(R.string.blog).withIcon(FontAwesome.Icon.faw_desktop).withIdentifier(7),
                         new SecondaryDrawerItem().withName(R.string.cloud).withIcon(FontAwesome.Icon.faw_cloud).withIdentifier(8)
 //                        new SecondaryDrawerItem().withName(R.string.contact).withIcon(GoogleMaterial.Icon.gmd_code_smartphone).withIdentifier(9)
@@ -194,8 +194,8 @@ public class MainActivity extends AppCompatActivity {
                             case 8:
                             case 9:
                             default:
-                                webFragment.loadPage(position);
                                 viewPager.setCurrentItem(2);
+                                webFragment.loadPage(position);
                                 break;
                         }
                         return false;

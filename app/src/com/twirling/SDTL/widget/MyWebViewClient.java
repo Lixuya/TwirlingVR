@@ -8,7 +8,6 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.LinearLayout;
 
 /**
  * Created by 谢秋鹏 on 2015/7/21.
@@ -37,12 +36,9 @@ public class MyWebViewClient extends WebViewClient {
     }
 
     @Override
-    public boolean shouldOverrideUrlLoading(WebView view, String url) {
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1);
-        lp.setMargins(0, 0, 0, 0);
-        view.setLayoutParams(lp);
-        view.loadUrl(url);
-        return true;
+    public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+
+        return super.shouldOverrideUrlLoading(view, request);
     }
 
     @Override

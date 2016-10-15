@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
@@ -18,6 +19,7 @@ import com.twirling.SDTL.widget.MyWebViewClient;
  */
 public class WebFragment extends Fragment {
     private WebView webView = null;
+    private String url = "";
 
     @Nullable
     @Override
@@ -36,8 +38,6 @@ public class WebFragment extends Fragment {
         String cacheDirPath = this.getContext().getCacheDir().getAbsolutePath() + "/webViewCache ";
         // 开启 database storage API 功能
         webSettings.setDatabaseEnabled(true);
-        // 设置数据库缓存路径
-        webSettings.setGeolocationDatabasePath(cacheDirPath);
         // 开启Application H5 Caches 功能
         webSettings.setAppCacheEnabled(true);
         // 设置Application Caches 缓存目录
@@ -46,18 +46,42 @@ public class WebFragment extends Fragment {
 //      this.addJavascriptInterface(new MyJavaScriptInterface(this), "WidgetWebView");
         MyWebViewClient client = new MyWebViewClient();
         webView.setWebViewClient(client);
+        webView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                boolean isHandle = false;
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_HOVER_ENTER:
+                        isHandle = true;
+                        break;
+                    case MotionEvent.ACTION_DOWN:
+                        isHandle = false;
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        isHandle = true;
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        isHandle = true;
+                        break;
+                    case MotionEvent.ACTION_SCROLL:
+                        isHandle = false;
+                        break;
+                }
+                return isHandle;
+            }
+        });
+        url = "http://yun.twirlingvr.com/index.php";
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1);  // , 1是可选写的
+        //noinspection ResourceType
+        lp.setMargins(0, -200, 0, 0);
+        webView.loadUrl(url);
         //
         loadPage(4);
         return rootView;
     }
 
-    @SuppressWarnings("ResourceType")
     @Override
     public void onStart() {
-        String url = "http://yun.twirlingvr.com/index.php";
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1);  // , 1是可选写的
-        lp.setMargins(0, -200, 0, 0);
-        webView.loadUrl(url);
         super.onStart();
     }
 
@@ -68,21 +92,20 @@ public class WebFragment extends Fragment {
 
     @SuppressWarnings("ResourceType")
     public void loadPage(int index) {
-        String url = "";
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1);  // , 1是可选写的
+        // 1是可选写的
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT, 1);
         switch (index) {
             case 3:
                 url = "http://yun.twirlingvr.com/index.php";
                 lp.setMargins(0, -200, 0, 0);
                 break;
-            case 4:
-            case 5:
             case 6:
-                url = "http://yun.twirlingvr.com/audio.html?ch=707562";
+                url = "http://yun.twirlingvr.com/index.php/home/index/product.html";
                 lp.setMargins(0, -220, 0, 0);
                 break;
             case 7:
-                url = "http://www.twirlingvr.com/service.html";
+                url = "http://yun.twirlingvr.com/index.php/home/audio/audioList.html";
                 lp.setMargins(0, -220, 0, 0);
                 break;
             case 8:
@@ -90,11 +113,7 @@ public class WebFragment extends Fragment {
                 lp.setMargins(0, 0, 0, 0);
                 break;
             case 9:
-                url = "http://yun.twirlingvr.com";
-                lp.setMargins(0, -250, 0, 0);
-                break;
-            case 10:
-                url = "http://www.twirlingvr.com/index.html#contact";
+                url = "http://yun.twirlingvr.com/index.php/home/index/about.html";
                 lp.setMargins(0, -250, 0, 0);
                 break;
             default:
