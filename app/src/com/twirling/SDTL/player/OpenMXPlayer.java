@@ -50,6 +50,9 @@ public class OpenMXPlayer implements Runnable {
     private Context mContext;
     private boolean stop = false;
     private AudioProcess audioProcess = null;
+    //
+    private byte[] byteArray = new byte[32768 * 2];
+    private int byteArrayOffset = 0;
 
     private SurroundAudio daa = null;
     String mime = null;
@@ -300,7 +303,6 @@ public class OpenMXPlayer implements Runnable {
         ByteBuffer[] codecOutputBuffers = codec.getOutputBuffers();
         //
         MediaCodec.BufferInfo info = new MediaCodec.BufferInfo();
-//        info.set(info.offset, 33792, info.presentationTimeUs, info.flags);
         //
         final long kTimeOutUs = 1000;
         boolean sawInputEOS = false;
@@ -318,11 +320,9 @@ public class OpenMXPlayer implements Runnable {
             readBuffer(sawInputEOS, codecInputBuffers, kTimeOutUs, info);
             // decode to PCM and push it to the AudioTrack player
             int res = codec.dequeueOutputBuffer(info, kTimeOutUs);
-            info.set(info.offset, 33792, info.presentationTimeUs, info.flags);
-            Logger.e("res " + info.size + " " + res);
+            Logger.e("res " + res + " info.size " + info.size);
             //
             if (res >= 0) {
-
                 if (info.size > 0) {
                     noOutputCounter = 0;
                 }
@@ -330,41 +330,30 @@ public class OpenMXPlayer implements Runnable {
                 ByteBuffer buf = codecOutputBuffers[outputBufIndex];
                 Log.i(LOG_TAG, "buf capacity " + buf.capacity() + " info.size " + info.size);
                 final byte[] chunk = new byte[info.size];
-                //
-                int deno = 2 * channels * FRAME_LENGTH;
-                int chucksize = ((int) Math.ceil(info.size / (float) deno)) * deno;
-                byte[] chunk2 = new byte[chucksize];
-                //输出10个0
-//                for (int j = 0; j < 10; j++) {
-//                    System.out.println(chunk2[chucksize - j - 1]);
-//                }
-                //
                 buf.get(chunk);
                 buf.clear();
-                System.arraycopy(chunk, 0, chunk2, 0, chunk.length);
                 //
-                Log.w(LOG_TAG, "chunksize " + chunk.length
-                        + " chunk2size " + chunk2.length
-                        + " diffsize " + (chunk2.length - chunk.length));
-                int loopNum = chucksize / deno;
+                System.arraycopy(chunk, 0, byteArray, byteArrayOffset, chunk.length);
+                int datasize = info.size + byteArrayOffset;
+                int deno = 2 * channels * FRAME_LENGTH;
+                int infoSizeAligned = datasize / deno * deno;
+                byteArrayOffset = datasize - infoSizeAligned;
+                //
+                Log.w(LOG_TAG, "infoSizeAligned " + infoSizeAligned);
+                int loopNum = infoSizeAligned / 2 / channels / FRAME_LENGTH;
                 Log.w(LOG_TAG, "loopNum " + loopNum);
-                // short 双声道
-                float chnnChunk2 = chucksize / channels / 2 * 2;
-                float chnnChunk = info.size / channels / 2 * 2;
-                float diff = (chucksize - chunk.length) / channels / 2 * 2;
-                Log.w(LOG_TAG, "writeSize " + chnnChunk2
-                        + " infoSize " + chnnChunk
-                        + " diff " + diff);
+                final byte[] chunkAligned = new byte[infoSizeAligned];
+                System.arraycopy(byteArray, 0, chunkAligned, 0, infoSizeAligned);
                 // TODO
-                short[] audio = daa.byte2Short(chunk2, loopNum);
+                short[] audio = daa.byte2Short(chunkAligned, loopNum);
                 daa.setAudioPlayTime(presentationTimeUs / 1000f / 1000f);
                 daa.audioProcess(audio);
-
+                // 剩下的部分
+                System.arraycopy(byteArray, infoSizeAligned, byteArray, 0, byteArrayOffset);
                 // 播放
                 if (chunk.length > 0) {
                     int loop = loopNum * FRAME_LENGTH * 2;
-                    audioTrack.write(audio, 0, (int) chnnChunk);
-//                    audioTrack.write(chunk, 0, chunk.length);
+                    audioTrack.write(audio, 0, loop);
                 }
                 if ((info.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) {
                     Log.d(LOG_TAG, "end while");

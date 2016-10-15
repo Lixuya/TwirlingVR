@@ -204,6 +204,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
                         FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "audio.mp4"));
                         FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "data.json"));
                         FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "image.jpg"));
+                        FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "sound.wav"));
                         FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + androidOffline));
                         FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + videoName));
                     }
