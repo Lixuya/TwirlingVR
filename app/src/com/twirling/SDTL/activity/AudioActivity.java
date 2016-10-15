@@ -160,7 +160,6 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
 
             @Override
             public void onCompletion() {
-                video_view.seekTo(0);
             }
         });
     }

@@ -5,7 +5,9 @@ buildscript {
         setup = [compileSdk: 24,
                  buildTools: "24.0.3",
                  minSdk    : 19,
-                 targetSdk : 24]
+                 targetSdk : 24,
+                 vcode     : 3,
+                 vname     : "2.2.0"]
         versions = [supportLib: "24.2.1"]
     }
     repositories {

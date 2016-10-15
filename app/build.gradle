@@ -13,8 +13,8 @@ android {
         applicationId "com.twirling.SDTL"
         minSdkVersion setup.minSdk
         targetSdkVersion setup.targetSdk
-        versionCode 3
-        versionName "2.2.0"
+        versionCode setup.vcode
+        versionName setup.vname
 //        jackOptions {
 //            enabled true
 //        }
