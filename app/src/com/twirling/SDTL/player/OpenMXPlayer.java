@@ -300,6 +300,7 @@ public class OpenMXPlayer implements Runnable {
         ByteBuffer[] codecOutputBuffers = codec.getOutputBuffers();
         //
         MediaCodec.BufferInfo info = new MediaCodec.BufferInfo();
+//        info.set(info.offset, 33792, info.presentationTimeUs, info.flags);
         //
         final long kTimeOutUs = 1000;
         boolean sawInputEOS = false;
@@ -317,7 +318,7 @@ public class OpenMXPlayer implements Runnable {
             readBuffer(sawInputEOS, codecInputBuffers, kTimeOutUs, info);
             // decode to PCM and push it to the AudioTrack player
             int res = codec.dequeueOutputBuffer(info, kTimeOutUs);
-//            info.set(info.offset, 33792, info.presentationTimeUs, info.flags);
+            info.set(info.offset, 33792, info.presentationTimeUs, info.flags);
             Logger.e("res " + info.size + " " + res);
             //
             if (res >= 0) {
@@ -440,8 +441,7 @@ public class OpenMXPlayer implements Runnable {
         int inputBufIndex = codec.dequeueInputBuffer(kTimeOutUs);
         Log.d(LOG_TAG, "inputBufIndex " + inputBufIndex);
         if (inputBufIndex >= 0) {
-            ByteBuffer dstBuf =
-                    codecInputBuffers[inputBufIndex];
+            ByteBuffer dstBuf = codecInputBuffers[inputBufIndex];
             Log.i(LOG_TAG, "dstBuf capacity " + dstBuf.capacity() + " offset " + info.offset);
             int sampleSize = extractor.readSampleData(dstBuf, info.offset);
             // TODO
