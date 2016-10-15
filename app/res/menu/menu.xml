@@ -6,6 +6,8 @@
 
     <item
         android:id="@+id/action_edit"
+        android:checkable="false"
+        android:enabled="false"
         android:orderInCategory="1"
         android:title="在线"
         app:showAsAction="ifRoom" />

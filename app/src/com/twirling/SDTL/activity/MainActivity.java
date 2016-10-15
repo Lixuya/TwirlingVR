@@ -1,6 +1,8 @@
 package com.twirling.SDTL.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v4.app.FragmentManager;
@@ -15,6 +17,7 @@ import android.view.View;
 import com.mikepenz.crossfadedrawerlayout.view.CrossfadeDrawerLayout;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.itemanimators.AlphaCrossFadeAnimator;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -40,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar = null;
     private AccountHeader headerResult = null;
     private Drawer result = null;
-    private CrossfadeDrawerLayout crossfadeDrawerLayout = null;
     private ViewPager viewPager = null;
     private WebFragment webFragment = null;
     private ModuleAlertDialog dialog = null;
@@ -83,18 +85,31 @@ public class MainActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 pageIndex = position;
                 String title = "";
+                Drawable icon = null;
                 if (pageIndex == 0) {
                     title = "在线";
+                    icon = new IconicsDrawable(MainActivity.this)
+                            .icon(FontAwesome.Icon.faw_cloud_download)
+                            .color(Color.parseColor("#DDFFFF"))
+                            .sizeDp(30);
                     result.setSelection(1);
                 } else if (pageIndex == 1) {
                     title = "本地";
+                    icon = new IconicsDrawable(MainActivity.this)
+                            .icon(FontAwesome.Icon.faw_play_circle)
+                            .color(Color.parseColor("#FFDDFF"))
+                            .sizeDp(24);
                     result.setSelection(2);
                 } else if (pageIndex == 2) {
                     title = "关于";
+                    icon = new IconicsDrawable(MainActivity.this)
+                            .icon(FontAwesome.Icon.faw_home)
+                            .color(Color.parseColor("#FFFFDD"))
+                            .sizeDp(24);
                     result.setSelection(3);
                 }
                 try {
-                    menuItem.setTitle(title);
+                    menuItem.setIcon(icon);
                 } catch (Exception e) {
                     Log.w("title", title);
                 }
@@ -200,28 +215,17 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
         menuItem = menu.findItem(R.id.action_edit);
         if (menuItem == null) {
             menuItem = menu.getItem(0);
         }
-//        menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-//            @Override
-//            public boolean onMenuItemClick(MenuItem item) {
-//                Observable.just("")
-//                        .throttleFirst(2, TimeUnit.SECONDS)
-//                        .subscribeOn(AndroidSchedulers.mainThread())
-//                        .subscribe(new Action1<String>() {
-//                            @Override
-//                            public void call(String s) {
-//                                RealmHelper.getIns().exportDatabase();
-//                            }
-//                        });
-//                return true;
-//            }
-//        });
-        return true;
+        Drawable icon = new IconicsDrawable(MainActivity.this)
+                .icon(FontAwesome.Icon.faw_cloud_download)
+                .color(Color.parseColor("#DDFFFF"))
+                .sizeDp(30);
+        menuItem.setIcon(icon);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

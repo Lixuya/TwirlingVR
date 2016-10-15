@@ -174,7 +174,7 @@ public class OpenMXPlayer implements Runnable {
         readTrackHeader();
         //
         audioProcess.Init(profileId, FRAME_LENGTH, channels, sampleRate);
-        audioProcess.Set(false, 0, false, false, 1.0f);
+        audioProcess.Set(false, 0, false, true, 1.0f);
         // configure AudioTrack
         int minSize = AudioTrack.getMinBufferSize(sampleRate,
                 AudioFormat.CHANNEL_OUT_STEREO,
@@ -213,11 +213,19 @@ public class OpenMXPlayer implements Runnable {
             channels = format.getInteger(MediaFormat.KEY_CHANNEL_COUNT);
             // if duration is 0, we are probably playing a live stream
             duration = format.getLong(MediaFormat.KEY_DURATION);
-            buffSize = format.getInteger(MediaFormat.KEY_MAX_INPUT_SIZE);
-            bitrate = format.getInteger(MediaFormat.KEY_BIT_RATE);
-//            format.setInteger(MediaFormat.KEY_MAX_INPUT_SIZE, 65541);
         } catch (Exception e) {
             Log.e(LOG_TAG, "Reading format parameters exception:" + e.getMessage());
+        }
+        try {
+            bitrate = format.getInteger(MediaFormat.KEY_BIT_RATE);
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "bitrate exception:" + e.getMessage());
+        }
+        try {
+//            format.setInteger(MediaFormat.KEY_MAX_INPUT_SIZE, channels * FRAME_LENGTH * 2 * 8);
+            buffSize = format.getInteger(MediaFormat.KEY_MAX_INPUT_SIZE);
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "buffSize exception:" + e.getMessage());
         }
         try {
             adt = format.getInteger(MediaFormat.KEY_IS_ADTS);
@@ -309,7 +317,7 @@ public class OpenMXPlayer implements Runnable {
             readBuffer(sawInputEOS, codecInputBuffers, kTimeOutUs, info);
             // decode to PCM and push it to the AudioTrack player
             int res = codec.dequeueOutputBuffer(info, kTimeOutUs);
-//            info.set(info.offset, info.size, info.presentationTimeUs, info.flags);
+//            info.set(info.offset, 33792, info.presentationTimeUs, info.flags);
             Logger.e("res " + info.size + " " + res);
             //
             if (res >= 0) {
@@ -325,6 +333,10 @@ public class OpenMXPlayer implements Runnable {
                 int deno = 2 * channels * FRAME_LENGTH;
                 int chucksize = ((int) Math.ceil(info.size / (float) deno)) * deno;
                 byte[] chunk2 = new byte[chucksize];
+                //输出10个0
+//                for (int j = 0; j < 10; j++) {
+//                    System.out.println(chunk2[chucksize - j - 1]);
+//                }
                 //
                 buf.get(chunk);
                 buf.clear();
@@ -336,11 +348,11 @@ public class OpenMXPlayer implements Runnable {
                 int loopNum = chucksize / deno;
                 Log.w(LOG_TAG, "loopNum " + loopNum);
                 // short 双声道
-                float writeSize = chucksize / channels / 2 * 2;
-                float infoSize = info.size / channels / 2 * 2;
+                float chnnChunk2 = chucksize / channels / 2 * 2;
+                float chnnChunk = info.size / channels / 2 * 2;
                 float diff = (chucksize - chunk.length) / channels / 2 * 2;
-                Log.w(LOG_TAG, "writeSize " + writeSize
-                        + " infoSize " + infoSize
+                Log.w(LOG_TAG, "writeSize " + chnnChunk2
+                        + " infoSize " + chnnChunk
                         + " diff " + diff);
                 // TODO
                 short[] audio = daa.byte2Short(chunk2, loopNum);
@@ -349,7 +361,8 @@ public class OpenMXPlayer implements Runnable {
 
                 // 播放
                 if (chunk.length > 0) {
-                    audioTrack.write(audio, 0, (int) infoSize);
+                    int loop = loopNum * FRAME_LENGTH * 2;
+                    audioTrack.write(audio, 0, (int) chnnChunk);
 //                    audioTrack.write(chunk, 0, chunk.length);
                 }
                 if ((info.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) {
@@ -427,10 +440,14 @@ public class OpenMXPlayer implements Runnable {
         int inputBufIndex = codec.dequeueInputBuffer(kTimeOutUs);
         Log.d(LOG_TAG, "inputBufIndex " + inputBufIndex);
         if (inputBufIndex >= 0) {
-            ByteBuffer dstBuf = codecInputBuffers[inputBufIndex];
+            ByteBuffer dstBuf =
+                    codecInputBuffers[inputBufIndex];
             Log.i(LOG_TAG, "dstBuf capacity " + dstBuf.capacity() + " offset " + info.offset);
-            // TODO
             int sampleSize = extractor.readSampleData(dstBuf, info.offset);
+            // TODO
+//            int deno = 2 * channels * FRAME_LENGTH;
+//            int chucksize = ((int) Math.ceil(sampleSize / (float) deno)) * deno;
+            //
             int index = extractor.getSampleTrackIndex();
             Log.w(LOG_TAG, "sampleSize " + sampleSize
                     + " index " + index);

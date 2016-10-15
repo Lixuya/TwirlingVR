@@ -92,7 +92,7 @@ public class SimpleVrVideoActivity extends AppCompatActivity {
 
             @Override
             public void onCompletion() {
-                videoWidgetView.seekTo(0);
+//                videoWidgetView.seekTo(0);
             }
         });
         //

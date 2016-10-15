@@ -22,7 +22,7 @@ public class SurroundAudio {
     private int channels = 0;
     private float[] metadata = null;
     private float[][] metadataFromJson = null;
-    private float postgain = 0.6f;
+    private float postgain = 0.3f;
 
     private SurroundAudio() {
     }
@@ -65,7 +65,7 @@ public class SurroundAudio {
             audioProcess.Process(yaw, pitch, audioInput, audioOutput, metadata);
             // 转成双声道
 //            for (ii = 0; ii < FRAME_LENGTH; ii++) {
-//                audioOutput[ii * 2] = audioInput[ii * channels];
+//                audioOutput[ii * 2] = audioInput[ii * channels + 0];
 //                audioOutput[ii * 2 + 1] = audioInput[ii * channels + 1];
 //            }
             for (ii = 0; ii < FRAME_LENGTH * 2; ii++) {
