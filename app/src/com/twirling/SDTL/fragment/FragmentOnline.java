@@ -39,8 +39,13 @@ public class FragmentOnline extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_online, container, false);
-        initView(rootView);
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        initView(getView());
+        super.onResume();
     }
 
     private void initView(View view) {
