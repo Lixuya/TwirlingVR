@@ -11,10 +11,9 @@ import android.os.Looper;
 import android.os.Message;
 
 import com.twirling.SDTL.App;
+import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.data.RealmHelper;
 import com.twirling.SDTL.model.VideoItem;
-import com.twirling.SDTL.Constants;
-import com.twirling.SDTL.utils.DeviceUtils;
 import com.twirling.SDTL.utils.TextUtil;
 
 /**
@@ -55,15 +54,17 @@ public class DownloadService extends IntentService {
             url = Constants.PATH_RESOURCE + videoItem.getFolder() + Constants.PAPH_VIDEO + videoName;
             mime = Constants.MIME_MP4;
             name = videoName;
-        } else if (DeviceUtils.getDeviceInfo().deviceBrand.equals("samsung")) {
+        } else {
+//        else if (DeviceUtils.getDeviceInfo().deviceBrand.equals("samsung")) {
             url = Constants.PATH_RESOURCE + videoItem.getFolder() + Constants.PAPH_DOWNLOAD + videoItem.getAppIOSOffline();
             mime = Constants.MIME_ZIP;
             name = videoItem.getAppAndroidOffline();
-        } else {
-            url = Constants.PATH_RESOURCE + videoItem.getFolder() + Constants.PAPH_DOWNLOAD + videoItem.getAppAndroidOffline();
-            mime = Constants.MIME_ZIP;
-            name = videoItem.getAppAndroidOffline();
         }
+//        else {
+//            url = Constants.PATH_RESOURCE + videoItem.getFolder() + Constants.PAPH_DOWNLOAD + videoItem.getAppAndroidOffline();
+//            mime = Constants.MIME_ZIP;
+//            name = videoItem.getAppAndroidOffline();
+//        }
         //
         if (!TextUtil.isValidate(url) || !TextUtil.isValidate(videoName)) {
             return;

@@ -90,7 +90,7 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
                 || videoItem.getVrAudio() == 0
                 || channels == 8
                 || DeviceUtils.getDeviceInfo().deviceBrand.equals("samsung");
-        if (isWave) {
+        if (true) {
             audioPath = Constants.URI_DOWNLOAD_LOCAL + name + "sound.wav";
         } else {
             audioPath = Constants.URI_DOWNLOAD_LOCAL + name + "audio.mp4";
