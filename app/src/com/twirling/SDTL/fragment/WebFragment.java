@@ -61,7 +61,7 @@ public class WebFragment extends Fragment {
                         isHandle = true;
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        isHandle = true;
+                        isHandle = false;
                         break;
                     case MotionEvent.ACTION_SCROLL:
                         isHandle = false;
