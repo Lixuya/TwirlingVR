@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 } else if (pageIndex == 1) {
                     title = "本地";
                     icon = new IconicsDrawable(MainActivity.this)
-                            .icon(FontAwesome.Icon.faw_play_circle)
+                            .icon(FontAwesome.Icon.faw_play_circle_o)
                             .color(Color.parseColor("#FFDDFF"))
                             .sizeDp(24);
                     result.setSelection(2);
@@ -161,16 +161,15 @@ public class MainActivity extends AppCompatActivity {
                 .withAccountHeader(headerResult)
                 .addDrawerItems(
                         new PrimaryDrawerItem().withName(R.string.download).withIcon(FontAwesome.Icon.faw_cloud_download).withIdentifier(1),
-                        new PrimaryDrawerItem().withName(R.string.local).withIcon(FontAwesome.Icon.faw_play_circle).withIdentifier(2),
+                        new PrimaryDrawerItem().withName(R.string.local).withIcon(FontAwesome.Icon.faw_play_circle_o).withIdentifier(2),
                         new PrimaryDrawerItem().withName(R.string.homepage).withIcon(FontAwesome.Icon.faw_home).withIdentifier(3),
-                        new PrimaryDrawerItem().withName(R.string.hls).withIcon(GoogleMaterial.Icon.gmd_comment_video).withIdentifier(4),
+                        new PrimaryDrawerItem().withName(R.string.hls).withIcon(GoogleMaterial.Icon.gmd_youtube_play).withIdentifier(4),
                         new SectionDrawerItem().withName(R.string.drawer_item_section_header),
 
                         new SecondaryDrawerItem().withName(R.string.products).withIcon(GoogleMaterial.Icon.gmd_playlist_plus).withIdentifier(5),
                         new SecondaryDrawerItem().withName(R.string.audio).withIcon(FontAwesome.Icon.faw_headphones).withIdentifier(6),
-                        new SecondaryDrawerItem().withName(R.string.blog).withIcon(FontAwesome.Icon.faw_desktop).withIdentifier(7),
-                        new SecondaryDrawerItem().withName(R.string.cloud).withIcon(FontAwesome.Icon.faw_cloud).withIdentifier(8)
-//                        new SecondaryDrawerItem().withName(R.string.contact).withIcon(GoogleMaterial.Icon.gmd_code_smartphone).withIdentifier(9)
+                        new SecondaryDrawerItem().withName(R.string.machine).withIcon(GoogleMaterial.Icon.gmd_comment_video).withIdentifier(7),
+                        new SecondaryDrawerItem().withName(R.string.contact).withIcon(GoogleMaterial.Icon.gmd_phone_ring).withIdentifier(8)
                 ) // add the items we want to use with our Drawer
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override

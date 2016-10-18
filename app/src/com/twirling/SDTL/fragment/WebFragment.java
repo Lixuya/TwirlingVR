@@ -52,17 +52,13 @@ public class WebFragment extends Fragment {
                 boolean isHandle = false;
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_HOVER_ENTER:
+                    case MotionEvent.ACTION_HOVER_EXIT:
+                    case MotionEvent.ACTION_HOVER_MOVE:
                         isHandle = true;
                         break;
                     case MotionEvent.ACTION_DOWN:
-                        isHandle = false;
-                        break;
                     case MotionEvent.ACTION_UP:
-                        isHandle = true;
-                        break;
                     case MotionEvent.ACTION_MOVE:
-                        isHandle = false;
-                        break;
                     case MotionEvent.ACTION_SCROLL:
                         isHandle = false;
                         break;
@@ -106,15 +102,15 @@ public class WebFragment extends Fragment {
                 break;
             case 7:
                 url = "http://yun.twirlingvr.com/index.php/home/audio/audioList.html";
-                lp.setMargins(0, -220, 0, 0);
+                lp.setMargins(0, -200, 0, 0);
                 break;
             case 8:
-                url = "http://www.twirlingvr.com/App_Web/blog/essaylist.html?ch=time";
-                lp.setMargins(0, 0, 0, 0);
+                url = "http://yun.twirlingvr.com/index.php/home/index/recording.html";
+                lp.setMargins(0, -220, 0, 0);
                 break;
             case 9:
                 url = "http://yun.twirlingvr.com/index.php/home/index/about.html";
-                lp.setMargins(0, -250, 0, 0);
+                lp.setMargins(0, -200, 0, 0);
                 break;
             default:
                 lp.setMargins(0, 0, 0, 0);

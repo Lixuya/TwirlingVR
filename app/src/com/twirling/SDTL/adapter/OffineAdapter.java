@@ -2,6 +2,8 @@ package com.twirling.SDTL.adapter;
 
 import android.app.DownloadManager;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,6 +16,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.jakewharton.rxbinding.view.RxView;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.twirling.SDTL.App;
 import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.R;
@@ -154,6 +158,11 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
         public ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            Drawable icon = new IconicsDrawable(view.getContext())
+                    .icon(FontAwesome.Icon.faw_trash_o)
+                    .color(Color.parseColor("#FFFFFF"))
+                    .sizeDp(25);
+            iv_delete.setImageDrawable(icon);
         }
     }
 

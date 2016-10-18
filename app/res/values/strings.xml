@@ -37,10 +37,9 @@
     <string name="local">本地播放</string>
     <string name="atmos">立体声</string>
     <string name="homepage">拓灵主页</string>
-    <string name="blog">拓灵博客</string>
+    <string name="machine">声场录制机</string>
     <string name="contact">联系我们</string>
     <string name="audio">全景声</string>
     <string name="products">产品与服务</string>
-    <string name="cloud">拓灵云服务</string>
     <string name="drawer_item_section_header">关于我们</string>
 </resources>
