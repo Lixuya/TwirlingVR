@@ -146,3 +146,17 @@ dependencies {
     //
     //    compile 'com.github.xieqiupeng:TwirlingPlayerSDK:1.5.7'
 }
+//task copyTaskWithPatterns(type: Copy) {
+//    from "${buildDir}/outputs/apk/"
+//    into "D:/TwirlingVR/"
+//    exclude { details ->
+//        details.file.name.endsWith('-unaligned.apk') ||
+//                details.file.name.endsWith('-unsigned.apk')
+//    }
+//    include "**/*.apk"
+//    println "apk copied. ${buildDir}"
+//}
+//
+//build.doLast {
+//    tasks.copyTaskWithPatterns.execute()
+//}
