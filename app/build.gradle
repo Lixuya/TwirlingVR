@@ -62,19 +62,19 @@ android {
 //        sourceCompatibility JavaVersion.VERSION_1_8
 //        targetCompatibility JavaVersion.VERSION_1_8
 //    }
-//    productFlavors {
-//        armv7 {
-//            ndk {
-//                abiFilter "armeabi-v7a"
-//            }
-//        }
-//        armv8 {
-//            ndk {
-//                abiFilter "armeabi-v7a"
-//            }
-//        }
-//        fat
-//    }
+    productFlavors {
+        armv7 {
+            ndk {
+                abiFilter "armeabi-v7a"
+            }
+        }
+        armv8 {
+            ndk {
+                abiFilter "armeabi-v7a"
+            }
+        }
+        fat
+    }
     lintOptions {
         abortOnError false
     }
