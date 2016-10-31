@@ -62,19 +62,19 @@ android {
 //        sourceCompatibility JavaVersion.VERSION_1_8
 //        targetCompatibility JavaVersion.VERSION_1_8
 //    }
-    productFlavors {
-        armv7 {
-            ndk {
-                abiFilter "armeabi-v7a"
-            }
-        }
-        armv8 {
-            ndk {
-                abiFilter "armeabi-v7a"
-            }
-        }
-        fat
-    }
+//    productFlavors {
+//        armv7 {
+//            ndk {
+//                abiFilter "armeabi-v7a"
+//            }
+//        }
+//        armv8 {
+//            ndk {
+//                abiFilter "armeabi-v7a"
+//            }
+//        }
+//        fat
+//    }
     lintOptions {
         abortOnError false
     }
@@ -98,6 +98,7 @@ dependencies {
     compile(name: 'commonwidget', ext: 'aar')
     compile(name: 'videowidget', ext: 'aar')
     compile(name: 'base', ext: 'aar')
+    compile(name: 'libgvr-1.5.6', ext: 'aar')
     //
     compile "com.android.support:appcompat-v7:${versions.supportLib}"
     compile "com.android.support:cardview-v7:${versions.supportLib}"
@@ -144,7 +145,6 @@ dependencies {
     compile project(':library')
     //    compile files('libs/pldroid-player-1.3.0.jar')
     //
-    //    compile 'com.github.xieqiupeng:TwirlingPlayerSDK:1.5.7'
 }
 //task copyTaskWithPatterns(type: Copy) {
 //    from "${buildDir}/outputs/apk/"

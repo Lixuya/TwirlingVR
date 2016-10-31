@@ -30,11 +30,11 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.R;
-import com.twirling.SDTL.adapter.ViewPagerAdapter;
 import com.twirling.SDTL.fragment.FragmentDownload;
 import com.twirling.SDTL.fragment.FragmentOnline;
 import com.twirling.SDTL.fragment.WebFragment;
 import com.twirling.SDTL.module.ModuleAlertDialog;
+import com.twirling.www.libgvr.adapter.ViewPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
     //
