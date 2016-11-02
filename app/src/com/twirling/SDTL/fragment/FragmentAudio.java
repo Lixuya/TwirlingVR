@@ -12,7 +12,7 @@ import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.R;
-import com.twirling.SDTL.adapter.OffineAdapter;
+import com.twirling.SDTL.adapter.AudioAdapter;
 import com.twirling.SDTL.model.DataArray;
 import com.twirling.SDTL.model.VideoItem;
 import com.twirling.SDTL.retrofit.RetrofitManager;
@@ -30,7 +30,7 @@ import rx.schedulers.Schedulers;
  * Created by 谢秋鹏 on 2016/5/27.
  */
 public class FragmentAudio extends Fragment {
-    private OffineAdapter mAdapter = null;
+    private AudioAdapter mAdapter = null;
     private XRecyclerView mRecyclerView = null;
     private List<VideoItem> datas = new ArrayList<>();
 
@@ -70,8 +70,8 @@ public class FragmentAudio extends Fragment {
 //                page += 1;
             }
         });
-        mAdapter = new OffineAdapter(datas);
-        mRecyclerView.setAdapter(mAdapter);
+//        mAdapter = new AudioAdapter(datas);
+//        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void loadData() {
