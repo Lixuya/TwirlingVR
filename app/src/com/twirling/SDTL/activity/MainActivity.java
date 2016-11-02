@@ -33,7 +33,6 @@ import com.twirling.SDTL.R;
 import com.twirling.SDTL.fragment.FragmentAudio;
 import com.twirling.SDTL.fragment.FragmentDownload;
 import com.twirling.SDTL.fragment.FragmentOnline;
-import com.twirling.SDTL.fragment.WebFragment;
 import com.twirling.SDTL.module.ModuleAlertDialog;
 import com.twirling.www.libgvr.adapter.ViewPagerAdapter;
 
@@ -44,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private AccountHeader headerResult = null;
     private Drawer result = null;
     private ViewPager viewPager = null;
-    private WebFragment webFragment = null;
+
     private ModuleAlertDialog dialog = null;
     private ModuleAlertDialog dialog2 = null;
     private MenuItem menuItem;
@@ -69,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         //
-        webFragment = new WebFragment();
+
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         FragmentManager manager = this.getSupportFragmentManager();
         ViewPagerAdapter adapter = new ViewPagerAdapter(manager);
@@ -177,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         Log.w("MainActivity", position + "");
+                        Intent intent = null;
                         switch (position) {
                             case 1:
                                 viewPager.setCurrentItem(0);
@@ -188,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
                                 viewPager.setCurrentItem(2);
                                 break;
                             case 4:
-                                Intent intent = new Intent(getBaseContext(), HLSActivity.class);
+                                intent = new Intent(getBaseContext(), HLSActivity.class);
                                 startActivity(intent);
                                 break;
                             case 5:
@@ -197,8 +197,9 @@ public class MainActivity extends AppCompatActivity {
                             case 8:
                             case 9:
                             default:
-//                                viewPager.setCurrentItem(2);
-//                                webFragment.loadPage(position);
+                                intent = new Intent(getBaseContext(), WebActivity.class);
+                                intent.setFlags(position);
+                                startActivity(intent);
                                 break;
                         }
                         return false;

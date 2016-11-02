@@ -60,6 +60,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.MyDesign" />
         <activity
+            android:name=".activity.WebActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.MyDesign" />
+        <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:screenOrientation="portrait"

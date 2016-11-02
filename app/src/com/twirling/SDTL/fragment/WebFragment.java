@@ -69,7 +69,6 @@ public class WebFragment extends Fragment {
         url = "http://yun.twirlingvr.com/index.php";
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1);  // , 1是可选写的
         //noinspection ResourceType
-        lp.setMargins(0, -200, 0, 0);
         webView.loadUrl(url);
         //
         loadPage(4);
@@ -92,25 +91,20 @@ public class WebFragment extends Fragment {
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT, 1);
         switch (index) {
-            case 3:
+            case 5:
                 url = "http://yun.twirlingvr.com/index.php";
-                lp.setMargins(0, -200, 0, 0);
                 break;
             case 6:
                 url = "http://yun.twirlingvr.com/index.php/home/index/product.html";
-                lp.setMargins(0, -220, 0, 0);
                 break;
             case 7:
                 url = "http://yun.twirlingvr.com/index.php/home/audio/audioList.html";
-                lp.setMargins(0, -200, 0, 0);
                 break;
             case 8:
                 url = "http://yun.twirlingvr.com/index.php/home/index/recording.html";
-                lp.setMargins(0, -220, 0, 0);
                 break;
             case 9:
                 url = "http://yun.twirlingvr.com/index.php/home/index/about.html";
-                lp.setMargins(0, -200, 0, 0);
                 break;
             default:
                 lp.setMargins(0, 0, 0, 0);
