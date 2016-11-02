@@ -66,7 +66,7 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_audio);
+        setContentView(R.layout.activity_audio);
         ButterKnife.bind(this);
         initData();
         //

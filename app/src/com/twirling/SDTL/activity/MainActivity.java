@@ -30,6 +30,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.R;
+import com.twirling.SDTL.fragment.FragmentAudio;
 import com.twirling.SDTL.fragment.FragmentDownload;
 import com.twirling.SDTL.fragment.FragmentOnline;
 import com.twirling.SDTL.fragment.WebFragment;
@@ -74,7 +75,8 @@ public class MainActivity extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(manager);
         adapter.addFragment(new FragmentOnline());
         adapter.addFragment(new FragmentDownload());
-        adapter.addFragment(webFragment);
+        adapter.addFragment(new FragmentAudio());
+//        adapter.addFragment(webFragment);
         viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(0);
@@ -100,9 +102,9 @@ public class MainActivity extends AppCompatActivity {
                             .sizeDp(24);
                     result.setSelection(2);
                 } else if (pageIndex == 2) {
-                    title = "关于";
+                    title = "声音";
                     icon = new IconicsDrawable(MainActivity.this)
-                            .icon(FontAwesome.Icon.faw_home)
+                            .icon(FontAwesome.Icon.faw_heartbeat)
                             .color(Color.parseColor("#FFFFDD"))
                             .sizeDp(24);
                     result.setSelection(3);
@@ -162,10 +164,10 @@ public class MainActivity extends AppCompatActivity {
                 .addDrawerItems(
                         new PrimaryDrawerItem().withName(R.string.download).withIcon(FontAwesome.Icon.faw_cloud_download).withIdentifier(1),
                         new PrimaryDrawerItem().withName(R.string.local).withIcon(FontAwesome.Icon.faw_play_circle_o).withIdentifier(2),
-                        new PrimaryDrawerItem().withName(R.string.homepage).withIcon(FontAwesome.Icon.faw_home).withIdentifier(3),
+                        new PrimaryDrawerItem().withName(R.string.atmos).withIcon(FontAwesome.Icon.faw_heartbeat).withIdentifier(3),
                         new PrimaryDrawerItem().withName(R.string.hls).withIcon(GoogleMaterial.Icon.gmd_youtube_play).withIdentifier(4),
                         new SectionDrawerItem().withName(R.string.drawer_item_section_header),
-
+                        new SecondaryDrawerItem().withName(R.string.homepage).withIcon(FontAwesome.Icon.faw_home).withIdentifier(3),
                         new SecondaryDrawerItem().withName(R.string.products).withIcon(GoogleMaterial.Icon.gmd_playlist_plus).withIdentifier(5),
                         new SecondaryDrawerItem().withName(R.string.audio).withIcon(FontAwesome.Icon.faw_headphones).withIdentifier(6),
                         new SecondaryDrawerItem().withName(R.string.machine).withIcon(GoogleMaterial.Icon.gmd_comment_video).withIdentifier(7),
@@ -182,19 +184,21 @@ public class MainActivity extends AppCompatActivity {
                             case 2:
                                 viewPager.setCurrentItem(1);
                                 break;
+                            case 3:
+                                viewPager.setCurrentItem(2);
+                                break;
                             case 4:
                                 Intent intent = new Intent(getBaseContext(), HLSActivity.class);
                                 startActivity(intent);
                                 break;
-                            case 3:
                             case 5:
                             case 6:
                             case 7:
                             case 8:
                             case 9:
                             default:
-                                viewPager.setCurrentItem(2);
-                                webFragment.loadPage(position);
+//                                viewPager.setCurrentItem(2);
+//                                webFragment.loadPage(position);
                                 break;
                         }
                         return false;
