@@ -70,8 +70,8 @@ public class FragmentAudio extends Fragment {
 //                page += 1;
             }
         });
-//        mAdapter = new AudioAdapter(datas);
-//        mRecyclerView.setAdapter(mAdapter);
+        mAdapter = new AudioAdapter(datas);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void loadData() {
