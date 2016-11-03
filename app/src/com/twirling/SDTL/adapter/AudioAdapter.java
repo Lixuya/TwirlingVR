@@ -14,10 +14,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
-import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.R;
 import com.twirling.SDTL.activity.SimpleVrVideoActivity;
-import com.twirling.SDTL.model.VideoItem;
+import com.twirling.SDTL.model.AudioItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +29,9 @@ import butterknife.ButterKnife;
  */
 public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> {
     //
-    private List<VideoItem> datas = new ArrayList<VideoItem>();
+    private List<AudioItem> datas = new ArrayList<AudioItem>();
 
-    public AudioAdapter(List<VideoItem> datas) {
+    public AudioAdapter(List<AudioItem> datas) {
         this.datas = datas;
     }
 
@@ -45,19 +44,17 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(final AudioAdapter.ViewHolder holder, int position) {
-        final VideoItem item = datas.get(position);
-        String path = Constants.PATH_RESOURCE + item.getFolder() + Constants.PAPH_IMAGE + item.getImage();
+        final AudioItem item = datas.get(position);
+        String path = item.getCover();
         Glide.with(holder.itemView.getContext()).load(path).into(holder.iv_background);
-        holder.tv_title.setText(item.getName());
+        holder.tv_title.setText(item.getTitle());
         holder.cv_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {//
-                int vrAudio = item.getVrAudio();
-                if (vrAudio == -1) {
-                    Intent intent = new Intent(holder.itemView.getContext(), SimpleVrVideoActivity.class);
-                    intent.putExtra("videoItem", Constants.PAPH_DOWNLOAD_LOCAL + item.getAppAndroidOnline());
-                    holder.itemView.getContext().startActivity(intent);
-                }
+                String vrAudio = item.getAudio();
+                Intent intent = new Intent(holder.itemView.getContext(), SimpleVrVideoActivity.class);
+                intent.putExtra("videoItem", vrAudio);
+                holder.itemView.getContext().startActivity(intent);
             }
         });
 

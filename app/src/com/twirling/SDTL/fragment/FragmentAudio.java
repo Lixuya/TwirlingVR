@@ -13,8 +13,8 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.R;
 import com.twirling.SDTL.adapter.AudioAdapter;
+import com.twirling.SDTL.model.AudioItem;
 import com.twirling.SDTL.model.DataArray;
-import com.twirling.SDTL.model.VideoItem;
 import com.twirling.SDTL.retrofit.RetrofitManager;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ import rx.schedulers.Schedulers;
 public class FragmentAudio extends Fragment {
     private AudioAdapter mAdapter = null;
     private XRecyclerView mRecyclerView = null;
-    private List<VideoItem> datas = new ArrayList<>();
+    private List<AudioItem> datas = new ArrayList<>();
 
     @Nullable
     @Override
@@ -80,9 +80,9 @@ public class FragmentAudio extends Fragment {
         RetrofitManager.getService().getAudioList(params)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<DataArray<VideoItem>>() {
+                .subscribe(new Action1<DataArray<AudioItem>>() {
                     @Override
-                    public void call(DataArray<VideoItem> dataArray) {
+                    public void call(DataArray<AudioItem> dataArray) {
                         datas.clear();
                         datas.addAll(dataArray.getData());
                         mAdapter.notifyDataSetChanged();

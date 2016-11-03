@@ -1,6 +1,7 @@
 package com.twirling.SDTL.retrofit;
 
 
+import com.twirling.SDTL.model.AudioItem;
 import com.twirling.SDTL.model.DataArray;
 import com.twirling.SDTL.model.LiveItem;
 import com.twirling.SDTL.model.VideoItem;
@@ -18,7 +19,7 @@ import rx.Observable;
 public interface Api {
     // 获取视频列表
     @GET("AppAudio/selectAll")
-    Observable<DataArray<VideoItem>> getAudioList(@QueryMap Map<String, Object> params);
+    Observable<DataArray<AudioItem>> getAudioList(@QueryMap Map<String, Object> params);
 
 
     // 获取视频列表
