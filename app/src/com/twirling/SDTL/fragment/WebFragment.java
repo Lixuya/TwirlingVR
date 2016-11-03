@@ -91,19 +91,19 @@ public class WebFragment extends Fragment {
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT, 1);
         switch (index) {
-            case 5:
+            case 6:
                 url = "http://yun.twirlingvr.com/index.php";
                 break;
-            case 6:
+            case 7:
                 url = "http://yun.twirlingvr.com/index.php/home/index/product.html";
                 break;
-            case 7:
+            case 8:
                 url = "http://yun.twirlingvr.com/index.php/home/audio/audioList.html";
                 break;
-            case 8:
+            case 9:
                 url = "http://yun.twirlingvr.com/index.php/home/index/recording.html";
                 break;
-            case 9:
+            case 10:
                 url = "http://yun.twirlingvr.com/index.php/home/index/about.html";
                 break;
             default:

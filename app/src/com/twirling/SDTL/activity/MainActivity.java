@@ -165,12 +165,12 @@ public class MainActivity extends AppCompatActivity {
                         new PrimaryDrawerItem().withName(R.string.local).withIcon(FontAwesome.Icon.faw_play_circle_o).withIdentifier(2),
                         new PrimaryDrawerItem().withName(R.string.atmos).withIcon(FontAwesome.Icon.faw_heartbeat).withIdentifier(3),
                         new PrimaryDrawerItem().withName(R.string.hls).withIcon(GoogleMaterial.Icon.gmd_youtube_play).withIdentifier(4),
-                        new SectionDrawerItem().withName(R.string.drawer_item_section_header),
-                        new SecondaryDrawerItem().withName(R.string.homepage).withIcon(FontAwesome.Icon.faw_home).withIdentifier(5),
-                        new SecondaryDrawerItem().withName(R.string.products).withIcon(GoogleMaterial.Icon.gmd_playlist_plus).withIdentifier(6),
-                        new SecondaryDrawerItem().withName(R.string.audio).withIcon(FontAwesome.Icon.faw_headphones).withIdentifier(7),
-                        new SecondaryDrawerItem().withName(R.string.machine).withIcon(GoogleMaterial.Icon.gmd_comment_video).withIdentifier(8),
-                        new SecondaryDrawerItem().withName(R.string.contact).withIcon(GoogleMaterial.Icon.gmd_phone_ring).withIdentifier(9)
+                        new SectionDrawerItem().withName(R.string.drawer_item_section_header).withIdentifier(5),
+                        new SecondaryDrawerItem().withName(R.string.homepage).withIcon(FontAwesome.Icon.faw_home).withIdentifier(6),
+                        new SecondaryDrawerItem().withName(R.string.products).withIcon(GoogleMaterial.Icon.gmd_playlist_plus).withIdentifier(7),
+                        new SecondaryDrawerItem().withName(R.string.audio).withIcon(FontAwesome.Icon.faw_headphones).withIdentifier(8),
+                        new SecondaryDrawerItem().withName(R.string.machine).withIcon(GoogleMaterial.Icon.gmd_comment_video).withIdentifier(9),
+                        new SecondaryDrawerItem().withName(R.string.contact).withIcon(GoogleMaterial.Icon.gmd_phone_ring).withIdentifier(10)
                 ) // add the items we want to use with our Drawer
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -192,10 +192,12 @@ public class MainActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 break;
                             case 5:
+                                break;
                             case 6:
                             case 7:
                             case 8:
                             case 9:
+                            case 10:
                             default:
                                 intent = new Intent(getBaseContext(), WebActivity.class);
                                 intent.setFlags(position);
