@@ -21,7 +21,6 @@ public interface Api {
     @GET("AppAudio/selectAll")
     Observable<DataArray<AudioItem>> getAudioList(@QueryMap Map<String, Object> params);
 
-
     // 获取视频列表
     @GET("AppVideo/makelist")
     Observable<DataArray<VideoItem>> getVideoList(@QueryMap Map<String, Object> params);

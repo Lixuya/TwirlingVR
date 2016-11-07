@@ -62,6 +62,12 @@ public class OpenMXPlayer implements Runnable {
     public long presentationTimeUs = 0,
             duration = 0;
 
+    public void setAudioIndex(int audioIndex) {
+        this.audioIndex = audioIndex;
+    }
+
+    private int audioIndex = 0;
+
     public SurroundAudio getDaa() {
         return daa;
     }
@@ -209,7 +215,7 @@ public class OpenMXPlayer implements Runnable {
         String channelCount = "";
         try {
             count = extractor.getTrackCount();
-            format = extractor.getTrackFormat(0);
+            format = extractor.getTrackFormat(audioIndex);
             mime = format.getString(MediaFormat.KEY_MIME);
 //            mime = "audio/x-wav";
             sampleRate = format.getInteger(MediaFormat.KEY_SAMPLE_RATE);
@@ -275,10 +281,6 @@ public class OpenMXPlayer implements Runnable {
         // create the actual decoder, using the mime to select
         try {
             codec = MediaCodec.createDecoderByType(mime);
-//            codec = MediaCodec.createByCodecName("OMX.google.raw.decoder");
-//            codec = MediaCodec.createByCodecName("OMX.google.aac.decoder");
-//            codec = MediaCodec.createByCodecName("OMX.SEC.aac.enc");
-//            codec = MediaCodec.createByCodecName("OMX.qcom.audio.decoder.aac");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -294,7 +296,8 @@ public class OpenMXPlayer implements Runnable {
         daa.setChannels(channels);
         // profileId
         Log.d(LOG_TAG, "AudioProcess: " + sourcePath
-                + " profileId:" + profileId);
+                + " profileId:" + profileId
+                + " codec:" + codec.getName());
     }
 
     private void startDecoding() {
@@ -431,15 +434,11 @@ public class OpenMXPlayer implements Runnable {
         Log.d(LOG_TAG, "inputBufIndex " + inputBufIndex);
         if (inputBufIndex >= 0) {
             ByteBuffer dstBuf = codecInputBuffers[inputBufIndex];
-            Log.i(LOG_TAG, "dstBuf capacity " + dstBuf.capacity() + " offset " + info.offset);
+//            Log.i(LOG_TAG, "dstBuf capacity " + dstBuf.capacity() + " offset " + info.offset);
             int sampleSize = extractor.readSampleData(dstBuf, info.offset);
-            // TODO
-//            int deno = 2 * channels * FRAME_LENGTH;
-//            int chucksize = ((int) Math.ceil(sampleSize / (float) deno)) * deno;
-            //
             int index = extractor.getSampleTrackIndex();
-            Log.w(LOG_TAG, "sampleSize " + sampleSize
-                    + " index " + index);
+//            Log.w(LOG_TAG, "sampleSize " + sampleSize
+//                    + " index " + index);
             //
             if (sampleSize < 0) {
                 Log.d(LOG_TAG, "saw input EOS. Stopping playback");
