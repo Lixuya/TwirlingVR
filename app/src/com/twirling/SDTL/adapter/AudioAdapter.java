@@ -42,7 +42,7 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
     public AudioAdapter(List<AudioItem> datas) {
         this.datas = datas;
         openMXPlayer = new OpenMXPlayer();
-        openMXPlayer.setProfileId(11);
+        openMXPlayer.setProfileId(0);
         openMXPlayer.setAudioIndex(0);
     }
 
