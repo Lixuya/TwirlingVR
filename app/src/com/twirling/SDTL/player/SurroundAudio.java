@@ -22,7 +22,7 @@ public class SurroundAudio {
     private int channels = 0;
     private float[] metadata = null;
     private float[][] metadataFromJson = null;
-    private float postgain = 0.3f;
+    private float postgain = 0.9f;
 
     private SurroundAudio() {
     }
@@ -44,7 +44,7 @@ public class SurroundAudio {
     }
 
     // TODO
-    public void audioProcess(short[] audioFlat) {
+    public void audioProcess(short[] audioFlat, short[] audioFlatOutput) {
         int n_acc = 0;
         int n_acc_out = 0;
         int ii = 0;
@@ -69,7 +69,7 @@ public class SurroundAudio {
 //                audioOutput[ii * 2 + 1] = audioInput[ii * channels + 1];
 //            }
             for (ii = 0; ii < FRAME_LENGTH * 2; ii++) {
-                audioFlat[n_acc_out++] = (short) (audioOutput[ii] * postgain);
+                audioFlatOutput[n_acc_out++] = (short) (audioOutput[ii] * postgain);
             }
         }
         return;

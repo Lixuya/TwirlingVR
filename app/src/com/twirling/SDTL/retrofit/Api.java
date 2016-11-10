@@ -18,7 +18,7 @@ import rx.Observable;
  */
 public interface Api {
     // 获取视频列表
-    @GET("AppAudio/selectAll")
+    @GET("Audio/selectAll")
     Observable<DataArray<AudioItem>> getAudioList(@QueryMap Map<String, Object> params);
 
     // 获取视频列表

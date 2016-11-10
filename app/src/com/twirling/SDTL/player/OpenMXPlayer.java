@@ -349,14 +349,15 @@ public class OpenMXPlayer implements Runnable {
                 System.arraycopy(byteArray, 0, chunkAligned, 0, infoSizeAligned);
                 // TODO
                 short[] audio = daa.byte2Short(chunkAligned, loopNum);
+                short[] audioOutput = new short[loopNum * FRAME_LENGTH * 2];
                 daa.setAudioPlayTime(presentationTimeUs / 1000f / 1000f);
-                daa.audioProcess(audio);
+                daa.audioProcess(audio, audioOutput);
                 // 剩下的部分
                 System.arraycopy(byteArray, infoSizeAligned, byteArray, 0, byteArrayOffset);
                 // 播放
                 if (chunk.length > 0) {
                     int loop = loopNum * FRAME_LENGTH * 2;
-                    audioTrack.write(audio, 0, loop);
+                    audioTrack.write(audioOutput, 0, loop);
                 }
                 if ((info.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) {
                     Log.d(LOG_TAG, "end while");
