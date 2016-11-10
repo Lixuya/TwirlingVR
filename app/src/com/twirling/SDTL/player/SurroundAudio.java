@@ -37,6 +37,12 @@ public class SurroundAudio {
     public void setChannels(int channels) {
         this.channels = channels;
         metadata = new float[channels * 3];
+        for (int num = 0; num < channels; num++) {
+            metadata[num * 3] = 2;
+            metadata[num * 3 + 1] = 45 * num * (3.1415926f / 180);
+            metadata[num * 3 + 2] = 0;
+
+        }
     }
 
     public SurroundAudio(AudioProcess audioProcess) {
@@ -51,14 +57,16 @@ public class SurroundAudio {
         if (metadata == null) {
             return;
         }
+
         // 0度方向
         float[] audioInput = new float[FRAME_LENGTH * channels];
         float[] audioOutput = new float[FRAME_LENGTH * 2];
         for (int loopi = 0; loopi < loopNum; loopi++) {
             for (ii = 0; ii < FRAME_LENGTH * channels; ii++) {
                 audioInput[ii] = audioFlat[n_acc++];
+
             }
-//            Log.i("angle", "eular = " + yaw + ", " + pitch);
+
 //            for (int i = 0; i < metadata.length; i++) {
 //                Log.w("angle", metadata[i] + "");
 //            }
@@ -90,7 +98,7 @@ public class SurroundAudio {
 
         // copy data from ByteBuffer into our short buffer. Short buffer is used
         // to load the AudioTrack object
-        int totalsamples = chunkSize / 2;
+        int totalsamples = chunkSize/2 ;
         for (int counter1 = 0; counter1 < totalsamples; counter1++) {
             sounddata[counter1] = fulldata.getShort(counter1 * 2);
         }
