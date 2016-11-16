@@ -37,13 +37,13 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
     private List<AudioItem> datas = new ArrayList<AudioItem>();
     private OpenMXPlayer openMXPlayer = null;
     private boolean isPaused = true;
-    private boolean isPlaying = false;
+    private boolean isPlaying = true;
 
     public AudioAdapter(List<AudioItem> datas) {
         this.datas = datas;
         openMXPlayer = new OpenMXPlayer();
         openMXPlayer.setProfileId(0);
-        openMXPlayer.setAudioIndex(0);
+        openMXPlayer.setAudioIndex(1);
     }
 
     private void togglePause() {
@@ -69,7 +69,7 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
         String path = item.getCover();
         Glide.with(holder.itemView.getContext()).load(path).into(holder.iv_background);
         holder.tv_title.setText(item.getTitle());
-        holder.audio = "https://yun-twirlingvr.oss-cn-hangzhou.aliyuncs.com/App_Audios/Audio_file/wxyz9.mp4";
+        holder.audio = item.getAudio();
         RxView.clicks(holder.iv_play)
                 .filter(new Func1<Void, Boolean>() {
                     @Override

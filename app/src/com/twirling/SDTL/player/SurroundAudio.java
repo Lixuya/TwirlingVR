@@ -41,7 +41,6 @@ public class SurroundAudio {
             metadata[num * 3] = 2;
             metadata[num * 3 + 1] = 45 * num * (3.1415926f / 180);
             metadata[num * 3 + 2] = 0;
-
         }
     }
 
@@ -66,7 +65,6 @@ public class SurroundAudio {
                 audioInput[ii] = audioFlat[n_acc++];
 
             }
-
 //            for (int i = 0; i < metadata.length; i++) {
 //                Log.w("angle", metadata[i] + "");
 //            }
@@ -98,7 +96,7 @@ public class SurroundAudio {
 
         // copy data from ByteBuffer into our short buffer. Short buffer is used
         // to load the AudioTrack object
-        int totalsamples = chunkSize/2 ;
+        int totalsamples = chunkSize / 2;
         for (int counter1 = 0; counter1 < totalsamples; counter1++) {
             sounddata[counter1] = fulldata.getShort(counter1 * 2);
         }
