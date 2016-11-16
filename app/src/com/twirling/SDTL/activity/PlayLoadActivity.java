@@ -65,7 +65,7 @@ public class PlayLoadActivity extends AppCompatActivity {
 //        StatusBarUtil.setTransparent(PlayLoadActivity.this);
         //
         final VideoItem videoItem = (VideoItem) getIntent().getExtras().getParcelable("videoItem");
-        Log.e("PlayLoadActivity",videoItem.toString());
+        Log.e("PlayLoadActivity", videoItem.toString());
         videoName = videoItem.getAppAndroidOnline();
         imageUrl = Constants.PATH_RESOURCE + videoItem.getFolder() + Constants.PAPH_IMAGE + videoItem.getImage();
         //
@@ -93,7 +93,7 @@ public class PlayLoadActivity extends AppCompatActivity {
                     @Override
                     public void call(Void aVoid) {
                         Intent intent = new Intent();
-                        intent.putExtra("videoItem", Constants.PATH_RESOURCE + videoItem.getFolder() + Constants.PAPH_VIDEO + videoItem.getAppAndroidOnline());
+                        intent.putExtra("VideoItem", Constants.PATH_RESOURCE + videoItem.getFolder() + Constants.PAPH_VIDEO + videoItem.getAppAndroidOnline());
                         intent.setClass(PlayLoadActivity.this, SimpleVrVideoActivity.class);
                         startActivity(intent);
                     }
