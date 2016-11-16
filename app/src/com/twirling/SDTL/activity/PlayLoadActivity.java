@@ -20,6 +20,7 @@ import com.twirling.SDTL.data.RealmHelper;
 import com.twirling.SDTL.download.DownloadChangeObserver;
 import com.twirling.SDTL.download.DownloadService;
 import com.twirling.SDTL.model.VideoItem;
+import com.twirling.player.activity.SimpleVrVideoActivity;
 
 import java.util.concurrent.TimeUnit;
 

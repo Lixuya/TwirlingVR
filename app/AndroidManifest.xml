@@ -32,12 +32,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.MyDesign" />
         <activity
-            android:name=".activity.SimpleVrVideoActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.MyDesign">
-            <category android:name="com.google.intent.category.CARDBOARD" />
-        </activity>
-        <activity
             android:name=".activity.PlayLoadActivity"
             android:screenOrientation="portrait"
             android:uiOptions="splitActionBarWhenNarrow" />
@@ -47,10 +41,6 @@
             android:theme="@style/Theme.AppCompat.MyDesign">
             <category android:name="com.google.intent.category.CARDBOARD" />
         </activity>
-        <activity
-            android:name=".activity.HLSActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.MyDesign" />
         <activity
             android:name=".activity.RTMPActivity"
             android:screenOrientation="portrait"
@@ -68,9 +58,6 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent" />
-
-        <activity android:name=".activity.DeviceListActivity"/>
-
         <service android:name=".download.DownloadService" />
         <receiver android:name=".download.DownloadReceiver">
             <intent-filter>

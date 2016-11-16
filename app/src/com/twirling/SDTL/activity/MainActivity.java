@@ -34,7 +34,8 @@ import com.twirling.SDTL.fragment.FragmentAudio;
 import com.twirling.SDTL.fragment.FragmentDownload;
 import com.twirling.SDTL.fragment.FragmentOnline;
 import com.twirling.SDTL.module.ModuleAlertDialog;
-import com.twirling.www.libgvr.adapter.ViewPagerAdapter;
+import com.twirling.player.activity.HLSActivity;
+import com.twirling.player.adapter.ViewPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
     //
