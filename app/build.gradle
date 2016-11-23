@@ -86,8 +86,9 @@ repositories {
     }
 }
 
-def Dagger2_Version = '2.2'
-def Rxbinding_Version = '0.4.0'
+def Dagger2_Version = properties.getProperty("Dagger2_Version")
+def Rxbinding_Version = properties.getProperty("Rxbinding_Version")
+def Audio_Lib = properties.getProperty("Audio_Lib");
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -97,6 +98,7 @@ dependencies {
     compile(name: 'videowidget', ext: 'aar')
     compile(name: 'base', ext: 'aar')
     compile(name: 'libgvr-1.5.10', ext: 'aar')
+//    compile(name: 'libaudio-1.7', ext: 'aar')
     //
     compile "com.android.support:appcompat-v7:${versions.supportLib}"
     compile "com.android.support:cardview-v7:${versions.supportLib}"
@@ -124,6 +126,7 @@ dependencies {
     //
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.jcodecraeer:xrecyclerview:1.2.6'
+//    compile "$Audio_Lib"
     //
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.tencent.bugly:crashreport:2.3.0'

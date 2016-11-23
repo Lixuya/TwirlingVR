@@ -37,7 +37,7 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
     private List<AudioItem> datas = new ArrayList<AudioItem>();
     private OpenMXPlayer openMXPlayer = null;
     private boolean isPaused = true;
-    private boolean isPlaying = true;
+    private boolean isPlaying = false;
 
     public AudioAdapter(List<AudioItem> datas) {
         this.datas = datas;
