@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.widget.Toast;
 
 import com.twirling.SDTL.App;
 import com.twirling.SDTL.Constants;
@@ -29,8 +30,16 @@ public class DownloadService extends IntentService {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            VideoItem videoItem = (VideoItem) msg.obj;
-            RealmHelper.getIns().insertVideoItem(videoItem);
+            switch (msg.what) {
+                case 0:
+                    VideoItem videoItem = (VideoItem) msg.obj;
+                    RealmHelper.getIns().insertVideoItem(videoItem);
+                    break;
+                case 1:
+                default:
+                    Toast.makeText(getBaseContext(), "请打开手机存储权限", Toast.LENGTH_LONG).show();
+                    break;
+            }
         }
     };
 
@@ -76,6 +85,7 @@ public class DownloadService extends IntentService {
         videoItem.setDownloadId(downloadId);
         Message message = new Message();
         message.obj = videoItem;
+        message.what = 0;
         handler.sendMessage(message);
         //
         App.observers.put(downloadId, downloadObserver);
@@ -93,7 +103,12 @@ public class DownloadService extends IntentService {
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, name);
         request.setVisibleInDownloadsUi(true);
         request.allowScanningByMediaScanner();
-        long downloadId = dm.enqueue(request);
+        long downloadId = 0;
+        try {
+            downloadId = dm.enqueue(request);
+        } catch (Exception e) {
+            handler.sendEmptyMessage(1);
+        }
         return downloadId;
     }
 

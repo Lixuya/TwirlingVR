@@ -82,7 +82,7 @@ public class PlayLoadActivity extends AppCompatActivity {
                         intent.putExtra("videoItem", videoItem);
                         startService(intent);
                         //
-                        if (load.isEnabled()) {
+                        if (load.isEnabled() && !App.observers.isEmpty()) {
                             selfTimer.start();
                         }
                         load.setEnabled(false);

@@ -17,7 +17,7 @@ import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.twirling.SDTL.R;
 import com.twirling.SDTL.model.AudioItem;
-import com.twirling.SDTL.player.OpenMXPlayer;
+import com.twirling.audio.player.OpenMXPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +43,7 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
         this.datas = datas;
         openMXPlayer = new OpenMXPlayer();
         openMXPlayer.setProfileId(0);
-        openMXPlayer.setAudioIndex(1);
+        openMXPlayer.setAudioIndex(0);
     }
 
     private void togglePause() {

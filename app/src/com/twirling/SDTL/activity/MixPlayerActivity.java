@@ -9,7 +9,7 @@ import android.widget.ImageView;
 
 import com.jakewharton.rxbinding.view.RxView;
 import com.twirling.SDTL.R;
-import com.twirling.SDTL.player.OpenMXPlayer;
+import com.twirling.audio.player.OpenMXPlayer;
 
 import java.util.concurrent.TimeUnit;
 
