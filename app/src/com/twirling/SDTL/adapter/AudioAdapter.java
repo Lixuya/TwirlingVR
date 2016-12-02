@@ -1,7 +1,11 @@
 package com.twirling.SDTL.adapter;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,9 +19,10 @@ import com.bumptech.glide.Glide;
 import com.jakewharton.rxbinding.view.RxView;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
+import com.twirling.SDTL.App;
 import com.twirling.SDTL.R;
+import com.twirling.SDTL.activity.Audio2Activity;
 import com.twirling.SDTL.model.AudioItem;
-import com.twirling.audio.player.OpenMXPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +32,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.functions.Func1;
 
 /**
  * Created by 谢秋鹏 on 2016/5/26.
@@ -35,25 +39,9 @@ import rx.functions.Func1;
 public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> {
     //
     private List<AudioItem> datas = new ArrayList<AudioItem>();
-    private OpenMXPlayer openMXPlayer = null;
-    private boolean isPaused = true;
-    private boolean isPlaying = false;
 
     public AudioAdapter(List<AudioItem> datas) {
         this.datas = datas;
-        openMXPlayer = new OpenMXPlayer();
-        openMXPlayer.setProfileId(0);
-        openMXPlayer.setAudioIndex(0);
-    }
-
-    private void togglePause() {
-        if (isPaused) {
-            openMXPlayer.play();
-            isPaused = false;
-        } else {
-            openMXPlayer.stop();
-            isPaused = true;
-        }
     }
 
     @Override
@@ -70,24 +58,27 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
         Glide.with(holder.itemView.getContext()).load(path).into(holder.iv_background);
         holder.tv_title.setText(item.getTitle());
         holder.audio = item.getAudio();
-        RxView.clicks(holder.iv_play)
-                .filter(new Func1<Void, Boolean>() {
-                    @Override
-                    public Boolean call(Void aVoid) {
-                        return isPlaying == false;
-                    }
-                })
+        RxView.clicks(holder.cv_card)
                 .throttleFirst(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
-                        isPlaying = true;
-                        holder.iv_play.setVisibility(View.INVISIBLE);
-                        holder.iv_stop.setVisibility(View.VISIBLE);
-                        openMXPlayer.setDataSource(holder.audio);
-                        togglePause();
+                        Intent intent = new Intent(holder.itemView.getContext(), Audio2Activity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("AudioItem", item);
+                        intent.putExtras(bundle);
+                        //
+                        ActivityOptions transitionActivityOptions = null;
+                        String ti = holder.itemView.getContext().getString(R.string.ti);
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                            Activity activity = App.getInst().getCurrentShowActivity();
+                            transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(activity, holder.iv_background, ti);
+                            holder.itemView.getContext().startActivity(intent, transitionActivityOptions.toBundle());
+                        } else {
+                            holder.itemView.getContext().startActivity(intent);
+                        }
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -95,30 +86,7 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
                         Log.e(getClass() + "", throwable.toString());
                     }
                 });
-        RxView.clicks(holder.iv_stop)
-                .filter(new Func1<Void, Boolean>() {
-                    @Override
-                    public Boolean call(Void aVoid) {
-                        return isPlaying == true;
-                    }
-                })
-                .throttleFirst(1, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Void>() {
-                    @Override
-                    public void call(Void aVoid) {
-                        isPlaying = false;
-                        holder.iv_stop.setVisibility(View.INVISIBLE);
-                        holder.iv_play.setVisibility(View.VISIBLE);
-                        togglePause();
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        Log.e(getClass() + "", throwable.toString());
-                    }
-                });
+
     }
 
     @Override

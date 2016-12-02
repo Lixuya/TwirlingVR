@@ -46,6 +46,12 @@
             <category android:name="com.google.intent.category.CARDBOARD" />
         </activity>
         <activity
+            android:name=".activity.Audio2Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.MyDesign">
+            <category android:name="com.google.intent.category.CARDBOARD" />
+        </activity>
+        <activity
             android:name=".activity.RTMPActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.MyDesign" />
@@ -62,6 +68,7 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent" />
+
         <service android:name=".download.DownloadService" />
         <receiver android:name=".download.DownloadReceiver">
             <intent-filter>
@@ -86,6 +93,7 @@
 
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
+
     <uses-feature
         android:name="android.hardware.sensor.accelerometer"
         android:required="true" />
