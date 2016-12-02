@@ -1,5 +1,7 @@
 package com.twirling.SDTL.activity;
 
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -9,6 +11,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.jakewharton.rxbinding.view.RxView;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.twirling.SDTL.R;
 import com.twirling.SDTL.model.AudioItem;
 import com.twirling.audio.player.OpenMXPlayer;
@@ -19,7 +23,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.functions.Func1;
 
 public class Audio2Activity extends AppCompatActivity {
     @BindView(R.id.iv_stop)
@@ -36,12 +39,11 @@ public class Audio2Activity extends AppCompatActivity {
 
     private String imageUrl,
             videoUrl,
-            videoName,
+            audioUrl,
             title;
     //
     private OpenMXPlayer openMXPlayer = null;
     private boolean isPaused = true;
-    private boolean isPlaying = false;
 
     //
     public void onCreate(Bundle savedInstanceState) {
@@ -56,7 +58,7 @@ public class Audio2Activity extends AppCompatActivity {
 
     private void initData() {
         final AudioItem audioItem = (AudioItem) getIntent().getExtras().getParcelable("AudioItem");
-        videoName = audioItem.getAudio();
+        audioUrl = audioItem.getAudio();
         imageUrl = audioItem.getCover();
         title = audioItem.getTitle();
         //
@@ -67,24 +69,45 @@ public class Audio2Activity extends AppCompatActivity {
 
     private void initView() {
         tv_title.setText(title);
+        Drawable icon = new IconicsDrawable(getBaseContext())
+                .icon(FontAwesome.Icon.faw_play_circle)
+                .color(Color.parseColor("#FFFFFF"))
+                .sizeDp(25);
+        iv_play.setImageDrawable(icon);
+        Drawable icon2 = new IconicsDrawable(getBaseContext())
+                .icon(FontAwesome.Icon.faw_pause)
+                .color(Color.parseColor("#FFFFFF"))
+                .sizeDp(25);
+        iv_stop.setImageDrawable(icon2);
         Glide.with(getBaseContext()).load(imageUrl).into(iv_video_image);
         RxView.clicks(iv_play)
-                .filter(new Func1<Void, Boolean>() {
-                    @Override
-                    public Boolean call(Void aVoid) {
-                        return false;
-                    }
-                })
                 .throttleFirst(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
-                        isPlaying = true;
                         iv_play.setVisibility(View.INVISIBLE);
                         iv_stop.setVisibility(View.VISIBLE);
-                        openMXPlayer.setDataSource(videoName);
+                        openMXPlayer.setDataSource(audioUrl);
+                        togglePause();
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Log.e(getClass() + "", throwable.toString());
+                    }
+                });
+        RxView.clicks(iv_stop)
+                .throttleFirst(1, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        iv_play.setVisibility(View.INVISIBLE);
+                        iv_stop.setVisibility(View.VISIBLE);
+                        openMXPlayer.setDataSource(audioUrl);
                         togglePause();
                     }
                 }, new Action1<Throwable>() {

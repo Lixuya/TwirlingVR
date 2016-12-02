@@ -30,6 +30,8 @@
     <string name="loading_video">Loading Video...</string>
 
     <string name="ti">transition_image</string>
+    <string name="tra_image">tra_image</string>
+    <string name="tra_text">tra_text</string>
 
     <!-- Drawer Items -->
     <string name="download">在线播放</string>

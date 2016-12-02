@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,12 +71,15 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
                         bundle.putParcelable("AudioItem", item);
                         intent.putExtras(bundle);
                         //
-                        ActivityOptions transitionActivityOptions = null;
-                        String ti = holder.itemView.getContext().getString(R.string.ti);
+                        ActivityOptions transitionOptions = null;
+                        String tra_image = holder.itemView.getContext().getString(R.string.tra_image);
+                        Pair<View, String> imagePair = Pair.create((View) holder.iv_background, tra_image);
+                        String tra_text = holder.itemView.getContext().getString(R.string.tra_text);
+                        Pair<View, String> textPair = Pair.create((View) holder.tv_title, tra_text);
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                             Activity activity = App.getInst().getCurrentShowActivity();
-                            transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(activity, holder.iv_background, ti);
-                            holder.itemView.getContext().startActivity(intent, transitionActivityOptions.toBundle());
+                            transitionOptions = ActivityOptions.makeSceneTransitionAnimation(activity, imagePair, textPair);
+                            holder.itemView.getContext().startActivity(intent, transitionOptions.toBundle());
                         } else {
                             holder.itemView.getContext().startActivity(intent);
                         }
