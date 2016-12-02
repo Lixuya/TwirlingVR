@@ -67,6 +67,12 @@ public class Audio2Activity extends AppCompatActivity {
         openMXPlayer.setAudioIndex(0);
     }
 
+    @Override
+    protected void onDestroy() {
+        openMXPlayer.stop();
+        super.onDestroy();
+    }
+
     private void initView() {
         tv_title.setText(title);
         Drawable icon = new IconicsDrawable(getBaseContext())
@@ -105,9 +111,8 @@ public class Audio2Activity extends AppCompatActivity {
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
-                        iv_play.setVisibility(View.INVISIBLE);
-                        iv_stop.setVisibility(View.VISIBLE);
-                        openMXPlayer.setDataSource(audioUrl);
+                        iv_play.setVisibility(View.VISIBLE);
+                        iv_stop.setVisibility(View.INVISIBLE);
                         togglePause();
                     }
                 }, new Action1<Throwable>() {
@@ -126,11 +131,6 @@ public class Audio2Activity extends AppCompatActivity {
             openMXPlayer.stop();
             isPaused = true;
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     @Override
