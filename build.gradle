@@ -8,7 +8,7 @@ buildscript {
                  targetSdk : 25,
                  vcode     : 9,
                  vname     : "2.4.3"]
-        versions = [supportLib: "24.2.1"]
+        versions = [supportLib: "25.0.1"]
     }
     repositories {
         jcenter()
