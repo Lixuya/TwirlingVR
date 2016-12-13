@@ -1,5 +1,7 @@
-package com.twirling.SDTL.fragment;
+package com.twirling.libtwirling.widgetwebview;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,16 +13,16 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
 
-import com.twirling.SDTL.R;
-import com.twirling.SDTL.widget.MyWebViewClient;
+import com.twirling.libtwirling.R;
 
 /**
  * Created by 谢秋鹏 on 2016/6/12.
  */
 public class WebFragment extends Fragment {
-    private WebView webView = null;
-    private String url = "";
+    protected WebView webView = null;
+    protected String url = "";
 
+    @TargetApi(Build.VERSION_CODES.M)
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -75,6 +77,13 @@ public class WebFragment extends Fragment {
         return rootView;
     }
 
+    public void loadPage(int index) {
+        // 1是可选写的
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT, 1);
+        webView.setLayoutParams(lp);
+    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -85,32 +94,18 @@ public class WebFragment extends Fragment {
         super.onResume();
     }
 
-    @SuppressWarnings("ResourceType")
-    public void loadPage(int index) {
-        // 1是可选写的
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT, 1);
-        switch (index) {
-            case 6:
-                url = "http://yun.twirlingvr.com/index.php";
-                break;
-            case 7:
-                url = "http://yun.twirlingvr.com/index.php/home/index/product.html";
-                break;
-            case 8:
-                url = "http://yun.twirlingvr.com/index.php/home/audio/audioList.html";
-                break;
-            case 9:
-                url = "http://yun.twirlingvr.com/index.php/home/index/recording.html";
-                break;
-            case 10:
-                url = "http://yun.twirlingvr.com/index.php/home/index/about.html";
-                break;
-            default:
-                lp.setMargins(0, 0, 0, 0);
-                break;
-        }
-        webView.setLayoutParams(lp);
-        webView.loadUrl(url);
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 }

@@ -1,4 +1,4 @@
-package com.twirling.SDTL.widget;
+package com.twirling.libtwirling.widgetwebview;
 
 import android.graphics.Bitmap;
 import android.net.http.SslError;

@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/web"
-        android:name="com.twirling.SDTL.fragment.WebFragment"
+        android:name="com.twirling.SDTL.fragment.FragmentWeb"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>
