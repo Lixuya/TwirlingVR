@@ -22,7 +22,7 @@ import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.twirling.SDTL.App;
 import com.twirling.SDTL.R;
-import com.twirling.SDTL.activity.Audio2Activity;
+import com.twirling.SDTL.activity.AudioActivity;
 import com.twirling.SDTL.model.AudioItem;
 
 import java.util.ArrayList;
@@ -66,7 +66,7 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
-                        Intent intent = new Intent(holder.itemView.getContext(), Audio2Activity.class);
+                        Intent intent = new Intent(holder.itemView.getContext(), AudioActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putParcelable("AudioItem", item);
                         intent.putExtras(bundle);
@@ -76,9 +76,11 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
                         Pair<View, String> imagePair = Pair.create((View) holder.iv_background, tra_image);
                         String tra_text = holder.itemView.getContext().getString(R.string.tra_text);
                         Pair<View, String> textPair = Pair.create((View) holder.tv_title, tra_text);
+                        String tra_play = holder.itemView.getContext().getString(R.string.tra_play);
+                        Pair<View, String> playPair = Pair.create((View) holder.iv_play, tra_play);
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                             Activity activity = App.getInst().getCurrentShowActivity();
-                            transitionOptions = ActivityOptions.makeSceneTransitionAnimation(activity, imagePair, textPair);
+                            transitionOptions = ActivityOptions.makeSceneTransitionAnimation(activity, imagePair, textPair, playPair);
                             holder.itemView.getContext().startActivity(intent, transitionOptions.toBundle());
                         } else {
                             holder.itemView.getContext().startActivity(intent);

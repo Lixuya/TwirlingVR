@@ -40,13 +40,13 @@
             android:screenOrientation="portrait"
             android:uiOptions="splitActionBarWhenNarrow" />
         <activity
-            android:name=".activity.AudioActivity"
+            android:name=".activity.MixPlayerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.MyDesign">
             <category android:name="com.google.intent.category.CARDBOARD" />
         </activity>
         <activity
-            android:name=".activity.Audio2Activity"
+            android:name=".activity.AudioActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.MyDesign">
             <category android:name="com.google.intent.category.CARDBOARD" />

@@ -82,7 +82,7 @@ public class LoginWX {
                                         if (dataArray.getStatus() == 200) {
                                             Toast.makeText(activity, dataArray.getMsg(), Toast.LENGTH_SHORT).show();
                                             Constants.USER_MOBILE = "";
-                                            Constants.USER_IMAGE = FontAwesome.Icon.faw_wechat;
+                                            Constants.USER_IMAGE = FontAwesome.Icon.faw_weixin;
                                             SPUtil.setIsLogin(true);
                                             activity.finish();
                                         } else if (dataArray.getStatus() == 400) {
