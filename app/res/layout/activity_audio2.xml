@@ -103,6 +103,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:text="建议在良好网络下播放"
+        android:textColor="@color/md_white_1000"/>
+
     <com.google.vr.sdk.base.GvrView
         android:id="@+id/gvrview"
         android:layout_width="1dp"
