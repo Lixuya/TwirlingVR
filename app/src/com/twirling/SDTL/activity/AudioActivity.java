@@ -81,6 +81,8 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         initData();
         //
         initView();
+        //
+        iv_play.performClick();
     }
 
     private void initData() {
@@ -210,8 +212,6 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
                         Log.e(getClass() + "", throwable.toString());
                     }
                 });
-        //
-        iv_play.performClick();
     }
 
     private void togglePause() {

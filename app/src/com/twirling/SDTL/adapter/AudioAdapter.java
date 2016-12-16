@@ -13,6 +13,7 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,6 +28,7 @@ import com.twirling.SDTL.model.AudioItem;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -40,9 +42,11 @@ import rx.functions.Action1;
 public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> {
     //
     private List<AudioItem> datas = new ArrayList<AudioItem>();
+    private List<Integer> mHeights = new ArrayList<Integer>();
 
-    public AudioAdapter(List<AudioItem> datas) {
+    public AudioAdapter(List<AudioItem> datas, List<Integer> mHeights) {
         this.datas = datas;
+        this.mHeights = mHeights;
     }
 
     @Override
@@ -55,8 +59,25 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(final AudioAdapter.ViewHolder holder, int position) {
         final AudioItem item = datas.get(position);
-        String path = item.getCover();
-        Glide.with(holder.itemView.getContext()).load(path).into(holder.iv_background);
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) holder.iv_background.getLayoutParams();
+        params.height = mHeights.get(position);
+        holder.iv_background.setLayoutParams(params);
+        //
+        if (item.getCover().endsWith(".gif")) {
+            Glide.with(holder.itemView.getContext())
+                    .load(item.getCover())
+                    .asGif()
+                    .into(holder.iv_background);
+        } else {
+            Glide.with(holder.itemView.getContext())
+                    .load(item.getCover())
+                    .asBitmap()
+                    .into(holder.iv_background);
+        }
+        Glide.with(holder.itemView.getContext())
+                .load(item.getCover())
+                .into(holder.iv_background);
+        //
         holder.tv_title.setText(item.getTitle());
         holder.audio = item.getAudio();
         RxView.clicks(holder.cv_card)
@@ -111,13 +132,16 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
         CardView cv_card;
         @BindView(R.id.tv_title)
         TextView tv_title;
+        //
         public String audio = "";
+        public String image = "";
 
+        //
         public ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
             Drawable icon = new IconicsDrawable(view.getContext())
-                    .icon(FontAwesome.Icon.faw_play_circle)
+                    .icon(FontAwesome.Icon.faw_play)
                     .color(Color.parseColor("#FFFFFF"))
                     .sizeDp(25);
             iv_play.setImageDrawable(icon);
@@ -126,6 +150,21 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
                     .color(Color.parseColor("#FFFFFF"))
                     .sizeDp(25);
             iv_stop.setImageDrawable(icon2);
+            //
+            iv_background.setBackgroundColor(Color.parseColor("#33" + getRandColorCode()));
         }
+    }
+
+    public static String getRandColorCode() {
+        String r, g, b;
+        Random random = new Random();
+        r = Integer.toHexString(random.nextInt(256)).toUpperCase();
+        g = Integer.toHexString(random.nextInt(256)).toUpperCase();
+        b = Integer.toHexString(random.nextInt(256)).toUpperCase();
+        //
+        r = r.length() == 1 ? "0" + r : r;
+        g = g.length() == 1 ? "0" + g : g;
+        b = b.length() == 1 ? "0" + b : b;
+        return r + g + b;
     }
 }

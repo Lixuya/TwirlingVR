@@ -1,9 +1,13 @@
 package com.twirling.SDTL.fragment;
 
+import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.view.ContextThemeWrapper;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,25 +37,26 @@ public class FragmentAudio extends Fragment {
     private AudioAdapter mAdapter = null;
     private XRecyclerView mRecyclerView = null;
     private List<AudioItem> datas = new ArrayList<>();
+    private List<Integer> mHeights = new ArrayList<Integer>();
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_list, container, false);
+        final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.MaterialBaseTheme_Light);
+        LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
+        View rootView = localInflater.inflate(R.layout.fragment_list, container, false);
         initView(rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
+        //
         loadData();
+        return rootView;
     }
 
     private void initView(View view) {
         mRecyclerView = (XRecyclerView) view.findViewById(R.id.mRecyclerview);
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 1);
-//        mRecyclerView.addItemDecoration(new DividerGridItemDecoration(getBaseContext()));
+//        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 1);
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+//        SpacesItemDecoration decoration = new SpacesItemDecoration(0);
+//        mRecyclerView.addItemDecoration(decoration);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.Pacman);
@@ -70,7 +75,7 @@ public class FragmentAudio extends Fragment {
 //                page += 1;
             }
         });
-        mAdapter = new AudioAdapter(datas);
+        mAdapter = new AudioAdapter(datas, mHeights);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -85,6 +90,11 @@ public class FragmentAudio extends Fragment {
                     public void call(DataArray<AudioItem> dataArray) {
                         datas.clear();
                         datas.addAll(dataArray.getData());
+                        //
+                        mHeights.clear();
+                        while (mHeights.size() <= datas.size()) {
+                            mHeights.add((int) (Math.random() * 400) + 400);
+                        }
                         mAdapter.notifyDataSetChanged();
                     }
                 }, new Action1<Throwable>() {
@@ -102,5 +112,23 @@ public class FragmentAudio extends Fragment {
                         }
                     }
                 });
+    }
+
+    public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
+        private int space;
+
+        public SpacesItemDecoration(int space) {
+            this.space = space;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            outRect.left = space;
+            outRect.right = space;
+            outRect.bottom = space;
+            if (parent.getChildAdapterPosition(view) == 0) {
+                outRect.top = space;
+            }
+        }
     }
 }
