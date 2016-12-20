@@ -5,7 +5,7 @@ import com.twirling.SDTL.model.AudioItem;
 import com.twirling.SDTL.model.DataArray;
 import com.twirling.SDTL.model.LiveItem;
 import com.twirling.SDTL.model.VideoItem;
-import com.twirling.SDTL.oauth.WXBack;
+import com.twirling.libtwirling.oauth.WXBack;
 
 import java.util.Map;
 

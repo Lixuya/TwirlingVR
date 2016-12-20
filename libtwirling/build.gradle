@@ -15,7 +15,7 @@ android {
         main {
             manifest.srcFile 'AndroidManifest.xml'
             java.srcDirs = ['java']
-            resources.srcDirs = ['java']
+//            resources.srcDirs = ['java']
             aidl.srcDirs = ['aidl']
             renderscript.srcDirs = ['rs']
             res.srcDirs = ['res']

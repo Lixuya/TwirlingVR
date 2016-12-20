@@ -94,7 +94,7 @@
         android:textColor="#ffffff"
         android:textSize="15dp" />
 
-    <com.twirling.SDTL.widget.WidgetOAuth
+    <com.twirling.SDTL.oauth.WidgetOAuth
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

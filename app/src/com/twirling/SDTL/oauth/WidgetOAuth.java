@@ -1,4 +1,4 @@
-package com.twirling.SDTL.widget;
+package com.twirling.SDTL.oauth;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,8 +9,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.twirling.SDTL.App;
-import com.twirling.SDTL.R;
-import com.twirling.SDTL.oauth.LoginWX;
+import com.twirling.libtwirling.R;
+
 
 /**
  * 解决问题：首页下方的三个oauth按钮
@@ -55,16 +55,13 @@ public class WidgetOAuth extends LinearLayout implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_login_qq:
-//                LoginQQ.getInstance().initTencentQQ(getActivity());
-                break;
-            case R.id.btn_login_wx:
-                LoginWX.getInstance(getActivity()).initData();
-                break;
-            case R.id.btn_login_sina:
-//                LoginSinaWB.getInstance().bindListener(getActivity());
-                break;
+        int i = view.getId();
+        if (i == R.id.btn_login_qq) {
+            // LoginQQ.getInstance().initTencentQQ(getActivity());
+        } else if (i == R.id.btn_login_wx) {
+            LoginWX.getInstance(getActivity()).initData();
+        } else if (i == R.id.btn_login_sina) {
+            //  LoginSinaWB.getInstance().bindListener(getActivity());
         }
     }
 }

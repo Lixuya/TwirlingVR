@@ -11,7 +11,6 @@ import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.twirling.SDTL.Constants;
-import com.twirling.SDTL.oauth.LoginWX;
 
 /**
  * Created by 谢秋鹏 on 2016/8/5.

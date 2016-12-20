@@ -1,4 +1,4 @@
-package com.twirling.SDTL.oauth;
+package com.twirling.libtwirling.oauth;
 
 /**
  * Auto-generated: 2016-10-12 16:11:16
