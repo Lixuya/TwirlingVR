@@ -56,12 +56,13 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@null"
-            android:src="@drawable/selector" />
+            android:src="@drawable/selector_qq" />
 
         <ImageButton
             android:id="@+id/btn_login_wx"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@null"
             android:src="@drawable/selector_wx" />
     </LinearLayout>
