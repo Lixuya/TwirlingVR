@@ -15,7 +15,7 @@ import com.twirling.SDTL.App;
 import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.data.RealmHelper;
 import com.twirling.SDTL.model.VideoItem;
-import com.twirling.SDTL.utils.TextUtil;
+import com.twirling.libtwirling.utils.utils.TextUtil;
 
 /**
  * Created by MagicBean on 2016/03/14 15:15:56

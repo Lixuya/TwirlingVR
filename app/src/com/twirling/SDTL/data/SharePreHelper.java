@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.twirling.SDTL.utils.TextUtil;
+import com.twirling.libtwirling.utils.utils.TextUtil;
 
 /**
  * Created by MagicBean on 2016/01/13 15:15:28

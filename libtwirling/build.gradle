@@ -32,6 +32,12 @@ android {
     }
 }
 
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+def Rxbinding_Version = properties.getProperty("Rxbinding_Version")
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
@@ -41,4 +47,11 @@ dependencies {
     compile "com.android.support:cardview-v7:${versions.supportLib}"
     compile "com.android.support:design:${versions.supportLib}"
     compile 'com.alibaba:fastjson:1.2.12'
+    //
+    //
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex:rxjava:1.1.6'
+    compile "com.jakewharton.rxbinding:rxbinding:$Rxbinding_Version"
+    compile "com.jakewharton.rxbinding:rxbinding-appcompat-v7:$Rxbinding_Version"
+    compile "com.jakewharton.rxbinding:rxbinding-design:$Rxbinding_Version"
 }

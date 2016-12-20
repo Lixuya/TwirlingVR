@@ -11,8 +11,8 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.model.DataArray;
 import com.twirling.SDTL.retrofit.RetrofitManager;
-import com.twirling.SDTL.utils.EncodeUtil;
-import com.twirling.SDTL.utils.SPUtil;
+import com.twirling.libtwirling.utils.utils.EncodeUtil;
+import com.twirling.libtwirling.utils.utils.SPUtil;
 import com.twirling.libtwirling.oauth.WXBack;
 
 import java.util.HashMap;

@@ -26,7 +26,7 @@ import com.twirling.SDTL.data.RealmHelper;
 import com.twirling.SDTL.download.DownloadChangeObserver;
 import com.twirling.SDTL.model.VideoItem;
 import com.twirling.SDTL.module.ModuleAlertDialog;
-import com.twirling.SDTL.utils.FileUtil;
+import com.twirling.libtwirling.utils.utils.FileUtil;
 import com.twirling.player.activity.SimpleVrVideoActivity;
 
 import java.io.File;

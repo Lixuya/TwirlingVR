@@ -22,8 +22,8 @@ import com.twirling.SDTL.R;
 import com.twirling.SDTL.model.DownloadJson;
 import com.twirling.SDTL.model.Elements;
 import com.twirling.SDTL.model.VideoItem;
-import com.twirling.SDTL.utils.DeviceUtils;
-import com.twirling.SDTL.utils.FileUtil;
+import com.twirling.libtwirling.utils.utils.DeviceUtils;
+import com.twirling.libtwirling.utils.utils.FileUtil;
 import com.twirling.audio.player.OpenMXPlayer;
 
 import javax.microedition.khronos.egl.EGLConfig;

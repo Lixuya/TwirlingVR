@@ -1,4 +1,4 @@
-package com.twirling.SDTL.utils;
+package com.twirling.libtwirling.utils.utils;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;

@@ -1,6 +1,6 @@
 package com.twirling.SDTL.net;
 
-import com.twirling.SDTL.utils.TextUtil;
+import com.twirling.libtwirling.utils.utils.TextUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
