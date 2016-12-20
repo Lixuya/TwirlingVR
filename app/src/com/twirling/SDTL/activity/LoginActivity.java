@@ -10,11 +10,12 @@ import android.widget.Toast;
 
 import com.jakewharton.rxbinding.view.RxView;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.twirling.SDTL.App;
 import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.R;
 import com.twirling.SDTL.model.DataArray;
 import com.twirling.SDTL.retrofit.RetrofitManager;
-import com.twirling.libtwirling.utils.utils.SPUtil;
+import com.twirling.libtwirling.utils.SPUtil;
 
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
@@ -72,8 +73,8 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, "登陆成功", Toast.LENGTH_SHORT).show();
                             Constants.USER_MOBILE = mobile;
                             Constants.USER_IMAGE = FontAwesome.Icon.faw_mobile;
-                            SPUtil.setUserMobile(mobile);
-                            SPUtil.setIsLogin(true);
+                            SPUtil.setUserMobile(App.getInst(), mobile);
+                            SPUtil.setIsLogin(App.getInst(), true);
                             finish();
                         } else if (dataArray.getStatus() == 400) {
                             Toast.makeText(LoginActivity.this, "账号密码错误", Toast.LENGTH_SHORT).show();

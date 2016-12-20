@@ -1,4 +1,4 @@
-package com.twirling.libtwirling.utils.utils;
+package com.twirling.libtwirling.utils;
 
 import java.net.URLEncoder;
 

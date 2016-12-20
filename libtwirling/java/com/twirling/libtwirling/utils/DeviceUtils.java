@@ -1,23 +1,21 @@
-package com.twirling.libtwirling.utils.utils;
+package com.twirling.libtwirling.utils;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.telephony.TelephonyManager;
-
-import com.twirling.SDTL.App;
 
 /**
  * Created by MagicBean on 2016/03/10 00:0:03
  */
 public class DeviceUtils {
 
-    public static DeviceInfo getDeviceInfo() {
+    public static DeviceInfo getDeviceInfo(Context context) {
         String modelName = android.os.Build.MODEL;
         String modelVerson = android.os.Build.VERSION.RELEASE;
-        TelephonyManager tm = (TelephonyManager) App.getInst().getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         int appVersion = 0;
         try {
-            appVersion = App.getInst().getPackageManager().getPackageInfo(App.getInst().getPackageName(), 0).versionCode;
+            appVersion = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }

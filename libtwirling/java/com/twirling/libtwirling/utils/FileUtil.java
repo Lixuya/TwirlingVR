@@ -1,4 +1,4 @@
-package com.twirling.libtwirling.utils.utils;
+package com.twirling.libtwirling.utils;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -8,7 +8,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.widget.ProgressBar;
 
-import com.twirling.SDTL.Constants;
+import com.twirling.libtwirling.Constants;
 
 import java.io.BufferedReader;
 import java.io.File;

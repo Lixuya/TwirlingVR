@@ -89,7 +89,6 @@
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
         android:shadowRadius="0"
-        android:singleLine="true"
         android:text="登录"
         android:textColor="#ffffff"
         android:textSize="15dp" />

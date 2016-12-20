@@ -8,11 +8,12 @@ import com.orhanobut.logger.Logger;
 import com.tencent.mm.sdk.modelmsg.SendAuth;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import com.twirling.SDTL.App;
 import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.model.DataArray;
 import com.twirling.SDTL.retrofit.RetrofitManager;
-import com.twirling.libtwirling.utils.utils.EncodeUtil;
-import com.twirling.libtwirling.utils.utils.SPUtil;
+import com.twirling.libtwirling.utils.EncodeUtil;
+import com.twirling.libtwirling.utils.SPUtil;
 import com.twirling.libtwirling.oauth.WXBack;
 
 import java.util.HashMap;
@@ -84,7 +85,7 @@ public class LoginWX {
                                             Toast.makeText(activity, dataArray.getMsg(), Toast.LENGTH_SHORT).show();
                                             Constants.USER_MOBILE = "";
                                             Constants.USER_IMAGE = FontAwesome.Icon.faw_weixin;
-                                            SPUtil.setIsLogin(true);
+                                            SPUtil.setIsLogin(App.getInst(), true);
                                             activity.finish();
                                         } else if (dataArray.getStatus() == 400) {
                                             Toast.makeText(activity, dataArray.getMsg(), Toast.LENGTH_SHORT).show();

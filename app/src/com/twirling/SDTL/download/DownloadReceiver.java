@@ -13,8 +13,8 @@ import com.twirling.SDTL.App;
 import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.data.RealmHelper;
 import com.twirling.SDTL.model.VideoItem;
-import com.twirling.libtwirling.utils.utils.UnZipHelper;
-import com.twirling.libtwirling.utils.utils.FileUtil;
+import com.twirling.libtwirling.utils.UnZipHelper;
+import com.twirling.libtwirling.utils.FileUtil;
 
 import java.io.File;
 

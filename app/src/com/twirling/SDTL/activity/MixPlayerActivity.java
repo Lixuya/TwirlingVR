@@ -17,13 +17,14 @@ import com.google.vr.sdk.base.Viewport;
 import com.google.vr.sdk.widgets.video.VrVideoEventListener;
 import com.google.vr.sdk.widgets.video.VrVideoView;
 import com.jakewharton.rxbinding.widget.RxSeekBar;
+import com.twirling.SDTL.App;
 import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.R;
 import com.twirling.SDTL.model.DownloadJson;
 import com.twirling.SDTL.model.Elements;
 import com.twirling.SDTL.model.VideoItem;
-import com.twirling.libtwirling.utils.utils.DeviceUtils;
-import com.twirling.libtwirling.utils.utils.FileUtil;
+import com.twirling.libtwirling.utils.DeviceUtils;
+import com.twirling.libtwirling.utils.FileUtil;
 import com.twirling.audio.player.OpenMXPlayer;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -89,7 +90,7 @@ public class MixPlayerActivity extends GvrActivity implements GvrView.StereoRend
         boolean isWave = videoItem.getVrAudio() == 12
                 || videoItem.getVrAudio() == 0
                 || channels == 8
-                || DeviceUtils.getDeviceInfo().deviceBrand.equals("samsung");
+                || DeviceUtils.getDeviceInfo(App.getInst()).deviceBrand.equals("samsung");
         if (true) {
             audioPath = Constants.URI_DOWNLOAD_LOCAL + name + "sound.wav";
         } else {
