@@ -21,6 +21,8 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.widget.RxSeekBar;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
+import com.trello.rxlifecycle.RxLifecycle;
+import com.trello.rxlifecycle.android.ActivityEvent;
 import com.twirling.SDTL.R;
 import com.twirling.SDTL.model.AudioItem;
 import com.twirling.SDTL.player.OpenMXPlayer;
@@ -31,9 +33,13 @@ import javax.microedition.khronos.egl.EGLConfig;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.subjects.BehaviorSubject;
+
+import static com.mikepenz.iconics.Iconics.TAG;
 
 public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer {
     @BindView(R.id.iv_stop)
@@ -70,7 +76,7 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
     private OpenMXPlayer openMXPlayer = null;
     private boolean isPaused = true;
     float[] headRotationEular = new float[3];
-
+    private BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
     Handler handler = null;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -78,11 +84,17 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         setContentView(R.layout.activity_audio2);
         ButterKnife.bind(this);
         //
+        this.lifecycleSubject.onNext(ActivityEvent.CREATE);
+        //
         initData();
         //
         initView();
-        //
+    }
+
+    @Override
+    protected void onStart() {
         iv_play.performClick();
+        super.onStart();
     }
 
     private void initData() {
@@ -99,10 +111,34 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
     }
 
     @Override
-    protected void onDestroy() {
-        if (openMXPlayer != null) {
-            openMXPlayer.stop();
+    protected void onPause() {
+        Log.i(TAG, "onPause");
+        try {
+            openMXPlayer.pause();
+        } catch (Exception e) {
+            Log.i("onPause", "error");
+            e.printStackTrace();
         }
+        isPaused = true;
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        try {
+            openMXPlayer.stop();
+//            openMXPlayer = null;
+        } catch (Exception e) {
+            Log.i("onStop", "error");
+            e.printStackTrace();
+        }
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        this.lifecycleSubject.onNext(ActivityEvent.DESTROY);
+        System.gc();
         super.onDestroy();
     }
 
@@ -124,34 +160,26 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
                 .sizeDp(25);
         iv_stop.setImageDrawable(icon3);
         Glide.with(getBaseContext()).load(imageUrl).into(iv_video_image);
-        RxView.clicks(iv_play)
-                .throttleFirst(3, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Void>() {
-                    @Override
-                    public void call(Void aVoid) {
-                        if (openMXPlayer == null) {
-                            openMXPlayer = new OpenMXPlayer();
-                            openMXPlayer.setProfileId(1);
-                            openMXPlayer.setAudioIndex(0);
-                        }
-                        openMXPlayer.setDataSource(audioUrl);
-                        togglePause();
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        Log.e(getClass() + "", throwable.toString());
-                    }
-                });
+        iv_play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (openMXPlayer == null) {
+                    openMXPlayer = new OpenMXPlayer();
+                    openMXPlayer.setProfileId(1);
+                    openMXPlayer.setAudioIndex(0);
+                }
+                openMXPlayer.setDataSource(audioUrl);
+                togglePause();
+            }
+        });
         RxView.clicks(iv_pause)
                 .throttleFirst(3, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Void>() {
+                .compose(RxLifecycle.bindUntilEvent(lifecycleSubject, ActivityEvent.DESTROY))
+                .subscribe(new Action1<Object>() {
                     @Override
-                    public void call(Void aVoid) {
+                    public void call(Object o) {
                         togglePause();
                     }
                 }, new Action1<Throwable>() {
@@ -170,9 +198,10 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Void>() {
+                .compose(RxLifecycle.bindUntilEvent(lifecycleSubject, ActivityEvent.DESTROY))
+                .subscribe(new Action1<Object>() {
                     @Override
-                    public void call(Void aVoid) {
+                    public void call(Object o) {
                         isPaused = false;
                         togglePause();
                         openMXPlayer.stop();
@@ -192,11 +221,14 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         setGvrView(gvrView);
         //
         RxSeekBar.userChanges(seekBar)
+                .throttleFirst(2, TimeUnit.SECONDS)
                 .subscribeOn(AndroidSchedulers.mainThread())
-                .debounce(3, TimeUnit.SECONDS)
                 .filter(new Func1<Integer, Boolean>() {
                     @Override
                     public Boolean call(Integer integer) {
+                        if (openMXPlayer != null) {
+                            isPaused = true;
+                        }
                         return openMXPlayer != null;
                     }
                 })
@@ -205,6 +237,13 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
                     @Override
                     public void call(Integer progress) {
                         openMXPlayer.seek((float) progress);
+                        Observable.timer(2, TimeUnit.SECONDS)
+                                .subscribe(new Action1<Long>() {
+                                    @Override
+                                    public void call(Long aLong) {
+                                        isPaused = false;
+                                    }
+                                });
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -249,7 +288,9 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         if (openMXPlayer == null || openMXPlayer.getDaa() == null) {
             return;
         }
-        seekBar.setProgress(openMXPlayer.getDuration());
+        if (!isPaused) {
+            seekBar.setProgress(openMXPlayer.getDuration());
+        }
         openMXPlayer.getDaa().setGyroscope(headRotationEular);
         if (seekBar.getProgress() >= 99) {
             seekBar.setProgress(100);

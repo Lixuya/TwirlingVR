@@ -1,13 +1,14 @@
 package com.twirling.SDTL;
 
 import android.app.Activity;
-import android.app.Application;
 import android.app.DownloadManager;
 import android.database.ContentObserver;
 import android.os.Bundle;
+import android.support.multidex.MultiDexApplication;
 
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
+import com.squareup.leakcanary.LeakCanary;
 import com.tencent.bugly.crashreport.CrashReport;
 
 import java.lang.ref.WeakReference;
@@ -18,7 +19,7 @@ import java.util.Map;
 /**
  * Created by MagicBean on 2016/02/23 11:11:38
  */
-public class App extends Application {
+public class App extends MultiDexApplication {
     public static App INS;
     private WeakReference<Activity> mCurrentActivity;
     //
@@ -28,6 +29,13 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         CrashReport.initCrashReport(getApplicationContext(), "900055825", false);
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
+        //
         INS = this;
 //        Log.w("device", DeviceUtils.getDeviceInfo().toString());
         Logger.init("twirling").setLogLevel(BuildConfig.DEBUG ? LogLevel.FULL : LogLevel.NONE);

@@ -42,13 +42,13 @@ public class OpenMXPlayer implements Runnable {
     public final String LOG_TAG = "OpenMXPlayer";
     private static final int FRAME_LENGTH = 512;
     private int profileId = 11;
-    private MediaExtractor extractor;
-    private MediaCodec codec;
-    private AudioTrack audioTrack;
+    private MediaExtractor extractor = null;
+    private MediaCodec codec = null;
+    private AudioTrack audioTrack = null;
     private PlayerStates state = new PlayerStates();
     private String sourcePath = null;
     private int sourceRawResId = -1;
-    private Context mContext;
+    private Context mContext = null;
     private boolean stop = false;
     private AudioEngine audioEngine = null;
     private long instance = 0;
@@ -57,8 +57,8 @@ public class OpenMXPlayer implements Runnable {
     private int byteArrayOffset = 0;
 
     private TwirlingAudioProcess daa = null;
-    String mime = null;
-    int sampleRate = -1,
+    private String mime = null;
+    private int sampleRate = -1,
             channels = -1,
             bitrate = -1;
     public long presentationTimeUs = 0,
@@ -141,7 +141,7 @@ public class OpenMXPlayer implements Runnable {
         if (extractor == null) {
             return;
         }
-        Log.w("progress", pos + " " + presentationTimeUs + " " + duration);
+//        Log.w("progress", pos + " " + presentationTimeUs + " " + duration);
         extractor.seekTo(pos, MediaExtractor.SEEK_TO_CLOSEST_SYNC);
         syncNotify();
     }
@@ -399,6 +399,9 @@ public class OpenMXPlayer implements Runnable {
     public void clearSource() {
         try {
             Log.d(LOG_TAG, "stopping...");
+            //
+            audioEngine.audioRelease(instance);
+            //
             if (codec != null) {
                 codec.stop();
                 codec.release();
@@ -420,7 +423,6 @@ public class OpenMXPlayer implements Runnable {
             duration = 0;
             state.set(PlayerStates.STOPPED);
             stop = true;
-            audioEngine.audioRelease(instance);
         } catch (Exception e) {
             e.printStackTrace();
         }

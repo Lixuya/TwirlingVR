@@ -77,14 +77,14 @@
                 android:id="@+id/iv_play"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:padding="10dp"
-                android:transitionName="@string/tra_play" />
+                android:padding="10dp" />
 
             <ImageView
                 android:id="@+id/iv_pause"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:padding="10dp"
+                android:transitionName="@string/tra_play"
                 android:visibility="invisible" />
         </FrameLayout>
 
@@ -109,7 +109,7 @@
         android:layout_gravity="center"
         android:layout_weight="1"
         android:text="建议在良好网络下播放"
-        android:textColor="@color/md_white_1000"/>
+        android:textColor="@color/md_white_1000" />
 
     <com.google.vr.sdk.base.GvrView
         android:id="@+id/gvrview"

@@ -11,10 +11,11 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.twirling.SDTL.App;
 import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.model.DataArray;
+import com.twirling.SDTL.model.User;
 import com.twirling.SDTL.retrofit.RetrofitManager;
+import com.twirling.libtwirling.oauth.WXBack;
 import com.twirling.libtwirling.utils.EncodeUtil;
 import com.twirling.libtwirling.utils.SPUtil;
-import com.twirling.libtwirling.oauth.WXBack;
 
 import java.util.HashMap;
 
@@ -83,10 +84,12 @@ public class LoginWX {
                                         Logger.d(dataArray.toString());
                                         if (dataArray.getStatus() == 200) {
                                             Toast.makeText(activity, dataArray.getMsg(), Toast.LENGTH_SHORT).show();
-                                            Constants.USER_MOBILE = "";
+                                            User user = (User) dataArray.getData().get(0);
+                                            Constants.USER_MOBILE = user.getMobile();
                                             Constants.USER_IMAGE = FontAwesome.Icon.faw_weixin;
                                             SPUtil.setIsLogin(App.getInst(), true);
                                             activity.finish();
+                                            instance = null;
                                         } else if (dataArray.getStatus() == 400) {
                                             Toast.makeText(activity, dataArray.getMsg(), Toast.LENGTH_SHORT).show();
                                         }
@@ -95,6 +98,7 @@ public class LoginWX {
                                     @Override
                                     public void call(Throwable throwable) {
                                         Logger.d(throwable.toString());
+                                        instance = null;
                                     }
                                 });
                     }

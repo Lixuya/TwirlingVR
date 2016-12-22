@@ -36,6 +36,8 @@ import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 
+import static java.lang.System.load;
+
 /**
  * Created by 谢秋鹏 on 2016/5/26.
  */
@@ -63,18 +65,7 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
         params.height = mHeights.get(position);
         holder.iv_background.setLayoutParams(params);
         //
-        if (item.getCover().endsWith(".gif")) {
-            Glide.with(holder.itemView.getContext())
-                    .load(item.getCover())
-                    .asGif()
-                    .into(holder.iv_background);
-        } else {
-            Glide.with(holder.itemView.getContext())
-                    .load(item.getCover())
-                    .asBitmap()
-                    .into(holder.iv_background);
-        }
-        Glide.with(holder.itemView.getContext())
+        Glide.with(App.getInst().getCurrentShowActivity())
                 .load(item.getCover())
                 .into(holder.iv_background);
         //
