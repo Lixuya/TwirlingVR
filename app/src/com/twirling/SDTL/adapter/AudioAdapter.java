@@ -2,6 +2,7 @@ package com.twirling.SDTL.adapter;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.jakewharton.rxbinding.view.RxView;
@@ -25,6 +27,7 @@ import com.twirling.SDTL.App;
 import com.twirling.SDTL.R;
 import com.twirling.SDTL.activity.AudioActivity;
 import com.twirling.SDTL.model.AudioItem;
+import com.twirling.libtwirling.utils.NetUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +38,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-
-import static java.lang.System.load;
+import rx.functions.Func1;
 
 /**
  * Created by 谢秋鹏 on 2016/5/26.
@@ -72,6 +74,16 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
         holder.tv_title.setText(item.getTitle());
         holder.audio = item.getAudio();
         RxView.clicks(holder.cv_card)
+                .filter(new Func1<Void, Boolean>() {
+                    @Override
+                    public Boolean call(Void aVoid) {
+                        Context context = holder.itemView.getContext();
+                        if (!NetUtil.isNetEnable(context)) {
+                            Toast.makeText(context, "请在良好网络下播放", Toast.LENGTH_SHORT).show();
+                        }
+                        return NetUtil.isNetEnable(context);
+                    }
+                })
                 .throttleFirst(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(AndroidSchedulers.mainThread())

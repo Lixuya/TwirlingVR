@@ -22,6 +22,7 @@ public class VideoItem extends RealmObject implements Parcelable {
     private String AppIOSOffline = "";
     private String AppAndroidOnline = "";
     private String Describe = "";
+    private long downloadId = 0;
     private long downloadTime = 0;
 
     public String getDescribe() {
@@ -47,8 +48,6 @@ public class VideoItem extends RealmObject implements Parcelable {
     public void setSort(String sort) {
         this.Sort = sort;
     }
-
-    private long downloadId = 0;
 
     protected VideoItem(Parcel in) {
         ID = in.readInt();

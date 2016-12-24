@@ -170,7 +170,9 @@ public class MixPlayerActivity extends GvrActivity implements GvrView.StereoRend
         headTransform.getHeadView(headView, 0);
         headTransform.getQuaternion(headRotation, 0);
         headTransform.getEulerAngles(headRotationEular, 0);
-        openMXPlayer.getDaa().setGyroscope(headRotationEular);
+        if (openMXPlayer != null && openMXPlayer.getDaa() != null) {
+            openMXPlayer.getDaa().setGyroscope(headRotationEular);
+        }
         if (metadata != null) {
             openMXPlayer.getDaa().setMetadataFromJson(metadata);
         }
@@ -208,11 +210,13 @@ public class MixPlayerActivity extends GvrActivity implements GvrView.StereoRend
     }
 
     private void updateStatusText() {
+        String current = (int) (video_view.getCurrentPosition() / 1000f) + "";
+        String whole = (int) (video_view.getDuration() / 1000f) + "";
         StringBuilder status = new StringBuilder();
         status.append(isPaused ? "Paused: " : "Playing: ");
-        status.append(String.format("%.2f", video_view.getCurrentPosition() / 1000f));
+        status.append(current);
         status.append(" / ");
-        status.append(video_view.getDuration() / 1000f);
+        status.append(whole);
         status.append(" seconds.");
         statusText.setText(status.toString());
     }

@@ -37,6 +37,10 @@ import com.twirling.audio.player.PlayerStates;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.concurrent.TimeUnit;
+
+import rx.Observable;
+import rx.functions.Action1;
 
 public class OpenMXPlayer implements Runnable {
     public final String LOG_TAG = "OpenMXPlayer";
@@ -130,7 +134,6 @@ public class OpenMXPlayer implements Runnable {
 
     public void stop() {
         stop = true;
-        clearSource();
     }
 
     public void pause() {
@@ -392,7 +395,13 @@ public class OpenMXPlayer implements Runnable {
                 Log.d(LOG_TAG, "dequeueOutputBuffer returned " + res);
             }
         }
-        clearSource();
+        Observable.timer(100, TimeUnit.MILLISECONDS)
+                .subscribe(new Action1<Long>() {
+                    @Override
+                    public void call(Long aLong) {
+                        clearSource();
+                    }
+                });
     }
 
     // clear source and the other globals

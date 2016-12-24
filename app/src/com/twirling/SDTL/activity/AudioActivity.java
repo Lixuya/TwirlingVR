@@ -114,7 +114,9 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
     protected void onPause() {
         Log.i(TAG, "onPause");
         try {
-            openMXPlayer.pause();
+            if (openMXPlayer != null) {
+                openMXPlayer.pause();
+            }
         } catch (Exception e) {
             Log.i("onPause", "error");
             e.printStackTrace();
@@ -126,8 +128,9 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
     @Override
     protected void onStop() {
         try {
-            openMXPlayer.stop();
-//            openMXPlayer = null;
+            if (openMXPlayer != null) {
+                openMXPlayer.stop();
+            }
         } catch (Exception e) {
             Log.i("onStop", "error");
             e.printStackTrace();
@@ -138,7 +141,6 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
     @Override
     protected void onDestroy() {
         this.lifecycleSubject.onNext(ActivityEvent.DESTROY);
-        System.gc();
         super.onDestroy();
     }
 
@@ -205,7 +207,6 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
                         isPaused = false;
                         togglePause();
                         openMXPlayer.stop();
-                        openMXPlayer = null;
                         seekBar.setProgress(0);
                     }
                 }, new Action1<Throwable>() {
@@ -297,7 +298,6 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
             isPaused = false;
             togglePause();
             openMXPlayer.stop();
-            openMXPlayer = null;
         }
     }
 

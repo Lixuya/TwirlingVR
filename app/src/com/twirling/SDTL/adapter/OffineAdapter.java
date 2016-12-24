@@ -1,7 +1,9 @@
 package com.twirling.SDTL.adapter;
 
 import android.app.DownloadManager;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.CardView;
@@ -27,6 +29,7 @@ import com.twirling.SDTL.download.DownloadChangeObserver;
 import com.twirling.SDTL.model.VideoItem;
 import com.twirling.SDTL.module.ModuleAlertDialog;
 import com.twirling.libtwirling.utils.FileUtil;
+import com.twirling.libtwirling.utils.UnZipHelper;
 import com.twirling.player.activity.SimpleVrVideoActivity;
 
 import java.io.File;
@@ -53,6 +56,8 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
         this.datas = datas;
     }
 
+    private int progress = 0;
+
     @Override
     public OffineAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.ll_item_download, viewGroup, false);
@@ -67,6 +72,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
         String path = Constants.PATH_RESOURCE + item.getFolder() + Constants.PAPH_IMAGE + item.getImage();
         Glide.with(holder.itemView.getContext()).load(path).into(holder.iv_background);
         holder.tv_title.setText(item.getName());
+        //
         RxView.clicks(holder.iv_delete)
                 .throttleFirst(2, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -108,13 +114,14 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
                 }
             }
         });
+        //
         if (holder.downloadId == 1) {
-            holder.pb_download.setVisibility(View.GONE);
-            holder.tv_title.setVisibility(View.VISIBLE);
-            holder.cv_card.setEnabled(true);
+            haveUnZip(holder);
             return;
         }
         if (holder.downloadId != 1) {
+            checkZip(item, holder);
+            //
             DownloadChangeObserver pco = (DownloadChangeObserver) App.observers.get(holder.downloadId);
             if (pco == null) {
                 return;
@@ -134,6 +141,55 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
                     holder.pb_download.setProgress(progress);
                 }
             });
+        }
+        //
+        checkDownload(holder);
+    }
+
+    private void checkDownload(OffineAdapter.ViewHolder holder) {
+        if (holder.downloadId == 1) {
+            return;
+        }
+        DownloadManager.Query q = new DownloadManager.Query();
+        q.setFilterById(holder.downloadId);
+        Cursor cursor = ((DownloadManager) holder.itemView.getContext().getSystemService(Context.DOWNLOAD_SERVICE)).query(q);
+        cursor.moveToFirst();
+        int bytes_downloaded = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
+        int bytes_total = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
+        progress = (int) (((float) bytes_downloaded * 100f) / (float) bytes_total);
+        cursor.close();
+//        Log.w("download_progress", progress + " " + holder.downloadId + " " + bytes_downloaded + " " + bytes_total + " ");
+        //
+        if (progress == 100) {
+            haveUnZip(holder);
+            return;
+        }
+//        downloading(holder);
+    }
+
+    private void haveUnZip(OffineAdapter.ViewHolder holder) {
+        holder.pb_download.setVisibility(View.GONE);
+        holder.tv_title.setVisibility(View.VISIBLE);
+        holder.cv_card.setEnabled(true);
+        return;
+    }
+
+    private void downloading(OffineAdapter.ViewHolder holder) {
+        holder.cv_card.setEnabled(false);
+        holder.pb_download.setVisibility(View.VISIBLE);
+        holder.tv_title.setVisibility(View.GONE);
+        holder.pb_download.setProgress(progress);
+    }
+
+    private void checkZip(VideoItem item, OffineAdapter.ViewHolder holder) {
+        File zipFile = new File(Constants.PAPH_DOWNLOAD_LOCAL + item.getAppAndroidOffline());
+        String androidOffine = item.getAppAndroidOffline();
+        String fileFolder = androidOffine.substring(0, androidOffine.length() - 4);
+        if (zipFile.exists() && progress == 100) {
+            new UnZipHelper(zipFile.getPath(), Constants.PAPH_DOWNLOAD_LOCAL + fileFolder).unzip();
+            FileUtil.delete(zipFile);
+            FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder));
+            RealmHelper.getIns().updateDownloadId(holder.downloadId);
         }
     }
 
