@@ -222,7 +222,6 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         setGvrView(gvrView);
         //
         RxSeekBar.userChanges(seekBar)
-                .throttleFirst(2, TimeUnit.SECONDS)
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .filter(new Func1<Integer, Boolean>() {
                     @Override
@@ -238,7 +237,8 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
                     @Override
                     public void call(Integer progress) {
                         openMXPlayer.seek((float) progress);
-                        Observable.timer(2, TimeUnit.SECONDS)
+                        openMXPlayer.presentationTimeUs = progress * openMXPlayer.duration / 100;
+                        Observable.timer(1, TimeUnit.SECONDS)
                                 .subscribe(new Action1<Long>() {
                                     @Override
                                     public void call(Long aLong) {
@@ -289,10 +289,10 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
         if (openMXPlayer == null || openMXPlayer.getDaa() == null) {
             return;
         }
+        openMXPlayer.getDaa().setGyroscope(headRotationEular);
         if (!isPaused) {
             seekBar.setProgress(openMXPlayer.getDuration());
         }
-        openMXPlayer.getDaa().setGyroscope(headRotationEular);
         if (seekBar.getProgress() >= 99) {
             seekBar.setProgress(100);
             isPaused = false;

@@ -120,6 +120,9 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
             return;
         }
         if (holder.downloadId != 1) {
+            //
+            checkDownload(holder);
+            //
             checkZip(item, holder);
             //
             DownloadChangeObserver pco = (DownloadChangeObserver) App.observers.get(holder.downloadId);
@@ -142,10 +145,9 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
                 }
             });
         }
-        //
-        checkDownload(holder);
     }
 
+    //
     private void checkDownload(OffineAdapter.ViewHolder holder) {
         if (holder.downloadId == 1) {
             return;

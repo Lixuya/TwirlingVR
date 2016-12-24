@@ -56,6 +56,7 @@ public class TwirlingAudioProcess {
         int n_acc_out = 0;
         int ii = 0;
         int normfactor = 32768;
+        int tmp32;
         if (metadata == null) {
             return;
         }
@@ -77,7 +78,13 @@ public class TwirlingAudioProcess {
 //                audioOutput[ii * 2 + 1] = audioInput[ii * channels + 1];
 //            }
             for (ii = 0; ii < FRAME_LENGTH * 2; ii++) {
-                audioFlatOutput[n_acc_out++] = (short) (audioOutput[ii] * normfactor * postgain);
+                tmp32 = (int) (audioOutput[ii] * normfactor * postgain);
+                if (tmp32 > 32767) {
+                    tmp32 = 32767;
+                } else if (tmp32 < -32768) {
+                    tmp32 = -32768;
+                }
+                audioFlatOutput[n_acc_out++] = (short) tmp32;
             }
         }
         return;
