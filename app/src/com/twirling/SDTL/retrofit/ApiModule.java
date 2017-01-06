@@ -1,7 +1,5 @@
 package com.twirling.SDTL.retrofit;
 
-import com.twirling.libtwirling.retrofit.RetrofitManager;
-
 import javax.inject.Singleton;
 
 import dagger.Module;

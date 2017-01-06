@@ -34,17 +34,15 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/button"
+            android:id="@+id/iv_download"
             android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/dwonload" />
+            android:layout_height="60dp" />
 
-        <Button
-            android:id="@+id/button2"
+        <ImageView
+            android:id="@+id/iv_play"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginLeft="40dp"
-            android:background="@drawable/play" />
+            android:layout_marginLeft="40dp" />
     </LinearLayout>
 
     <ProgressBar

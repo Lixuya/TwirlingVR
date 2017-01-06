@@ -17,7 +17,7 @@ import com.twirling.SDTL.R;
 import com.twirling.SDTL.adapter.MainAdapter;
 import com.twirling.SDTL.model.DataArray;
 import com.twirling.SDTL.model.VideoItem;
-import com.twirling.libtwirling.retrofit.RetrofitManager;
+import com.twirling.SDTL.retrofit.RetrofitManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;

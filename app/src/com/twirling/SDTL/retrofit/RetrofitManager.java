@@ -1,4 +1,4 @@
-package com.twirling.libtwirling.retrofit;
+package com.twirling.SDTL.retrofit;
 
 import com.orhanobut.logger.Logger;
 import com.twirling.SDTL.Constants;
@@ -25,9 +25,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class RetrofitManager {
 	//
-	private static Api mApiService = null;
-	private static OkHttpClient okHttpClient = null;
-	//
+	private static Api mApi = null;
+	private static OkHttpClient mOkHttpClient = null;
 	private static Retrofit mRetrofit = null;
 
 	@Inject
@@ -39,12 +38,12 @@ public class RetrofitManager {
 		if (checkNull()) {
 			init();
 		}
-		return mApiService;
+		return mApi;
 	}
 
 	private static void init() {
 		int TIME_OUT = 20;
-		okHttpClient = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
+		mOkHttpClient = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
 			@Override
 			public Response intercept(Chain chain) throws IOException {
 				HttpUrl url = chain.request().url();
@@ -75,12 +74,12 @@ public class RetrofitManager {
 				.addCallAdapterFactory(RxJavaCallAdapterFactory.create())
 				.addConverterFactory(GsonConverterFactory.create())
 				.build();
-		mApiService = mRetrofit.create(Api.class);
+		mApi = mRetrofit.create(Api.class);
 	}
 
-	public static OkHttpClient getOkHttpClient() {
+	public static OkHttpClient getmOkHttpClient() {
 		checkNull();
-		return okHttpClient;
+		return mOkHttpClient;
 	}
 
 	public static String getWebBaseUrl() {

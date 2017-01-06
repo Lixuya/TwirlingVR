@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.twirling.SDTL.App;
 import com.twirling.SDTL.retrofit.Api;
-import com.twirling.libtwirling.retrofit.RetrofitManager;
+import com.twirling.SDTL.retrofit.RetrofitManager;
 
 import javax.inject.Singleton;
 
