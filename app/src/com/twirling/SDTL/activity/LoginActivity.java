@@ -14,7 +14,7 @@ import com.twirling.SDTL.App;
 import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.R;
 import com.twirling.SDTL.model.DataArray;
-import com.twirling.SDTL.retrofit.RetrofitManager;
+import com.twirling.libtwirling.retrofit.RetrofitManager;
 import com.twirling.libtwirling.utils.SPUtil;
 
 import java.util.HashMap;

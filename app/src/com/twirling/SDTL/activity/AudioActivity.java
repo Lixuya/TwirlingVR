@@ -286,10 +286,10 @@ public class AudioActivity extends GvrActivity implements GvrView.StereoRenderer
     public void onNewFrame(HeadTransform headTransform) {
         headTransform.getEulerAngles(headRotationEular, 0);
         handler.sendEmptyMessage(0);
-        if (openMXPlayer == null || openMXPlayer.getDaa() == null) {
+        if (openMXPlayer == null || openMXPlayer.getTap() == null) {
             return;
         }
-        openMXPlayer.getDaa().setGyroscope(headRotationEular);
+        openMXPlayer.getTap().setGyroscope(headRotationEular);
         if (!isPaused) {
             seekBar.setProgress(openMXPlayer.getDuration());
         }

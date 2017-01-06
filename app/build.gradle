@@ -109,6 +109,7 @@ dependencies {
     compile 'com.alibaba:fastjson:1.2.12'
     //
     compile 'com.orhanobut:logger:1.11'
+    //
     compile "com.squareup.retrofit2:retrofit:$Retrofit_Version"
     compile "com.squareup.retrofit2:converter-gson:$Retrofit_Version"
     compile "com.squareup.retrofit2:adapter-rxjava:$Retrofit_Version"

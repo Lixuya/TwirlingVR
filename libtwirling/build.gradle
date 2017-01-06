@@ -36,7 +36,10 @@ android {
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
+def Dagger2_Version = properties.getProperty("Dagger2_Version")
 def Rxbinding_Version = properties.getProperty("Rxbinding_Version")
+def Audio_Lib = properties.getProperty("Audio_Lib");
+def Retrofit_Version = properties.getProperty("Retrofit_Version")
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -53,4 +56,8 @@ dependencies {
     compile "com.jakewharton.rxbinding:rxbinding:$Rxbinding_Version"
     compile "com.jakewharton.rxbinding:rxbinding-appcompat-v7:$Rxbinding_Version"
     compile "com.jakewharton.rxbinding:rxbinding-design:$Rxbinding_Version"
+    //
+    compile "com.squareup.retrofit2:retrofit:$Retrofit_Version"
+    compile "com.squareup.retrofit2:converter-gson:$Retrofit_Version"
+    compile "com.squareup.retrofit2:adapter-rxjava:$Retrofit_Version"
 }

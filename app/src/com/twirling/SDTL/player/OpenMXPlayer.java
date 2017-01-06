@@ -60,7 +60,7 @@ public class OpenMXPlayer implements Runnable {
     private byte[] byteArray = new byte[32768 * 2];
     private int byteArrayOffset = 0;
 
-    private TwirlingAudioProcess daa = null;
+    private TwirlingAudioProcess tap = null;
     private String mime = null;
     private int sampleRate = -1,
             channels = -1,
@@ -74,8 +74,8 @@ public class OpenMXPlayer implements Runnable {
 
     private int audioIndex = 0;
 
-    public TwirlingAudioProcess getDaa() {
-        return daa;
+    public TwirlingAudioProcess getTap() {
+        return tap;
     }
 
     public int getDuration() {
@@ -194,8 +194,8 @@ public class OpenMXPlayer implements Runnable {
         //
         instance = audioEngine.audioInit(profileId, FRAME_LENGTH, channels, sampleRate, false);
         audioEngine.audioSet(instance, false, 0, false, true, 1.0f);
-        daa = new TwirlingAudioProcess(audioEngine, instance);
-        daa.setChannels(channels);
+        tap = new TwirlingAudioProcess(audioEngine, instance);
+        tap.setChannels(channels);
         // configure AudioTrack
         int minSize = AudioTrack.getMinBufferSize(sampleRate,
                 AudioFormat.CHANNEL_OUT_STEREO,
@@ -328,7 +328,7 @@ public class OpenMXPlayer implements Runnable {
             // pause implementation
             waitPlay();
             noOutputCounter++;
-            Logger.w("noOutputCounter " + noOutputCounter + " " + info.size);
+//            Logger.w("noOutputCounter " + noOutputCounter + " " + info.size);
             // read a buffer before feeding it to the decoder
             try {
                 readBuffer(sawInputEOS, codecInputBuffers, kTimeOutUs, info);
@@ -363,10 +363,10 @@ public class OpenMXPlayer implements Runnable {
                 final byte[] chunkAligned = new byte[infoSizeAligned];
                 System.arraycopy(byteArray, 0, chunkAligned, 0, infoSizeAligned);
                 // TODO
-                short[] audio = daa.byte2Short(chunkAligned, loopNum);
+                short[] audio = tap.byte2Short(chunkAligned, loopNum);
                 short[] audioOutput = new short[loopNum * FRAME_LENGTH * 2];
-                daa.setAudioPlayTime(presentationTimeUs / 1000f / 1000f);
-                daa.audioOutputProcess(audio, audioOutput);
+                tap.setAudioPlayTime(presentationTimeUs / 1000f / 1000f);
+                tap.audioOutputProcess(audio, audioOutput);
                 // 剩下的部分
                 System.arraycopy(byteArray, infoSizeAligned, byteArray, 0, byteArrayOffset);
                 // 播放
@@ -468,12 +468,12 @@ public class OpenMXPlayer implements Runnable {
 //            Logger.w("sampleSize " + sampleSize + " index " + index);
             //
             if (sampleSize < 0) {
-                Log.d(LOG_TAG, "saw input EOS. Stopping playback");
+//                Log.d(LOG_TAG, "saw input EOS. Stopping playback");
                 sawInputEOS = true;
                 sampleSize = 0;
             } else {
                 presentationTimeUs = extractor.getSampleTime();
-                Log.v(LOG_TAG, "presentationTimeUs " + presentationTimeUs);
+//                Log.v(LOG_TAG, "presentationTimeUs " + presentationTimeUs);
                 int percent = (duration == 0) ? 0 : (int) (100 * presentationTimeUs / duration);
             }
             codec.queueInputBuffer(inputBufIndex,

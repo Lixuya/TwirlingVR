@@ -12,7 +12,7 @@ import com.twirling.SDTL.App;
 import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.model.DataArray;
 import com.twirling.SDTL.model.User;
-import com.twirling.SDTL.retrofit.RetrofitManager;
+import com.twirling.libtwirling.retrofit.RetrofitManager;
 import com.twirling.libtwirling.oauth.WXBack;
 import com.twirling.libtwirling.utils.EncodeUtil;
 import com.twirling.libtwirling.utils.SPUtil;

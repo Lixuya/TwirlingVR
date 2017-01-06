@@ -19,7 +19,7 @@ import com.twirling.SDTL.R;
 import com.twirling.SDTL.adapter.AudioAdapter;
 import com.twirling.SDTL.model.AudioItem;
 import com.twirling.SDTL.model.DataArray;
-import com.twirling.SDTL.retrofit.RetrofitManager;
+import com.twirling.libtwirling.retrofit.RetrofitManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;

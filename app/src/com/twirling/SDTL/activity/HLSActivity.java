@@ -6,7 +6,7 @@ import android.util.Log;
 import com.google.vr.sdk.widgets.video.VrVideoView;
 import com.twirling.SDTL.model.DataArray;
 import com.twirling.SDTL.model.LiveItem;
-import com.twirling.SDTL.retrofit.RetrofitManager;
+import com.twirling.libtwirling.retrofit.RetrofitManager;
 
 import java.io.IOException;
 

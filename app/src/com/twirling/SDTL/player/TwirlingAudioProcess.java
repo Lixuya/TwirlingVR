@@ -1,7 +1,5 @@
 package com.twirling.SDTL.player;
 
-import android.util.Log;
-
 import com.twirling.audio.AudioEngine;
 
 import java.nio.ByteBuffer;
@@ -70,7 +68,7 @@ public class TwirlingAudioProcess {
 //            for (int i = 0; i < metadata.length; i++) {
 //                Log.w("angle", metadata[i] + "");
 //            }
-            Log.w("angle", yaw + " " + pitch);
+//            Log.w("angle", yaw + " " + pitch);
             audioEngine.audioProcess(instance, yaw, pitch, 0, audioInput, audioOutput, metadata);
             // 转成双声道
 //            for (ii = 0; ii < FRAME_LENGTH; ii++) {
