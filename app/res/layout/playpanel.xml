@@ -56,4 +56,11 @@
         android:max="100"
         android:progress="0"
         android:progressDrawable="@drawable/progressbar_horizontal_bg" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:text="下载视频后可以体验全景声，在线观看暂不支持" />
 </LinearLayout>
