@@ -46,6 +46,9 @@ public class PlayLoadActivity extends AppCompatActivity {
 
 	private String imageUrl,
 			videoName;
+
+	private Drawable icon_click;
+
 	private CountDownTimer selfTimer = new CountDownTimer(20 * 1000, 1000) {
 		public void onTick(long millSec) {
 			mPbLoading.setProgress((int) ((20 * 1000 - millSec) / 1000));
@@ -80,12 +83,12 @@ public class PlayLoadActivity extends AppCompatActivity {
 			return;
 		} else if (downLoadId == 1) {
 			mPbLoading.setProgress(100);
-			iv_download.setBackgroundColor(Color.parseColor("#C0C0C0"));
+			iv_download.setImageDrawable(icon_click);
 			iv_download.setEnabled(false);
 			return;
 		}
 		iv_download.setEnabled(false);
-		iv_download.setBackgroundColor(Color.parseColor("#C0C0C0"));
+		iv_download.setImageDrawable(icon_click);
 		DownloadChangeObserver pco = (DownloadChangeObserver) App.observers.get(downLoadId);
 		if (pco == null) {
 			return;
@@ -100,6 +103,10 @@ public class PlayLoadActivity extends AppCompatActivity {
 
 	public void initView(final VideoItem videoItem) {
 		Glide.with(getBaseContext()).load(imageUrl).into(iv_video_image);
+		icon_click = new IconicsDrawable(getBaseContext())
+				.icon(FontAwesome.Icon.faw_download)
+				.color(Color.parseColor("#00CF00"))
+				.sizeDp(40);
 		Drawable icon = new IconicsDrawable(getBaseContext())
 				.icon(FontAwesome.Icon.faw_download)
 				.color(Color.parseColor("#000000"))
@@ -111,10 +118,6 @@ public class PlayLoadActivity extends AppCompatActivity {
 				.subscribe(new Action1<Void>() {
 					@Override
 					public void call(Void aVoid) {
-						Drawable icon_click = new IconicsDrawable(getBaseContext())
-								.icon(FontAwesome.Icon.faw_download)
-								.color(Color.parseColor("#00CF00"))
-								.sizeDp(40);
 						iv_download.setImageDrawable(icon_click);
 						//
 						Intent intent = new Intent(App.getInst().getApplicationContext(), DownloadService.class);
