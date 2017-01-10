@@ -35,13 +35,13 @@
 
         <ImageView
             android:id="@+id/iv_download"
-            android:layout_width="60dp"
-            android:layout_height="60dp" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <ImageView
             android:id="@+id/iv_play"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="40dp" />
     </LinearLayout>
 
@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
-        android:text="下载视频后可以体验全景声，" />
+        android:text="下载视频后可以体验全景声" />
 
     <TextView
         android:layout_width="wrap_content"

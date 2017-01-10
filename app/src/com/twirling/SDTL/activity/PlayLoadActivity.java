@@ -104,13 +104,13 @@ public class PlayLoadActivity extends AppCompatActivity {
 	public void initView(final VideoItem videoItem) {
 		Glide.with(getBaseContext()).load(imageUrl).into(iv_video_image);
 		icon_click = new IconicsDrawable(getBaseContext())
-				.icon(FontAwesome.Icon.faw_download)
+				.icon(FontAwesome.Icon.faw_cloud_download)
 				.color(Color.parseColor("#00CF00"))
-				.sizeDp(40);
+				.sizeDp(53);
 		Drawable icon = new IconicsDrawable(getBaseContext())
-				.icon(FontAwesome.Icon.faw_download)
+				.icon(FontAwesome.Icon.faw_cloud_download)
 				.color(Color.parseColor("#000000"))
-				.sizeDp(40);
+				.sizeDp(53);
 		iv_download.setImageDrawable(icon);
 		RxView.clicks(iv_download)
 				.debounce(300, TimeUnit.MILLISECONDS)
@@ -133,7 +133,7 @@ public class PlayLoadActivity extends AppCompatActivity {
 		Drawable icon2 = new IconicsDrawable(getBaseContext())
 				.icon(FontAwesome.Icon.faw_play_circle_o)
 				.color(Color.parseColor("#000000"))
-				.sizeDp(40);
+				.sizeDp(50);
 		iv_play.setImageDrawable(icon2);
 		RxView.clicks(iv_play)
 				.subscribe(new Action1<Void>() {
