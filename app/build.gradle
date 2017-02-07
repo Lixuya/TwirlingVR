@@ -92,7 +92,7 @@ repositories {
 
 def Dagger2_Version = properties.getProperty("Dagger2_Version")
 def Rxbinding_Version = properties.getProperty("Rxbinding_Version")
-def Audio_Lib = properties.getProperty("Audio_Lib");
+def LibAudio = properties.getProperty("LibAudio");
 def Retrofit_Version = properties.getProperty("Retrofit_Version")
 def LibGvr = properties.getProperty("LibGvr")
 
@@ -100,7 +100,6 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     //
     compile(name: 'sdk-base-1.10.0', ext: 'aar')
-    compile "$Audio_Lib"
     //
     compile "com.android.support:appcompat-v7:${versions.supportLib}"
     compile "com.android.support:cardview-v7:${versions.supportLib}"
@@ -156,6 +155,7 @@ dependencies {
     //
     compile project(':libtwirling')
     //
+//    compile "$LibAudio"
     compile "$LibGvr"
 }
 //task copyTaskWithPatterns(type: Copy) {

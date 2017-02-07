@@ -23,7 +23,6 @@ import com.mikepenz.iconics.IconicsDrawable;
 import com.twirling.SDTL.App;
 import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.R;
-import com.twirling.SDTL.activity.MixPlayerActivity;
 import com.twirling.SDTL.data.RealmHelper;
 import com.twirling.SDTL.download.DownloadChangeObserver;
 import com.twirling.SDTL.model.VideoItem;
@@ -109,9 +108,9 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
 					intent.putExtra("VideoItem", Constants.PAPH_DOWNLOAD_LOCAL + item.getAppAndroidOnline());
 					holder.itemView.getContext().startActivity(intent);
 				} else if (vrAudio != -1 && holder.downloadId == 1) {
-					Intent intent = new Intent(holder.itemView.getContext(), MixPlayerActivity.class);
-					intent.putExtra("videoItem", item);
-					holder.itemView.getContext().startActivity(intent);
+//					Intent intent = new Intent(holder.itemView.getContext(), MixPlayerActivity.class);
+//					intent.putExtra("videoItem", item);
+//					holder.itemView.getContext().startActivity(intent);
 				}
 			}
 		});

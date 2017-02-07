@@ -23,7 +23,7 @@ import com.twirling.SDTL.R;
 import com.twirling.SDTL.model.DownloadJson;
 import com.twirling.SDTL.model.Elements;
 import com.twirling.SDTL.model.VideoItem;
-import com.twirling.audio.player.OpenMXPlayer;
+import com.twirling.SDTL.player.OpenMXPlayer;
 import com.twirling.libtwirling.utils.DeviceUtils;
 import com.twirling.libtwirling.utils.FileUtil;
 
@@ -170,11 +170,11 @@ public class MixPlayerActivity extends GvrActivity implements GvrView.StereoRend
         headTransform.getHeadView(headView, 0);
         headTransform.getQuaternion(headRotation, 0);
         headTransform.getEulerAngles(headRotationEular, 0);
-        if (openMXPlayer != null && openMXPlayer.getDaa() != null) {
-            openMXPlayer.getDaa().setGyroscope(headRotationEular);
+        if (openMXPlayer != null && openMXPlayer.getTap() != null) {
+            openMXPlayer.getTap().setGyroscope(headRotationEular);
         }
         if (metadata != null) {
-            openMXPlayer.getDaa().setMetadataFromJson(metadata);
+            openMXPlayer.getTap().setMetadataFromJson(metadata);
         }
     }
 
