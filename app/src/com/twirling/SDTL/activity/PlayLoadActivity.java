@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
-import com.jakewharton.rxbinding.view.RxView;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.twirling.SDTL.App;
@@ -28,8 +28,9 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+
 
 public class PlayLoadActivity extends AppCompatActivity {
 	@BindView(R.id.iv_download)
@@ -115,9 +116,9 @@ public class PlayLoadActivity extends AppCompatActivity {
 		RxView.clicks(iv_download)
 				.debounce(300, TimeUnit.MILLISECONDS)
 				.observeOn(AndroidSchedulers.mainThread())
-				.subscribe(new Action1<Void>() {
+				.subscribe(new Consumer<Object>() {
 					@Override
-					public void call(Void aVoid) {
+					public void accept(Object o) {
 						iv_download.setImageDrawable(icon_click);
 						//
 						Intent intent = new Intent(App.getInst().getApplicationContext(), DownloadService.class);
@@ -136,9 +137,9 @@ public class PlayLoadActivity extends AppCompatActivity {
 				.sizeDp(50);
 		iv_play.setImageDrawable(icon2);
 		RxView.clicks(iv_play)
-				.subscribe(new Action1<Void>() {
+				.subscribe(new Consumer<Object>() {
 					@Override
-					public void call(Void aVoid) {
+					public void accept(Object o) {
 						Intent intent = new Intent();
 						intent.putExtra("VideoItem", Constants.PATH_RESOURCE + videoItem.getFolder() + Constants.PAPH_VIDEO + videoItem.getAppAndroidOnline());
 						intent.setClass(PlayLoadActivity.this, VRPlayerActivity.class);

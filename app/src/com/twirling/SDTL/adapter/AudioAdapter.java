@@ -20,7 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.jakewharton.rxbinding.view.RxView;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.twirling.SDTL.App;
@@ -36,9 +36,9 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Predicate;
 
 /**
  * Created by 谢秋鹏 on 2016/5/26.
@@ -74,9 +74,9 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
         holder.tv_title.setText(item.getTitle());
         holder.audio = item.getAudio();
         RxView.clicks(holder.cv_card)
-                .filter(new Func1<Void, Boolean>() {
-                    @Override
-                    public Boolean call(Void aVoid) {
+                .filter(new Predicate<Object>() {
+                   @Override
+                    public boolean test(Object o) throws Exception {
                         Context context = holder.itemView.getContext();
                         if (!NetUtil.isNetEnable(context)) {
                             Toast.makeText(context, "请在良好网络下播放", Toast.LENGTH_SHORT).show();
@@ -87,9 +87,9 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
                 .throttleFirst(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Void>() {
+                .subscribe(new Consumer<Object>() {
                     @Override
-                    public void call(Void aVoid) {
+                    public void accept(Object aVoid) {
                         Intent intent = new Intent(holder.itemView.getContext(), AudioActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putParcelable("AudioItem", item);
@@ -110,9 +110,9 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
                             holder.itemView.getContext().startActivity(intent);
                         }
                     }
-                }, new Action1<Throwable>() {
+                }, new Consumer<Throwable>() {
                     @Override
-                    public void call(Throwable throwable) {
+                    public void accept(Throwable throwable) {
                         Log.e(getClass() + "", throwable.toString());
                     }
                 });
