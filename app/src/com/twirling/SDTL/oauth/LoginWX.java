@@ -19,9 +19,10 @@ import com.twirling.libtwirling.utils.SPUtil;
 
 import java.util.HashMap;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+
 
 /**
  * 解决问题：OAuth登陆类：微信
@@ -69,18 +70,18 @@ public class LoginWX {
         RetrofitManager.getService().WXConfirm(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Action1<WXBack>() {
+                .subscribe(new Consumer<WXBack>() {
                     @Override
-                    public void call(WXBack wxBack) {
+                    public void accept(WXBack wxBack) {
                         Logger.d(wxBack.toString());
                         HashMap<String, Object> params = new HashMap<>();
                         params.put("openid", wxBack.getOpenid().toString());
                         RetrofitManager.getService().loginWX(params)
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribeOn(Schedulers.io())
-                                .subscribe(new Action1<DataArray>() {
+                                .subscribe(new Consumer<DataArray<User>>() {
                                     @Override
-                                    public void call(DataArray dataArray) {
+                                    public void accept(DataArray dataArray) {
                                         Logger.d(dataArray.toString());
                                         if (dataArray.getStatus() == 200) {
                                             Toast.makeText(activity, dataArray.getMsg(), Toast.LENGTH_SHORT).show();
@@ -94,17 +95,17 @@ public class LoginWX {
                                             Toast.makeText(activity, dataArray.getMsg(), Toast.LENGTH_SHORT).show();
                                         }
                                     }
-                                }, new Action1<Throwable>() {
+                                }, new Consumer<Throwable>() {
                                     @Override
-                                    public void call(Throwable throwable) {
+                                    public void accept(Throwable throwable) {
                                         Logger.d(throwable.toString());
                                         instance = null;
                                     }
                                 });
                     }
-                }, new Action1<Throwable>() {
+                }, new Consumer<Throwable>() {
                     @Override
-                    public void call(Throwable throwable) {
+                    public void accept(Throwable throwable) {
                         Logger.d(throwable.toString());
                     }
                 });

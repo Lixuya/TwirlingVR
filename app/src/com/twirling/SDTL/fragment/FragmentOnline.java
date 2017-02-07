@@ -23,10 +23,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+
 
 /**
  * Created by 谢秋鹏 on 2016/5/27.
@@ -85,21 +86,21 @@ public class FragmentOnline extends Fragment {
         RetrofitManager.getService().getVideoList(params)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<DataArray<VideoItem>>() {
+                .subscribe(new Consumer<DataArray<VideoItem>>() {
                     @Override
-                    public void call(DataArray<VideoItem> dataArray) {
+                    public void accept(DataArray<VideoItem> dataArray) throws Exception {
                         datas.clear();
                         datas.addAll(dataArray.getData());
                         mAdapter.notifyDataSetChanged();
                     }
-                }, new Action1<Throwable>() {
+                }, new Consumer<Throwable>() {
                     @Override
-                    public void call(Throwable throwable) {
+                    public void accept(Throwable throwable) {
 
                     }
-                }, new Action0() {
+                }, new Action() {
                     @Override
-                    public void call() {
+                    public void run() throws Exception {
                         if (page == 1) {
                             mRecyclerView.refreshComplete();
                         } else {

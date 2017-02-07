@@ -25,10 +25,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+
 
 /**
  * Created by 谢秋鹏 on 2016/5/27.
@@ -85,9 +86,9 @@ public class FragmentAudio extends Fragment {
         RetrofitManager.getService().getAudioList(params)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<DataArray<AudioItem>>() {
+                .subscribe(new Consumer<DataArray<AudioItem>>() {
                     @Override
-                    public void call(DataArray<AudioItem> dataArray) {
+                    public void accept(DataArray<AudioItem> dataArray) throws Exception {
                         datas.clear();
                         datas.addAll(dataArray.getData());
                         //
@@ -97,14 +98,14 @@ public class FragmentAudio extends Fragment {
                         }
                         mAdapter.notifyDataSetChanged();
                     }
-                }, new Action1<Throwable>() {
+                }, new Consumer<Throwable>() {
                     @Override
-                    public void call(Throwable throwable) {
+                    public void accept(Throwable throwable) {
 
                     }
-                }, new Action0() {
+                }, new Action() {
                     @Override
-                    public void call() {
+                    public void run() throws Exception {
                         if (true) {
                             mRecyclerView.refreshComplete();
                         } else {

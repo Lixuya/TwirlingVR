@@ -94,6 +94,7 @@ def Dagger2_Version = properties.getProperty("Dagger2_Version")
 def Rxbinding_Version = properties.getProperty("Rxbinding_Version")
 def Audio_Lib = properties.getProperty("Audio_Lib");
 def Retrofit_Version = properties.getProperty("Retrofit_Version")
+def LibGvr = properties.getProperty("LibGvr")
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -111,7 +112,8 @@ dependencies {
     //
     compile "com.squareup.retrofit2:retrofit:$Retrofit_Version"
     compile "com.squareup.retrofit2:converter-gson:$Retrofit_Version"
-    compile "com.squareup.retrofit2:adapter-rxjava:$Retrofit_Version"
+//    compile "com.squareup.retrofit2:adapter-rxjava2:$Retrofit_Version+"
+    compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
     //
     compile 'com.jakewharton:butterknife:8.1.0'
     apt "com.jakewharton:butterknife-compiler:8.1.0"
@@ -125,7 +127,7 @@ dependencies {
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'com.trello.rxlifecycle2:rxlifecycle:2.0.1'
     compile 'com.trello.rxlifecycle2:rxlifecycle-android:2.0.1'
-    compile  "com.github.JakeWharton.RxBinding:rxbinding:master-SNAPSHOT"
+    compile "com.github.JakeWharton.RxBinding:rxbinding:master-SNAPSHOT"
 //    compile "com.jakewharton.rxbinding:rxbinding:$Rxbinding_Version"
 //    compile "com.jakewharton.rxbinding:rxbinding-appcompat-v7:$Rxbinding_Version"
 //    compile "com.jakewharton.rxbinding:rxbinding-design:$Rxbinding_Version"
@@ -154,9 +156,7 @@ dependencies {
     //
     compile project(':libtwirling')
     //
-    compile 'com.github.xieqiupeng:PlayerSDK:master-SNAPSHOT'
-//    compile 'com.github.xieqiupeng:lib-gvr:master-SNAPSHOT'
-//    compile 'com.github.xieqiupeng:lib-gvr-exo:master-SNAPSHOT'
+    compile "$LibGvr"
 }
 //task copyTaskWithPatterns(type: Copy) {
 //    from "${buildDir}/outputs/apk/"
