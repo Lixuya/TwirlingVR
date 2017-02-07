@@ -44,7 +44,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
-import rx.functions.Action1;
 
 
 /**
@@ -258,7 +257,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
 				);
 		// 主线程更新列表，io删除
 		Observable.just(item)
-				.filter(new Predicate<VideoItem, boolean>() {
+				.filter(new Predicate<VideoItem>() {
 					@Override
 					public boolean test(VideoItem item) throws Exception{
 						return holder.downloadId == 1 && androidOffline.length() != 0;
@@ -266,9 +265,9 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
 				})
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribeOn(Schedulers.io())
-				.subscribe(new Action1<VideoItem>() {
+				.subscribe(new Consumer<VideoItem>() {
 					@Override
-					public void call(VideoItem item) {
+					public void accept(VideoItem item) {
 						String fileFolder = androidOffline.substring(0, androidOffline.length() - 4);
 						FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "video.mp4"));
 						FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "audio.mp4"));
@@ -278,9 +277,9 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
 						FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + androidOffline));
 						FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + videoName));
 					}
-				}, new Action1<Throwable>() {
+				}, new Consumer<Throwable>() {
 					@Override
-					public void call(Throwable throwable) {
+					public void accept(Throwable throwable) {
 						Log.e(getClass() + "", throwable.toString());
 					}
 				});
