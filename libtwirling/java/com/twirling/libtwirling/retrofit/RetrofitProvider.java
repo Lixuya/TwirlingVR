@@ -53,9 +53,8 @@ public class RetrofitProvider {
 							return true;
 						}
 					})
-					.addInterceptor(new InterceptorProvider().init())
+//					.addInterceptor(new InterceptorProvider().init())
 					.build();
-			//
 			return new Retrofit.Builder()
 					.baseUrl(ENDPOINT)
 					.client(okHttpClient)
