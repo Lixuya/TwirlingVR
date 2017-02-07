@@ -3,7 +3,6 @@ package com.twirling.SDTL.component;
 import android.content.Context;
 
 import com.twirling.SDTL.module.AppModule;
-import com.twirling.SDTL.retrofit.Api;
 
 import javax.inject.Singleton;
 
@@ -15,11 +14,11 @@ import dagger.Component;
 @Singleton
 @Component(modules = AppModule.class)
 public interface AppComponent {
-    Context context();  // 提供Applicaiton的Context
+	Context context();  // 提供Applicaiton的Context
 
 //    ThreadExecutor threadExecutor();   // 线程池
 
-    Api apiService();  // 所有Api请求的管理类
+//	Api apiService();  // 所有Api请求的管理类
 
 //    SpfManager spfManager();  // SharedPreference管理类
 

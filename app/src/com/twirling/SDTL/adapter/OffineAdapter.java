@@ -30,7 +30,7 @@ import com.twirling.SDTL.model.VideoItem;
 import com.twirling.SDTL.module.ModuleAlertDialog;
 import com.twirling.libtwirling.utils.FileUtil;
 import com.twirling.libtwirling.utils.UnZipHelper;
-import com.twirling.player.activity.SimpleVrVideoActivity;
+import com.twirling.player.activity.VRPlayerActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -104,7 +104,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
             public void onClick(View v) {//
                 int vrAudio = item.getVrAudio();
                 if (vrAudio == -1) {
-                    Intent intent = new Intent(holder.itemView.getContext(), SimpleVrVideoActivity.class);
+                    Intent intent = new Intent(holder.itemView.getContext(), VRPlayerActivity.class);
                     intent.putExtra("VideoItem", Constants.PAPH_DOWNLOAD_LOCAL + item.getAppAndroidOnline());
                     holder.itemView.getContext().startActivity(intent);
                 } else if (vrAudio != -1 && holder.downloadId == 1) {

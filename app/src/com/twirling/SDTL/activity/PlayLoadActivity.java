@@ -22,7 +22,7 @@ import com.twirling.SDTL.data.RealmHelper;
 import com.twirling.SDTL.download.DownloadChangeObserver;
 import com.twirling.SDTL.download.DownloadService;
 import com.twirling.SDTL.model.VideoItem;
-import com.twirling.player.activity.SimpleVrVideoActivity;
+import com.twirling.player.activity.VRPlayerActivity;
 
 import java.util.concurrent.TimeUnit;
 
@@ -141,7 +141,7 @@ public class PlayLoadActivity extends AppCompatActivity {
 					public void call(Void aVoid) {
 						Intent intent = new Intent();
 						intent.putExtra("VideoItem", Constants.PATH_RESOURCE + videoItem.getFolder() + Constants.PAPH_VIDEO + videoItem.getAppAndroidOnline());
-						intent.setClass(PlayLoadActivity.this, SimpleVrVideoActivity.class);
+						intent.setClass(PlayLoadActivity.this, VRPlayerActivity.class);
 						startActivity(intent);
 					}
 				});
