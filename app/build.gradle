@@ -79,6 +79,9 @@ android {
     lintOptions {
         abortOnError false
     }
+    dataBinding {
+        enabled = true
+    }
 }
 
 repositories {
@@ -95,11 +98,7 @@ def Retrofit_Version = properties.getProperty("Retrofit_Version")
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     //
-    compile(name: 'common', ext: 'aar')
-    compile(name: 'commonwidget', ext: 'aar')
-    compile(name: 'videowidget', ext: 'aar')
-    compile(name: 'base', ext: 'aar')
-    compile(name: 'libgvr-1.5.10', ext: 'aar')
+    compile(name: 'sdk-base-1.10.0', ext: 'aar')
     compile "$Audio_Lib"
     //
     compile "com.android.support:appcompat-v7:${versions.supportLib}"
@@ -154,7 +153,9 @@ dependencies {
     compile 'com.mikepenz:fontawesome-typeface:4.7.0.0@aar'
     compile 'com.mikepenz:octicons-typeface:3.2.0.2@aar'
     //
-    compile project(path: ':libtwirling')
+    compile project(':libtwirling')
+    //
+    compile 'com.github.xieqiupeng:PlayerSDK:master-SNAPSHOT'
 }
 //task copyTaskWithPatterns(type: Copy) {
 //    from "${buildDir}/outputs/apk/"

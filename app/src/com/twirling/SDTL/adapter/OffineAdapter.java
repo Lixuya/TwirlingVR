@@ -117,13 +117,14 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
         //
         if (holder.downloadId == 1) {
             haveUnZip(holder);
+            //
+            checkZip(item, holder);
             return;
         }
+        //
         if (holder.downloadId != 1) {
             //
             checkDownload(holder);
-            //
-            checkZip(item, holder);
             //
             DownloadChangeObserver pco = (DownloadChangeObserver) App.observers.get(holder.downloadId);
             if (pco == null) {
@@ -187,7 +188,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
         File zipFile = new File(Constants.PAPH_DOWNLOAD_LOCAL + item.getAppAndroidOffline());
         String androidOffine = item.getAppAndroidOffline();
         String fileFolder = androidOffine.substring(0, androidOffine.length() - 4);
-        if (zipFile.exists() && progress == 100) {
+        if (zipFile.exists()) {
             new UnZipHelper(zipFile.getPath(), Constants.PAPH_DOWNLOAD_LOCAL + fileFolder).unzip();
             FileUtil.delete(zipFile);
             FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder));
