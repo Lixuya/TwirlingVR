@@ -16,23 +16,23 @@ import com.google.vr.sdk.base.HeadTransform;
 import com.google.vr.sdk.base.Viewport;
 import com.google.vr.sdk.widgets.video.VrVideoEventListener;
 import com.google.vr.sdk.widgets.video.VrVideoView;
-import com.jakewharton.rxbinding.widget.RxSeekBar;
+import com.jakewharton.rxbinding2.widget.RxSeekBar;
 import com.twirling.SDTL.App;
 import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.R;
 import com.twirling.SDTL.model.DownloadJson;
 import com.twirling.SDTL.model.Elements;
 import com.twirling.SDTL.model.VideoItem;
+import com.twirling.audio.player.OpenMXPlayer;
 import com.twirling.libtwirling.utils.DeviceUtils;
 import com.twirling.libtwirling.utils.FileUtil;
-import com.twirling.audio.player.OpenMXPlayer;
 
 import javax.microedition.khronos.egl.EGLConfig;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 
 
 /**
@@ -113,9 +113,9 @@ public class MixPlayerActivity extends GvrActivity implements GvrView.StereoRend
         RxSeekBar.userChanges(seekBar)
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Integer>() {
+                .subscribe(new Consumer<Integer>() {
                     @Override
-                    public void call(Integer progress) {
+                    public void accept(Integer progress) {
                         video_view.seekTo(progress);
                         //seetPlayer
                         float percent = (float) progress / video_view.getDuration() * 100f;

@@ -9,9 +9,9 @@ import com.twirling.libtwirling.oauth.WXBack;
 
 import java.util.Map;
 
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.QueryMap;
-import rx.Observable;
 
 /**
  * Created by MagicBean on 2016/01/13 10:10:37
