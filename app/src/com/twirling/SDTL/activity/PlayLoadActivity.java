@@ -45,9 +45,7 @@ public class PlayLoadActivity extends AppCompatActivity {
 	@BindView(R.id.pb_download)
 	ProgressBar mPbLoading;
 
-	private String imageUrl,
-			videoName;
-
+	private String imageUrl;
 	private Drawable icon_click;
 
 	private CountDownTimer selfTimer = new CountDownTimer(20 * 1000, 1000) {
@@ -69,7 +67,7 @@ public class PlayLoadActivity extends AppCompatActivity {
 		//
 		VideoItem videoItem = (VideoItem) getIntent().getExtras().getParcelable("videoItem");
 		Log.e("PlayLoadActivity", videoItem.toString());
-		videoName = videoItem.getAppAndroidOnline();
+		String videoName = videoItem.getAppAndroidOnline();
 		imageUrl = Constants.PATH_RESOURCE + videoItem.getFolder() + Constants.PAPH_IMAGE + videoItem.getImage();
 		//
 		initView(videoItem);

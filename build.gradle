@@ -8,7 +8,11 @@ buildscript {
                  targetSdk : 25,
                  vcode     : 14,
                  vname     : "2.7.1"]
-        versions = [supportLib: "25.1.0"]
+        versions = [libSupport : "25.1.0",
+                    libRxJava  : "2.0.1",
+                    libRetrofit: "2.1.0",
+                    libOkhttp : "3.4.1",
+                    libDagger : "2.2"]
     }
     repositories {
         jcenter()

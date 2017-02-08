@@ -118,7 +118,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
 		if (holder.downloadId == 1) {
 			haveUnZip(holder);
 			//
-			checkZip(item, holder);
+//			checkZip(item, holder);
 			return;
 		}
 		//
