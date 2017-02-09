@@ -154,6 +154,8 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     compile "$LibGvr"
 //    compile "$LibGvrExo"
+    //
+//    compile "com.facebook.react:react-native:+"
 }
 
 //task copyTaskWithPatterns(type: Copy) {
