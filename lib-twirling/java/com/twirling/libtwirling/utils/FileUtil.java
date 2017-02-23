@@ -31,7 +31,7 @@ public class FileUtil {
 
     // 读文件
     public static String readFromSDCard(String fileName) {
-        return readFromSDCard(fileName, Constants.PAPH_DOWNLOAD_LOCAL);
+        return readFromSDCard(fileName, Constants.PATH_DOWNLOAD);
     }
 
     // 读文件

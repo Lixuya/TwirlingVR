@@ -70,7 +70,7 @@ public class DownloadService extends IntentService {
             name = videoItem.getAppAndroidOffline();
         }
 //        else {
-//            url = Constants.PATH_RESOURCE + videoItem.getFolder() + Constants.PAPH_DOWNLOAD + videoItem.getAppAndroidOffline();
+//            url = Constants.PATH_RESOURCE + videoItem.getFolder() + Constants.PATH_DOWNLOAD + videoItem.getAppAndroidOffline();
 //            mime = Constants.MIME_ZIP;
 //            name = videoItem.getAppAndroidOffline();
 //        }
