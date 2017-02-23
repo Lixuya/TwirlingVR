@@ -44,7 +44,6 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 
-
 /**
  * Created by 谢秋鹏 on 2016/5/26.
  */
@@ -86,9 +85,9 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
 							protected void onConfirm() {
 								deletefile(item, holder);
 								//
-								RealmHelper.getIns().deleteVideoItem(item);
+								RealmHelper.getInstance().deleteVideoItem(item);
 								datas.clear();
-								datas.addAll(RealmHelper.getIns().selectVideoList());
+								datas.addAll(RealmHelper.getInstance().selectVideoList());
 								notifyDataSetChanged();
 							}
 						}.setMessage("确定删除 " + item.getName() + " 吗");
@@ -192,7 +191,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
 			new UnZipHelper(zipFile.getPath(), Constants.PAPH_DOWNLOAD_LOCAL + fileFolder).unzip();
 			FileUtil.delete(zipFile);
 			FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder));
-			RealmHelper.getIns().updateDownloadId(holder.downloadId);
+			RealmHelper.getInstance().updateDownloadId(holder.downloadId);
 		}
 	}
 
@@ -229,7 +228,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
 	private void deletefile(VideoItem item, final ViewHolder holder) {
 		final String videoName = item.getAppAndroidOnline();
 		final String androidOffline = item.getAppAndroidOffline();
-		holder.downloadId = RealmHelper.getIns().selectVideoItem(videoName).getDownloadId();
+		holder.downloadId = RealmHelper.getInstance().selectVideoItem(videoName).getDownloadId();
 		// TODO 如果下载中，取消下载
 		Log.w(getClass() + "", holder.downloadId + " " + item.toString());
 		Observable.just(holder.downloadId)

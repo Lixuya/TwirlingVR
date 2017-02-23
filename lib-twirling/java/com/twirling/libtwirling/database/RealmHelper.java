@@ -16,7 +16,6 @@ public class RealmHelper {
 	public Realm realm = null;
 	private static RealmHelper instance = null;
 
-	// App.getInst().getApplicationContext()
 	public static RealmHelper getInstance(Context context) {
 		if (instance == null) {
 			instance = new RealmHelper(context);

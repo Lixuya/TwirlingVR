@@ -68,7 +68,7 @@ public class FragmentDownload extends Fragment {
 
     private void loadData() {
         datas.clear();
-        datas.addAll(RealmHelper.getIns().selectVideoList());
+        datas.addAll(RealmHelper.getInstance().selectVideoList());
         mAdapter.notifyDataSetChanged();
     }
 }

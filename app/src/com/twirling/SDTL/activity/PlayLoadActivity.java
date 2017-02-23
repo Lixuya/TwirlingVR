@@ -71,7 +71,7 @@ public class PlayLoadActivity extends AppCompatActivity {
 		imageUrl = Constants.PATH_RESOURCE + videoItem.getFolder() + Constants.PAPH_IMAGE + videoItem.getImage();
 		//
 		initView(videoItem);
-		VideoItem itemInDB = RealmHelper.getIns().selectVideoItem(videoName);
+		VideoItem itemInDB = RealmHelper.getInstance().selectVideoItem(videoName);
 		if (itemInDB == null) {
 			iv_download.setBackgroundColor(Color.TRANSPARENT);
 			iv_download.setEnabled(true);

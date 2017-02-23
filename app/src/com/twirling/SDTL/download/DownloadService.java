@@ -33,7 +33,7 @@ public class DownloadService extends IntentService {
             switch (msg.what) {
                 case 0:
                     VideoItem videoItem = (VideoItem) msg.obj;
-                    RealmHelper.getIns().insertVideoItem(videoItem);
+                    RealmHelper.getInstance().insertVideoItem(videoItem);
                     break;
                 case 1:
                 default:

@@ -47,7 +47,7 @@ public class DownloadReceiver extends BroadcastReceiver {
 						.flatMap(new Function<Long, ObservableSource<VideoItem>>() {
 							@Override
 							public ObservableSource<VideoItem> apply(Long id) throws Exception {
-								return Observable.just(RealmHelper.getIns().selectVideoItem(id));
+								return Observable.just(RealmHelper.getInstance().selectVideoItem(id));
 							}
 						})
 						.filter(new Predicate<VideoItem>() {
@@ -101,7 +101,7 @@ public class DownloadReceiver extends BroadcastReceiver {
 						.subscribe(new Consumer<Long>() {
 							@Override
 							public void accept(Long id) {
-								RealmHelper.getIns().updateDownloadId(id);
+								RealmHelper.getInstance().updateDownloadId(id);
 							}
 						});
 				break;

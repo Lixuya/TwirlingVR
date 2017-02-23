@@ -38,7 +38,7 @@ public class App extends MultiDexApplication {
         INS = this;
 //        Log.w("device", DeviceUtil.getDeviceInfo().toString());
         Logger.init("twirling").logLevel(BuildConfig.DEBUG ? LogLevel.FULL : LogLevel.NONE);
-//        SharedPreferencesHelper.getIns().initialize(this, null);
+//        SharedPreferencesHelper.getInstance().initialize(this, null);
 //        initializeSocialSdk();
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
