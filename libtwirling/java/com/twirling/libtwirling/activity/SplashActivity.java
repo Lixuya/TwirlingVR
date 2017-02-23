@@ -1,11 +1,11 @@
-package com.twirling.SDTL.activity;
+package com.twirling.libtwirling.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
-import com.twirling.SDTL.R;
+import com.twirling.libtwirling.R;
 
 import java.util.concurrent.TimeUnit;
 

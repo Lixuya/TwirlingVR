@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.activity_main);
         //
         dialog = new ModuleAlertDialog(MainActivity.this);
         dialog2 = new ModuleAlertDialog(MainActivity.this) {
