@@ -65,7 +65,7 @@ public class DownloadService extends IntentService {
             name = videoName;
         } else {
 //        else if (DeviceUtil.getDeviceInfo().deviceBrand.equals("samsung")) {
-            url = Constants.PATH_RESOURCE + videoItem.getFolder() + Constants.PAPH_DOWNLOAD + videoItem.getAppIOSOffline();
+            url = Constants.PATH_RESOURCE + videoItem.getFolder() + Constants.PATH_DOWNLOAD + videoItem.getAppIOSOffline();
             mime = Constants.MIME_ZIP;
             name = videoItem.getAppAndroidOffline();
         }

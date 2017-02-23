@@ -12,8 +12,8 @@ public class Constants {
 
 	// PATH
 	private static final String PAPH_ROOT = Environment.getExternalStorageDirectory() + "";
-	public static final String PAPH_IMAGE = "image/";
-	public static final String PAPH_VIDEO = "video/";
+	public static final String PAPH_IMAGE = "";
+	public static final String PAPH_VIDEO = "";
 	public static final String PATH_RESOURCE = "https://yun-twirlingvr.oss-cn-hangzhou.aliyuncs.com/";
 	public static final String PATH_JAVA = "http://120.27.136.111:23223/";
 	public static final String PATH_DOWNLOAD = PAPH_ROOT + "/" + Environment.DIRECTORY_DOWNLOADS + "/";

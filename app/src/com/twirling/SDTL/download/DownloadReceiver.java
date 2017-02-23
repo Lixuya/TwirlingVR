@@ -81,9 +81,9 @@ public class DownloadReceiver extends BroadcastReceiver {
 						.subscribe(new Consumer<Pair<String, String>>() {
 							@Override
 							public void accept(Pair<String, String> pair) {
-								new UnZipHelper(Constants.PAPH_DOWNLOAD_LOCAL + pair.first, Constants.PAPH_DOWNLOAD_LOCAL + pair.second).unzip();
-								FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + pair.first));
-								FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + pair.second));
+								new UnZipHelper(Constants.PATH_DOWNLOAD + pair.first, Constants.PATH_DOWNLOAD + pair.second).unzip();
+								FileUtil.delete(new File(Constants.PATH_DOWNLOAD + pair.first));
+								FileUtil.delete(new File(Constants.PATH_DOWNLOAD + pair.second));
 							}
 						});
 				// 打印Id，更新uploadId为1

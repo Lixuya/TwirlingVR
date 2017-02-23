@@ -104,7 +104,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
 				int vrAudio = item.getVrAudio();
 				if (vrAudio == -1) {
 					Intent intent = new Intent(holder.itemView.getContext(), VRPlayerActivity.class);
-					intent.putExtra("VideoItem", Constants.PAPH_DOWNLOAD_LOCAL + item.getAppAndroidOnline());
+					intent.putExtra("VideoItem", Constants.PATH_DOWNLOAD + item.getAppAndroidOnline());
 					holder.itemView.getContext().startActivity(intent);
 				} else if (vrAudio != -1 && holder.downloadId == 1) {
 //					Intent intent = new Intent(holder.itemView.getContext(), MixPlayerActivity.class);
@@ -184,13 +184,13 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
 	}
 
 	private void checkZip(VideoItem item, OffineAdapter.ViewHolder holder) {
-		File zipFile = new File(Constants.PAPH_DOWNLOAD_LOCAL + item.getAppAndroidOffline());
+		File zipFile = new File(Constants.PATH_DOWNLOAD + item.getAppAndroidOffline());
 		String androidOffine = item.getAppAndroidOffline();
 		String fileFolder = androidOffine.substring(0, androidOffine.length() - 4);
 		if (zipFile.exists()) {
-			new UnZipHelper(zipFile.getPath(), Constants.PAPH_DOWNLOAD_LOCAL + fileFolder).unzip();
+			new UnZipHelper(zipFile.getPath(), Constants.PATH_DOWNLOAD + fileFolder).unzip();
 			FileUtil.delete(zipFile);
-			FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder));
+			FileUtil.delete(new File(Constants.PATH_DOWNLOAD + fileFolder));
 			RealmHelper.getInstance().updateDownloadId(holder.downloadId);
 		}
 	}
@@ -267,13 +267,13 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
 					@Override
 					public void accept(VideoItem item) {
 						String fileFolder = androidOffline.substring(0, androidOffline.length() - 4);
-						FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "video.mp4"));
-						FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "audio.mp4"));
-						FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "data.json"));
-						FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "image.jpg"));
-						FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + fileFolder + "sound.wav"));
-						FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + androidOffline));
-						FileUtil.delete(new File(Constants.PAPH_DOWNLOAD_LOCAL + videoName));
+						FileUtil.delete(new File(Constants.PATH_DOWNLOAD + fileFolder + "video.mp4"));
+						FileUtil.delete(new File(Constants.PATH_DOWNLOAD + fileFolder + "audio.mp4"));
+						FileUtil.delete(new File(Constants.PATH_DOWNLOAD + fileFolder + "data.json"));
+						FileUtil.delete(new File(Constants.PATH_DOWNLOAD + fileFolder + "image.jpg"));
+						FileUtil.delete(new File(Constants.PATH_DOWNLOAD + fileFolder + "sound.wav"));
+						FileUtil.delete(new File(Constants.PATH_DOWNLOAD + androidOffline));
+						FileUtil.delete(new File(Constants.PATH_DOWNLOAD + videoName));
 					}
 				}, new Consumer<Throwable>() {
 					@Override
