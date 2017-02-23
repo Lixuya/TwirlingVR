@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion setup.compileSdk
@@ -34,9 +35,6 @@ android {
         enabled = true
     }
 }
-
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
