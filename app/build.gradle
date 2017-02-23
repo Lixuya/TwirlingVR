@@ -97,7 +97,7 @@ dependencies {
     //
     compile(name: 'sdk-base-1.10.0', ext: 'aar')
     //
-    compile "com.android.support:appcompat-v7:${versions.libSupport}"
+    compile "com.android.support:appcompat-v7:$rootProject.versions.libSupport"
     compile "com.android.support:cardview-v7:${versions.libSupport}"
     compile "com.android.support:design:${versions.libSupport}"
     compile 'com.android.support:multidex:1.0.1'

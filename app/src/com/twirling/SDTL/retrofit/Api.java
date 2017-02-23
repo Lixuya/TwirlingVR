@@ -17,7 +17,7 @@ import retrofit2.http.QueryMap;
  * Created by MagicBean on 2016/01/13 10:10:37
  */
 public interface Api {
-    // 获取视频列表
+    // 获取音频列表
     @GET("Audio/selectAll")
     Observable<DataArray<AudioItem>> getAudioList(@QueryMap Map<String, Object> params);
 
@@ -25,7 +25,7 @@ public interface Api {
     @GET("AppVideo/makelist")
     Observable<DataArray<VideoItem>> getVideoList(@QueryMap Map<String, Object> params);
 
-    // 获取视频列表
+    // 获取直播列表
     @GET("AppHLS/makelist")
     Observable<DataArray<LiveItem>> getLiveList();
 
