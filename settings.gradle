@@ -1,1 +1,1 @@
-include ':app', ':libtwirling'
+include ':app', ':lib-twirling'

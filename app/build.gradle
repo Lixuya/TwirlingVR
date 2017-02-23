@@ -149,7 +149,7 @@ dependencies {
     compile 'com.mikepenz:fontawesome-typeface:4.7.0.0@aar'
     compile 'com.mikepenz:octicons-typeface:3.2.0.2@aar'
     //
-    compile project(':libtwirling')
+    compile project(':lib-twirling')
     //
     compile 'org.greenrobot:eventbus:3.0.0'
     compile "$LibGvr"
