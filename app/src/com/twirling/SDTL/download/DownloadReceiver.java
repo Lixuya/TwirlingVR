@@ -5,26 +5,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.support.v4.util.Pair;
-import android.text.TextUtils;
 
 import com.orhanobut.logger.Logger;
 import com.twirling.SDTL.App;
-import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.data.RealmHelper;
-import com.twirling.SDTL.model.VideoItem;
-import com.twirling.libtwirling.utils.FileUtil;
-import com.twirling.libtwirling.utils.UnZipHelper;
-
-import java.io.File;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
-import io.reactivex.schedulers.Schedulers;
 
 
 /**
@@ -41,52 +30,6 @@ public class DownloadReceiver extends BroadcastReceiver {
 			case DownloadManager.ACTION_DOWNLOAD_COMPLETE:
 			default:
 				long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0);
-				// 普通模式下载成功，全景声删除下载zip,解压缩
-				Observable.just(id)
-						.observeOn(AndroidSchedulers.mainThread())
-						.flatMap(new Function<Long, ObservableSource<VideoItem>>() {
-							@Override
-							public ObservableSource<VideoItem> apply(Long id) throws Exception {
-								return Observable.just(RealmHelper.getInstance().selectVideoItem(id));
-							}
-						})
-						.filter(new Predicate<VideoItem>() {
-							@Override
-							public boolean test(VideoItem videoItem) throws Exception {
-								return videoItem != null;
-							}
-						})
-						.filter(new Predicate<VideoItem>() {
-							@Override
-							public boolean test(VideoItem item) throws Exception {
-								return !TextUtils.isEmpty(item.getAppAndroidOffline());
-							}
-						})
-						.filter(new Predicate<VideoItem>() {
-							@Override
-							public boolean test(VideoItem item) {
-								return item.getVrAudio() != -1;
-							}
-						})
-						.map(new Function<VideoItem, Pair<String, String>>() {
-							@Override
-							public Pair<String, String> apply(VideoItem item) throws Exception {
-								String androidOffine = item.getAppAndroidOffline();
-								String fileFolder = androidOffine.substring(0, item.getAppAndroidOffline().length() - 4);
-								return new Pair<String, String>(androidOffine, fileFolder);
-							}
-						})
-						.subscribeOn(Schedulers.io())
-						.observeOn(Schedulers.io())
-						.subscribe(new Consumer<Pair<String, String>>() {
-							@Override
-							public void accept(Pair<String, String> pair) {
-								new UnZipHelper(Constants.PATH_DOWNLOAD + pair.first, Constants.PATH_DOWNLOAD + pair.second).unzip();
-								FileUtil.delete(new File(Constants.PATH_DOWNLOAD + pair.first));
-								FileUtil.delete(new File(Constants.PATH_DOWNLOAD + pair.second));
-							}
-						});
-				// 打印Id，更新uploadId为1
 				Observable.just(id)
 						.observeOn(AndroidSchedulers.mainThread())
 						.map(new Function<Long, Long>() {

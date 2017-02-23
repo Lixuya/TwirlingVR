@@ -64,16 +64,10 @@ public class DownloadService extends IntentService {
             mime = Constants.MIME_MP4;
             name = videoName;
         } else {
-//        else if (DeviceUtil.getDeviceInfo().deviceBrand.equals("samsung")) {
-            url = Constants.PATH_RESOURCE + videoItem.getFolder() + Constants.PATH_DOWNLOAD + videoItem.getAppIOSOffline();
-            mime = Constants.MIME_ZIP;
+            url = Constants.PATH_RESOURCE + videoItem.getFolder() + Constants.PAPH_VIDEO + videoItem.getAppIOSOffline();
+            mime = Constants.MIME_MP4;
             name = videoItem.getAppAndroidOffline();
         }
-//        else {
-//            url = Constants.PATH_RESOURCE + videoItem.getFolder() + Constants.PATH_DOWNLOAD + videoItem.getAppAndroidOffline();
-//            mime = Constants.MIME_ZIP;
-//            name = videoItem.getAppAndroidOffline();
-//        }
         //
         if (!TextUtil.isValidate(url) || !TextUtil.isValidate(videoName)) {
             return;

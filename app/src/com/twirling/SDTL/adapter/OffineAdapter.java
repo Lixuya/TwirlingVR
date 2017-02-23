@@ -106,10 +106,10 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
 					Intent intent = new Intent(holder.itemView.getContext(), VRPlayerActivity.class);
 					intent.putExtra("VideoItem", Constants.PATH_DOWNLOAD + item.getAppAndroidOnline());
 					holder.itemView.getContext().startActivity(intent);
-				} else if (vrAudio != -1 && holder.downloadId == 1) {
-//					Intent intent = new Intent(holder.itemView.getContext(), MixPlayerActivity.class);
-//					intent.putExtra("videoItem", item);
-//					holder.itemView.getContext().startActivity(intent);
+				} else {
+					Intent intent = new Intent(holder.itemView.getContext(), VRPlayerActivity.class);
+					intent.putExtra("videoItem", Constants.PATH_DOWNLOAD + item.getAppAndroidOffline());
+					holder.itemView.getContext().startActivity(intent);
 				}
 			}
 		});
@@ -257,7 +257,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
 		Observable.just(item)
 				.filter(new Predicate<VideoItem>() {
 					@Override
-					public boolean test(VideoItem item) throws Exception{
+					public boolean test(VideoItem item) throws Exception {
 						return holder.downloadId == 1 && androidOffline.length() != 0;
 					}
 				})
