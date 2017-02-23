@@ -3,8 +3,8 @@ package com.twirling.SDTL.net;
 import android.content.pm.PackageManager;
 
 import com.twirling.SDTL.App;
-import com.twirling.libtwirling.utils.DeviceInfo;
-import com.twirling.libtwirling.utils.DeviceUtils;
+import com.twirling.libtwirling.model.DeviceInfo;
+import com.twirling.libtwirling.utils.DeviceUtil;
 
 import java.util.HashMap;
 
@@ -17,7 +17,7 @@ public class HttpParamsHelper {
 
     public synchronized static HashMap<String, Object> createParams() {
         if (device == null) {
-            device = DeviceUtils.getDeviceInfo(App.getInst());
+            device = DeviceUtil.getDeviceInfo(App.getInst());
         }
         HashMap<String, Object> params = new HashMap<>();
         params.put("device.id", device.deviceId);
@@ -32,7 +32,7 @@ public class HttpParamsHelper {
 
     public synchronized static String getUrlDeviceInfo() {
         if (device == null) {
-            device = DeviceUtils.getDeviceInfo(App.getInst());
+            device = DeviceUtil.getDeviceInfo(App.getInst());
         }
         if (sb == null) {
             sb = new StringBuilder();

@@ -9,13 +9,9 @@ import android.util.Log;
 
 import static android.content.Context.SENSOR_SERVICE;
 
-/**
- * Created by xieqi on 2016/12/5.
- */
-
-public class SenserUtils {
+public class SenserUtil {
     //
-    public SenserUtils(Context context) {
+    public SenserUtil(Context context) {
         SensorManager sensorManager = (SensorManager) context.getSystemService(SENSOR_SERVICE);
         Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 //        sensor =sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);

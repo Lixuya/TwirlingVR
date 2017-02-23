@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.telephony.TelephonyManager;
 
+import com.twirling.libtwirling.model.DeviceInfo;
+
 /**
  * Created by MagicBean on 2016/03/10 00:0:03
  */
-public class DeviceUtils {
+public class DeviceUtil {
 
     public static DeviceInfo getDeviceInfo(Context context) {
         String modelName = android.os.Build.MODEL;

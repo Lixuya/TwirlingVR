@@ -1,4 +1,4 @@
-package com.twirling.libtwirling.utils;
+package com.twirling.libtwirling.widgets;
 
 public class RxBus {
     private static RxBus mRxBus = null;

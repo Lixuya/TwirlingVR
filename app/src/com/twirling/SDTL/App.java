@@ -36,7 +36,7 @@ public class App extends MultiDexApplication {
 //        LeakCanary.install(this);
         //
         INS = this;
-//        Log.w("device", DeviceUtils.getDeviceInfo().toString());
+//        Log.w("device", DeviceUtil.getDeviceInfo().toString());
         Logger.init("twirling").logLevel(BuildConfig.DEBUG ? LogLevel.FULL : LogLevel.NONE);
 //        SharePreHelper.getIns().initialize(this, null);
 //        initializeSocialSdk();

@@ -24,7 +24,7 @@ import com.twirling.SDTL.model.DownloadJson;
 import com.twirling.SDTL.model.Elements;
 import com.twirling.SDTL.model.VideoItem;
 import com.twirling.SDTL.player.OpenMXPlayer;
-import com.twirling.libtwirling.utils.DeviceUtils;
+import com.twirling.libtwirling.utils.DeviceUtil;
 import com.twirling.libtwirling.utils.FileUtil;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -90,7 +90,7 @@ public class MixPlayerActivity extends GvrActivity implements GvrView.StereoRend
         boolean isWave = videoItem.getVrAudio() == 12
                 || videoItem.getVrAudio() == 0
                 || channels == 8
-                || DeviceUtils.getDeviceInfo(App.getInst()).deviceBrand.equals("samsung");
+                || DeviceUtil.getDeviceInfo(App.getInst()).deviceBrand.equals("samsung");
         if (true) {
             audioPath = Constants.URI_DOWNLOAD_LOCAL + name + "sound.wav";
         } else {
