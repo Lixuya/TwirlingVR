@@ -108,7 +108,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
 					holder.itemView.getContext().startActivity(intent);
 				} else {
 					Intent intent = new Intent(holder.itemView.getContext(), VRPlayerActivity.class);
-					intent.putExtra("videoItem", Constants.PATH_DOWNLOAD + item.getAppAndroidOffline());
+					intent.putExtra("VideoItem", Constants.PATH_DOWNLOAD + item.getAppAndroidOffline());
 					holder.itemView.getContext().startActivity(intent);
 				}
 			}
