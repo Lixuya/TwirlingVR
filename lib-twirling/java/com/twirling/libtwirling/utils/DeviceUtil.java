@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.telephony.TelephonyManager;
 
-import com.twirling.libtwirling.model.DeviceInfo;
+import com.twirling.libtwirling.models.DeviceInfo;
 
 /**
  * Created by MagicBean on 2016/03/10 00:0:03

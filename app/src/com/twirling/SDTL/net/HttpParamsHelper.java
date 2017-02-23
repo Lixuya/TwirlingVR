@@ -3,7 +3,7 @@ package com.twirling.SDTL.net;
 import android.content.pm.PackageManager;
 
 import com.twirling.SDTL.App;
-import com.twirling.libtwirling.model.DeviceInfo;
+import com.twirling.libtwirling.models.DeviceInfo;
 import com.twirling.libtwirling.utils.DeviceUtil;
 
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package com.twirling.libtwirling.model;
+package com.twirling.libtwirling.models;
 
 /**
  * Created by MagicBean on 2016/03/10 00:0:58
