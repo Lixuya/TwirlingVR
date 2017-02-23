@@ -15,13 +15,21 @@ import io.realm.Sort;
  * Created by 谢秋鹏 on 2016/5/30.
  */
 public class RealmHelper extends com.twirling.libtwirling.database.RealmHelper {
+	protected static RealmHelper instance = null;
 
 	private RealmHelper(Context context) {
 		super(context);
 	}
 
 	public static RealmHelper getInstance() {
-		return (RealmHelper) getInstance(App.getInst().getApplicationContext());
+		return getInstance(App.getInst().getApplicationContext());
+	}
+
+	public static RealmHelper getInstance(Context context) {
+		if (instance == null) {
+			instance = new RealmHelper(context);
+		}
+		return instance;
 	}
 
 	public void insertVideoItem(VideoItem item) {

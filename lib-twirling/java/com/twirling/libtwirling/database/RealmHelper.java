@@ -13,15 +13,7 @@ import io.realm.RealmConfiguration;
  * Target: Realm init
  */
 public class RealmHelper {
-	public Realm realm = null;
-	private static RealmHelper instance = null;
-
-	public static RealmHelper getInstance(Context context) {
-		if (instance == null) {
-			instance = new RealmHelper(context);
-		}
-		return instance;
-	}
+	protected Realm realm = null;
 
 	protected RealmHelper(Context context) {
 		Realm.init(context);
