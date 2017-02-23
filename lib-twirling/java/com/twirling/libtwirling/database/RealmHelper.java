@@ -13,20 +13,19 @@ import io.realm.RealmConfiguration;
  * Target: Realm init
  */
 public class RealmHelper {
-	private Realm realm = null;
-
-	private static RealmHelper helper;
+	public Realm realm = null;
+	private static RealmHelper instance = null;
 
 	// App.getInst().getApplicationContext()
-	public static RealmHelper getIns(Context context) {
-		if (helper == null) {
-			helper = new RealmHelper(context);
+	public static RealmHelper getInstance(Context context) {
+		if (instance == null) {
+			instance = new RealmHelper(context);
 		}
-		return helper;
+		return instance;
 	}
 
-	private RealmHelper(Context context) {
-        Realm.init(context);
+	protected RealmHelper(Context context) {
+		Realm.init(context);
 		RealmConfiguration realmConfig = new RealmConfiguration.Builder()
 				.deleteRealmIfMigrationNeeded()
 //                .schemaVersion(2) // Must be bumped when the schema changes

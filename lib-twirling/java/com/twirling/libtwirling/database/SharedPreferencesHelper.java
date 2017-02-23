@@ -1,4 +1,4 @@
-package com.twirling.SDTL.data;
+package com.twirling.libtwirling.database;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,19 +9,19 @@ import com.twirling.libtwirling.utils.TextUtil;
 /**
  * Created by MagicBean on 2016/01/13 15:15:28
  */
-public class SharePreHelper {
+public class SharedPreferencesHelper {
     private SharedPreferences sp;
     private SharedPreferences.Editor edit;
     private long adInterval;
 
-    private SharePreHelper() {
+    private SharedPreferencesHelper() {
     }
 
-    private static SharePreHelper helper;
+    private static SharedPreferencesHelper helper;
 
-    public static SharePreHelper getIns() {
+    public static SharedPreferencesHelper getIns() {
         if (helper == null) {
-            helper = new SharePreHelper();
+            helper = new SharedPreferencesHelper();
         }
         return helper;
     }
