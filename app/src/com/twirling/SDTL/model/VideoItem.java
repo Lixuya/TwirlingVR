@@ -10,204 +10,218 @@ import io.realm.annotations.PrimaryKey;
  * Created by 谢秋鹏 on 2016/5/30.
  */
 public class VideoItem extends RealmObject implements Parcelable {
-    @PrimaryKey
-    private int ID = 0;
-    private int UserID = 0;
-    private String Name = "";
-    private String Folder = "";
-    private String Image = "";
-    private String Sort = "";
-    private int VrAudio = -1;
-    private String AppAndroidOffline = "";
-    private String AppIOSOffline = "";
-    private String AppAndroidOnline = "";
-    private String Describe = "";
-    private long downloadId = 0;
-    private long downloadTime = 0;
+	@PrimaryKey
+	private int ID = 0;
+	private int UserID = 0;
+	private String Name = "";
+	private String Folder = "";
+	private String Image = "";
+	private String Sort = "";
+	private int VrAudio = -1;
+	private String AppAndroidOffline = "";
+	private String AppIOSOffline = "";
+	private String AppAndroidOnline = "";
+	private String Describe = "";
+	private long downloadId = 0;
+	private long downloadTime = 0;
+	private int progress = 0;
 
-    public String getDescribe() {
-        return Describe;
-    }
+	public int getProgress() {
+		return progress;
+	}
 
-    public void setDescribe(String describe) {
-        this.Describe = describe;
-    }
+	public void setProgress(int progress) {
+		this.progress = progress;
+	}
 
-    public int getVrAudio() {
-        return VrAudio;
-    }
 
-    public void setVrAudio(int vrAudio) {
-        this.VrAudio = vrAudio;
-    }
+	public String getDescribe() {
+		return Describe;
+	}
 
-    public String getSort() {
-        return Sort;
-    }
+	public void setDescribe(String describe) {
+		this.Describe = describe;
+	}
 
-    public void setSort(String sort) {
-        this.Sort = sort;
-    }
+	public int getVrAudio() {
+		return VrAudio;
+	}
 
-    protected VideoItem(Parcel in) {
-        ID = in.readInt();
-        UserID = in.readInt();
-        Name = in.readString();
-        Folder = in.readString();
-        Image = in.readString();
-        Sort = in.readString();
-        VrAudio = in.readInt();
-        AppAndroidOffline = in.readString();
-        AppAndroidOnline = in.readString();
-        Describe = in.readString();
-        downloadTime = in.readLong();
-        downloadId = in.readLong();
-    }
+	public void setVrAudio(int vrAudio) {
+		this.VrAudio = vrAudio;
+	}
 
-    public long getDownloadTime() {
-        return downloadTime;
-    }
+	public String getSort() {
+		return Sort;
+	}
 
-    public void setDownloadTime(long downloadTime) {
-        this.downloadTime = downloadTime;
-    }
+	public void setSort(String sort) {
+		this.Sort = sort;
+	}
 
-    public long getDownloadId() {
-        return downloadId;
-    }
+	protected VideoItem(Parcel in) {
+		ID = in.readInt();
+		UserID = in.readInt();
+		Name = in.readString();
+		Folder = in.readString();
+		Image = in.readString();
+		Sort = in.readString();
+		VrAudio = in.readInt();
+		AppAndroidOffline = in.readString();
+		AppAndroidOnline = in.readString();
+		Describe = in.readString();
+		downloadTime = in.readLong();
+		downloadId = in.readLong();
+		progress = in.readInt();
+	}
 
-    public void setDownloadId(long downloadId) {
-        this.downloadId = downloadId;
-    }
+	public long getDownloadTime() {
+		return downloadTime;
+	}
 
-    public VideoItem() {
-    }
+	public void setDownloadTime(long downloadTime) {
+		this.downloadTime = downloadTime;
+	}
 
-    public String getName() {
-        return Name;
-    }
+	public long getDownloadId() {
+		return downloadId;
+	}
 
-    public void setName(String name) {
-        this.Name = name;
-    }
+	public void setDownloadId(long downloadId) {
+		this.downloadId = downloadId;
+	}
 
-    public String getImage() {
-        return Image;
-    }
+	public VideoItem() {
+	}
 
-    public void setImage(String image) {
-        this.Image = image;
-    }
+	public String getName() {
+		return Name;
+	}
 
-    public String getAppAndroidOnline() {
-        return AppAndroidOnline;
-    }
+	public void setName(String name) {
+		this.Name = name;
+	}
 
-    public void setAppAndroidOnline(String appAndroidOnline) {
-        this.AppAndroidOnline = appAndroidOnline;
-    }
+	public String getImage() {
+		return Image;
+	}
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
+	public void setImage(String image) {
+		this.Image = image;
+	}
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(ID);
-        dest.writeInt(UserID);
-        dest.writeString(Name);
-        dest.writeString(Folder);
-        dest.writeString(Image);
-        dest.writeString(Sort);
-        dest.writeInt(VrAudio);
-        dest.writeString(AppAndroidOffline);
-        dest.writeString(AppAndroidOnline);
-        dest.writeString(Describe);
-        dest.writeLong(downloadTime);
-        dest.writeLong(downloadId);
-        dest.writeString(AppIOSOffline);
-    }
+	public String getAppAndroidOnline() {
+		return AppAndroidOnline;
+	}
 
-    public static final Creator<VideoItem> CREATOR = new Creator<VideoItem>() {
-        @Override
-        public VideoItem createFromParcel(Parcel in) {
-            VideoItem videoItem = new VideoItem();
-            videoItem.ID = in.readInt();
-            videoItem.UserID = in.readInt();
-            videoItem.Name = in.readString();
-            videoItem.Folder = in.readString();
-            videoItem.Image = in.readString();
-            videoItem.Sort = in.readString();
-            videoItem.VrAudio = in.readInt();
-            videoItem.AppAndroidOffline = in.readString();
-            videoItem.AppAndroidOnline = in.readString();
-            videoItem.Describe = in.readString();
-            videoItem.downloadTime = in.readLong();
-            videoItem.downloadId = in.readLong();
-            videoItem.AppIOSOffline = in.readString();
-            return videoItem;
-        }
+	public void setAppAndroidOnline(String appAndroidOnline) {
+		this.AppAndroidOnline = appAndroidOnline;
+	}
 
-        @Override
-        public VideoItem[] newArray(int size) {
-            return new VideoItem[size];
-        }
-    };
+	@Override
+	public int describeContents() {
+		return 0;
+	}
 
-    @Override
-    public String toString() {
-        String str = "downloadId: " + getDownloadId() +//
-                " Name: " + getName() +  //
-                " Image: " + getImage() + //
-                " AppAndroidOnline: " + getAppAndroidOnline() + //
-                " time: " + getDownloadTime() +  //
-                " VrAudio: " + getVrAudio() + //
-                " AppAndroidOffline: " + getAppAndroidOffline() +//
-                " Sort: " + getSort() + //
-                " Describe: " + getDescribe() +//
-                " Folder: " + getFolder() +
-                " AppIOSOffline " + getAppIOSOffline();
-        return str;
-    }
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeInt(ID);
+		dest.writeInt(UserID);
+		dest.writeString(Name);
+		dest.writeString(Folder);
+		dest.writeString(Image);
+		dest.writeString(Sort);
+		dest.writeInt(VrAudio);
+		dest.writeString(AppAndroidOffline);
+		dest.writeString(AppAndroidOnline);
+		dest.writeString(Describe);
+		dest.writeLong(downloadTime);
+		dest.writeLong(downloadId);
+		dest.writeString(AppIOSOffline);
+		dest.writeInt(progress);
+	}
 
-    public String getAppAndroidOffline() {
-        return AppAndroidOffline;
-    }
+	public static final Creator<VideoItem> CREATOR = new Creator<VideoItem>() {
+		@Override
+		public VideoItem createFromParcel(Parcel in) {
+			VideoItem videoItem = new VideoItem();
+			videoItem.ID = in.readInt();
+			videoItem.UserID = in.readInt();
+			videoItem.Name = in.readString();
+			videoItem.Folder = in.readString();
+			videoItem.Image = in.readString();
+			videoItem.Sort = in.readString();
+			videoItem.VrAudio = in.readInt();
+			videoItem.AppAndroidOffline = in.readString();
+			videoItem.AppAndroidOnline = in.readString();
+			videoItem.Describe = in.readString();
+			videoItem.downloadTime = in.readLong();
+			videoItem.downloadId = in.readLong();
+			videoItem.AppIOSOffline = in.readString();
+			videoItem.progress = in.readInt();
+			return videoItem;
+		}
 
-    public void setAppAndroidOffline(String appAndroidOffline) {
-        this.AppAndroidOffline = appAndroidOffline;
-    }
+		@Override
+		public VideoItem[] newArray(int size) {
+			return new VideoItem[size];
+		}
+	};
 
-    public String getFolder() {
-        return Folder;
-    }
+	@Override
+	public String toString() {
+		String str = "downloadId: " + getDownloadId() +//
+				" Progress: " + getProgress() +  //
+				" Name: " + getName() +  //
+				" Image: " + getImage() + //
+				" AppAndroidOnline: " + getAppAndroidOnline() + //
+				" time: " + getDownloadTime() +  //
+				" VrAudio: " + getVrAudio() + //
+				" AppAndroidOffline: " + getAppAndroidOffline() +//
+				" Sort: " + getSort() + //
+				" Describe: " + getDescribe() +//
+				" Folder: " + getFolder() +
+				" AppIOSOffline " + getAppIOSOffline();
+		return str;
+	}
 
-    public void setFolder(String folder) {
-        this.Folder = folder;
-    }
+	public String getAppAndroidOffline() {
+		return AppAndroidOffline;
+	}
 
-    public int getUserID() {
-        return UserID;
-    }
+	public void setAppAndroidOffline(String appAndroidOffline) {
+		this.AppAndroidOffline = appAndroidOffline;
+	}
 
-    public void setUserID(int userID) {
-        UserID = userID;
-    }
+	public String getFolder() {
+		return Folder;
+	}
 
-    public int getID() {
-        return ID;
-    }
+	public void setFolder(String folder) {
+		this.Folder = folder;
+	}
 
-    public void setID(int ID) {
-        this.ID = ID;
-    }
+	public int getUserID() {
+		return UserID;
+	}
 
-    public String getAppIOSOffline() {
-        return AppIOSOffline;
-    }
+	public void setUserID(int userID) {
+		UserID = userID;
+	}
 
-    public void setAppIOSOffline(String appIOSOffline) {
-        AppIOSOffline = appIOSOffline;
-    }
+	public int getID() {
+		return ID;
+	}
+
+	public void setID(int ID) {
+		this.ID = ID;
+	}
+
+	public String getAppIOSOffline() {
+		return AppIOSOffline;
+	}
+
+	public void setAppIOSOffline(String appIOSOffline) {
+		AppIOSOffline = appIOSOffline;
+	}
 }

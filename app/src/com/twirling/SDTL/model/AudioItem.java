@@ -1,5 +1,6 @@
 package com.twirling.SDTL.model;
 
+import android.databinding.BaseObservable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -7,7 +8,7 @@ import android.os.Parcelable;
  * Created by xieqi on 2016/11/3.
  */
 
-public class AudioItem implements Parcelable {
+public class AudioItem extends BaseObservable implements Parcelable {
     private String id;
 
     private String title;

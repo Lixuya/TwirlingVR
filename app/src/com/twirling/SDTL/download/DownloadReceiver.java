@@ -8,7 +8,6 @@ import android.database.Cursor;
 
 import com.orhanobut.logger.Logger;
 import com.twirling.SDTL.App;
-import com.twirling.SDTL.data.RealmHelper;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -44,7 +43,7 @@ public class DownloadReceiver extends BroadcastReceiver {
 						.subscribe(new Consumer<Long>() {
 							@Override
 							public void accept(Long id) {
-								RealmHelper.getInstance().updateDownloadId(id);
+//								RealmHelper.getInstance().updateDownloadId(id);
 							}
 						});
 				break;

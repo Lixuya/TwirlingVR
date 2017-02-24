@@ -24,7 +24,6 @@ import com.twirling.SDTL.App;
 import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.R;
 import com.twirling.SDTL.data.RealmHelper;
-import com.twirling.SDTL.download.DownloadChangeObserver;
 import com.twirling.SDTL.model.VideoItem;
 import com.twirling.SDTL.module.ModuleAlertDialog;
 import com.twirling.libtwirling.utils.FileUtil;
@@ -43,6 +42,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
+import zlc.season.rxdownload2.RxDownload;
+import zlc.season.rxdownload2.entity.DownloadEvent;
 
 /**
  * Created by 谢秋鹏 on 2016/5/26.
@@ -69,6 +70,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
 		final VideoItem item = datas.get(position);
 		holder.downloadId = item.getDownloadId();
 		String path = Constants.PATH_RESOURCE + item.getFolder() + Constants.PAPH_IMAGE + item.getImage();
+		String videoUrl = Constants.PATH_RESOURCE + item.getFolder() + item.getAppAndroidOffline();
 		Glide.with(holder.itemView.getContext()).load(path).into(holder.iv_background);
 		holder.tv_title.setText(item.getName());
 		//
@@ -113,38 +115,33 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
 				}
 			}
 		});
-		//
-		if (holder.downloadId == 1) {
-			haveUnZip(holder);
-			//
-//			checkZip(item, holder);
-			return;
-		}
-		//
-		if (holder.downloadId != 1) {
-			//
-			checkDownload(holder);
-			//
-			DownloadChangeObserver pco = (DownloadChangeObserver) App.observers.get(holder.downloadId);
-			if (pco == null) {
-				return;
-			}
-			pco.setProgressListener(new DownloadChangeObserver.ProgressListener() {
-				@Override
-				public void invoke(int progress) {
-					if (progress == 100 || holder.downloadId == 1) {
-						holder.pb_download.setVisibility(View.GONE);
-						holder.tv_title.setVisibility(View.VISIBLE);
-						holder.cv_card.setEnabled(true);
-						return;
+		holder.cv_card.setEnabled(true);
+		RxDownload.getInstance()
+				.receiveDownloadStatus(videoUrl)
+				.subscribe(new Consumer<DownloadEvent>() {
+					@Override
+					public void accept(DownloadEvent event) throws Exception {
+						int progress = 0;
+						if (event.getDownloadStatus().getTotalSize() != 0)
+							progress = (int) (event.getDownloadStatus().getDownloadSize() * 100f / event.getDownloadStatus().getTotalSize());
+						holder.pb_download.setProgress(progress);
 					}
-					holder.cv_card.setEnabled(false);
-					holder.pb_download.setVisibility(View.VISIBLE);
-					holder.tv_title.setVisibility(View.GONE);
-					holder.pb_download.setProgress(progress);
-				}
-			});
-		}
+				}, new Consumer<Throwable>() {
+					@Override
+					public void accept(Throwable throwable) throws Exception {
+						Log.w("www", throwable.toString());
+					}
+				});
+//		if (progress == 100 || holder.downloadId == 1) {
+//			holder.pb_download.setVisibility(View.GONE);
+//			holder.tv_title.setVisibility(View.VISIBLE);
+//			holder.cv_card.setEnabled(true);
+//			return;
+//		}
+
+//		holder.pb_download.setVisibility(View.VISIBLE);
+//		holder.tv_title.setVisibility(View.GONE);
+//		holder.pb_download.setProgress(progress);
 	}
 
 	//
@@ -191,7 +188,7 @@ public class OffineAdapter extends RecyclerView.Adapter<OffineAdapter.ViewHolder
 			new UnZipHelper(zipFile.getPath(), Constants.PATH_DOWNLOAD + fileFolder).unzip();
 			FileUtil.delete(zipFile);
 			FileUtil.delete(new File(Constants.PATH_DOWNLOAD + fileFolder));
-			RealmHelper.getInstance().updateDownloadId(holder.downloadId);
+//			RealmHelper.getInstance().updateDownloadId(holder.downloadId);
 		}
 	}
 

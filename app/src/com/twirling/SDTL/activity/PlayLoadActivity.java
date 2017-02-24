@@ -15,6 +15,7 @@ import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.R;
+import com.twirling.SDTL.data.RealmHelper;
 import com.twirling.SDTL.databinding.ActivityOnlineBinding;
 import com.twirling.SDTL.model.OnlineModel;
 import com.twirling.SDTL.model.VideoItem;
@@ -32,6 +33,8 @@ import zlc.season.rxdownload2.entity.DownloadFlag;
 public class PlayLoadActivity extends AppCompatActivity {
 	private VideoItem videoItem = null;
 	private OnlineModel onlineModel = null;
+	private RxDownload rxDownload = null;
+	private Disposable disposable = null;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,34 +45,18 @@ public class PlayLoadActivity extends AppCompatActivity {
 		anb.setItem(onlineModel);
 		anb.setPresenter(new Presenter());
 //        StatusBarUtil.setTransparent(PlayLoadActivity.this);
-		//
-		Disposable disposable = RxDownload.getInstance()
-				.receiveDownloadStatus(onlineModel.getVideoUrl())
-				.subscribe(new Consumer<DownloadEvent>() {
-					@Override
-					public void accept(DownloadEvent event) throws Exception {
-						if (event.getFlag() == DownloadFlag.FAILED) {
-							Throwable throwable = event.getError();
-							Log.w("Error", throwable);
-						} else {
-							onlineModel.setDownloadStatus(event.getFlag());
-							int progress = (int) (event.getDownloadStatus().getDownloadSize() / event.getDownloadStatus().getTotalSize());
-							onlineModel.setProgress(progress);
-						}
-					}
-				});
 	}
 
 	public class Presenter {
 		public void onIvDownload(View view) {
 			RxView.clicks(view)
-					.debounce(300, TimeUnit.MILLISECONDS)
+					.throttleFirst(1000, TimeUnit.MILLISECONDS)
 					.observeOn(AndroidSchedulers.mainThread())
 					.subscribe(new Consumer<Object>() {
 						@Override
 						public void accept(Object o) {
-							RxDownload.getInstance()
-									.context(PlayLoadActivity.this)
+							rxDownload = RxDownload.getInstance();
+							rxDownload.context(PlayLoadActivity.this)
 									.maxDownloadNumber(3)
 									.serviceDownload(onlineModel.getVideoUrl(), videoItem.getAppAndroidOffline(), Constants.PATH_DOWNLOAD)
 									.subscribe(new Consumer<Object>() {
@@ -81,6 +68,25 @@ public class PlayLoadActivity extends AppCompatActivity {
 													.color(Color.parseColor("#00CF00"))
 													.sizeDp(53);
 											onlineModel.setIconDownload(iconDownload);
+										}
+									});
+							rxDownload.receiveDownloadStatus(onlineModel.getVideoUrl())
+									.subscribe(new Consumer<DownloadEvent>() {
+										@Override
+										public void accept(DownloadEvent event) throws Exception {
+											int progress = 0;
+											if (event.getDownloadStatus().getTotalSize() != 0)
+												progress = (int) (event.getDownloadStatus().getDownloadSize() * 100f / event.getDownloadStatus().getTotalSize());
+											if (event.getFlag() == DownloadFlag.FAILED) {
+												Throwable throwable = event.getError();
+												Log.w("Error", throwable);
+											}
+											else {
+												onlineModel.setDownloadStatus(event.getFlag());
+												onlineModel.setProgress(progress);
+												videoItem.setProgress(progress);
+												RealmHelper.getInstance().insertVideoItem(videoItem);
+											}
 										}
 									});
 						}
@@ -107,8 +113,6 @@ public class PlayLoadActivity extends AppCompatActivity {
 		onlineModel.setVideoName(videoItem.getAppAndroidOnline());
 		onlineModel.setImageUrl(Constants.PATH_RESOURCE + videoItem.getFolder() + videoItem.getImage());
 		onlineModel.setVideoUrl(Constants.PATH_RESOURCE + videoItem.getFolder() + videoItem.getAppAndroidOffline());
-		//
-//		VideoItem itemInDB = RealmHelper.getInstance().selectVideoItem(videoName);
 	}
 
 	@Override

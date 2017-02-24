@@ -13,16 +13,16 @@ import com.twirling.SDTL.BR;
 import zlc.season.rxdownload2.entity.DownloadFlag;
 
 /**
- * Created by xieqi on 2017/2/23.
+ * Target: PlayLoad界面元素
  */
-
 public class OnlineModel extends BaseObservable {
+	//
+	private String videoUrl;
+	private String imageUrl;
 	private Drawable iconDownload;
 	private Drawable iconPlay;
 	private String videoName;
 	private String videoPath;
-	private String videoUrl;
-	private String imageUrl;
 	private int progress = 0;
 	private int downloadStatus = DownloadFlag.NORMAL;
 

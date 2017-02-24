@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.twirling.SDTL.App;
 import com.twirling.SDTL.Constants;
-import com.twirling.SDTL.data.RealmHelper;
 import com.twirling.SDTL.model.VideoItem;
 import com.twirling.libtwirling.utils.TextUtil;
 
@@ -33,7 +32,7 @@ public class DownloadService extends IntentService {
             switch (msg.what) {
                 case 0:
                     VideoItem videoItem = (VideoItem) msg.obj;
-                    RealmHelper.getInstance().insertVideoItem(videoItem);
+//                    RealmHelper.getInstance().insertVideoItem(videoItem);
                     break;
                 case 1:
                 default:

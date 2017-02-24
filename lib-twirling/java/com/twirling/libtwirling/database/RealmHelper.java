@@ -19,6 +19,7 @@ public class RealmHelper {
 		Realm.init(context);
 		RealmConfiguration realmConfig = new RealmConfiguration.Builder()
 				.deleteRealmIfMigrationNeeded()
+//				.rxFactory(null)
 //                .schemaVersion(2) // Must be bumped when the schema changes
 //                .migration(new MyRealmMigration()) // Migration to run instead of throwing an exception
 				.build();
