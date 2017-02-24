@@ -58,9 +58,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@null"
-                android:enabled="@{item.downloadStatus == DownloadFlag.NORMAL ? true : false}"
-                android:onClick="@{()->presenter.onIvDownload(v)}"
-                android:src="@{item.iconDownload}"/>
+                android:enabled="@{item.downloadStatus == DownloadFlag.NORMAL ? true : false}
+                android:onClick="@{(v)->presenter.onIvDownload(v)}"
+            android:src="@{item.iconDownload}"/>
 
             <ImageView
                 android:id="@+id/iv_play"
@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
                 android:contentDescription="@null"
-                android:onClick="@{()->presenter.onIvPlay(v)}"
+                android:onClick="@{(v)->presenter.onIvPlay(v)}"
                 android:src="@{item.iconPlay}"/>
         </LinearLayout>
 
