@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -27,14 +28,15 @@
             android:layout_width="match_parent"
             android:layout_height="250dp">
 
+            <!--android:src="@{item.imageUrl}"-->
             <ImageView
                 android:id="@+id/iv_stagephoto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#C0C0C0"
                 android:contentDescription="@null"
-                android:src="@{item.imageUrl}"
-                android:transitionName="@string/ti"/>
+                android:transitionName="@string/ti"
+                app:imageUrl="@{item.imageUrl}"/>
         </FrameLayout>
 
         <TextView
@@ -57,10 +59,11 @@
                 android:id="@+id/iv_download"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@null"
                 android:contentDescription="@null"
-                android:enabled="@{item.downloadStatus == DownloadFlag.NORMAL ? true : false}
+                android:enabled="@{item.downloadStatus == 9990 ? true : false}"
                 android:onClick="@{(v)->presenter.onIvDownload(v)}"
-            android:src="@{item.iconDownload}"/>
+                android:src="@{item.iconDownload}"/>
 
             <ImageView
                 android:id="@+id/iv_play"
@@ -78,7 +81,6 @@
             android:layout_width="200dp"
             android:layout_height="10dp"
             android:layout_marginTop="30dp"
-            android:max="@{item.max}"
             android:progress="@{item.progress}"
             android:progressDrawable="@drawable/progressbar_horizontal_bg"/>
 

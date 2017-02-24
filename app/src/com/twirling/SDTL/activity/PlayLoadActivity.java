@@ -35,11 +35,13 @@ public class PlayLoadActivity extends AppCompatActivity {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//
+		initData();
+		//
 		ActivityOnlineBinding anb = DataBindingUtil.setContentView(this, R.layout.activity_online);
 		anb.setItem(onlineModel);
 		anb.setPresenter(new Presenter());
 //        StatusBarUtil.setTransparent(PlayLoadActivity.this);
-		initData();
 		//
 		Disposable disposable = RxDownload.getInstance()
 				.receiveDownloadStatus(onlineModel.getVideoUrl())
@@ -50,9 +52,9 @@ public class PlayLoadActivity extends AppCompatActivity {
 							Throwable throwable = event.getError();
 							Log.w("Error", throwable);
 						} else {
-							onlineModel.setMax(event.getFlag());
-							onlineModel.setMax(event.getDownloadStatus().getTotalSize());
-							onlineModel.setProgress(event.getDownloadStatus().getDownloadSize());
+							onlineModel.setDownloadStatus(event.getFlag());
+							int progress = (int) (event.getDownloadStatus().getDownloadSize() / event.getDownloadStatus().getTotalSize());
+							onlineModel.setProgress(progress);
 						}
 					}
 				});

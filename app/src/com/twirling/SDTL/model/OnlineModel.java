@@ -23,8 +23,7 @@ public class OnlineModel extends BaseObservable {
 	private String videoPath;
 	private String videoUrl;
 	private String imageUrl;
-	private long progress = 0;
-	private long max = 100;
+	private int progress = 0;
 	private int downloadStatus = DownloadFlag.NORMAL;
 
 	public OnlineModel(Context context) {
@@ -89,23 +88,13 @@ public class OnlineModel extends BaseObservable {
 	}
 
 	@Bindable
-	public long getProgress() {
+	public int getProgress() {
 		return progress;
 	}
 
-	public void setProgress(long progress) {
+	public void setProgress(int progress) {
 		this.progress = progress;
 		notifyPropertyChanged(BR.progress);
-	}
-
-	@Bindable
-	public long getMax() {
-		return max;
-	}
-
-	public void setMax(long max) {
-		this.max = max;
-		notifyPropertyChanged(BR.max);
 	}
 
 	@Bindable
@@ -127,5 +116,4 @@ public class OnlineModel extends BaseObservable {
 		this.downloadStatus = downloadStatus;
 		notifyPropertyChanged(BR.downloadStatus);
 	}
-
 }
