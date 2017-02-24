@@ -2,8 +2,6 @@ package com.twirling.SDTL.activity;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,8 +9,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.jakewharton.rxbinding2.view.RxView;
-import com.mikepenz.fontawesome_typeface_library.FontAwesome;
-import com.mikepenz.iconics.IconicsDrawable;
 import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.R;
 import com.twirling.SDTL.data.RealmHelper;
@@ -33,8 +29,6 @@ import zlc.season.rxdownload2.entity.DownloadFlag;
 public class PlayLoadActivity extends AppCompatActivity {
 	private VideoItem videoItem = null;
 	private OnlineModel onlineModel = null;
-	private RxDownload rxDownload = null;
-	private Disposable disposable = null;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,6 +39,27 @@ public class PlayLoadActivity extends AppCompatActivity {
 		anb.setItem(onlineModel);
 		anb.setPresenter(new Presenter());
 //        StatusBarUtil.setTransparent(PlayLoadActivity.this);
+		RxDownload.getInstance()
+				.receiveDownloadStatus(onlineModel.getVideoUrl())
+				.subscribe(new Consumer<DownloadEvent>() {
+					@Override
+					public void accept(DownloadEvent event) throws Exception {
+						int progress = 0;
+						if (event.getDownloadStatus().getTotalSize() != 0)
+							progress = (int) (event.getDownloadStatus().getDownloadSize() * 100f / event.getDownloadStatus().getTotalSize());
+						if (event.getFlag() == DownloadFlag.FAILED) {
+							Throwable throwable = event.getError();
+							Log.w("Error", throwable);
+						} else if (event.getFlag() == DownloadFlag.COMPLETED) {
+//							Toast.makeText(PlayLoadActivity.this, "下载完成", Toast.LENGTH_LONG).show();
+						} else {
+							onlineModel.setDownloadStatus(event.getFlag());
+							onlineModel.setProgress(progress);
+							videoItem.setProgress(progress);
+							RealmHelper.getInstance().insertVideoItem(videoItem);
+						}
+					}
+				});
 	}
 
 	public class Presenter {
@@ -55,40 +70,17 @@ public class PlayLoadActivity extends AppCompatActivity {
 					.subscribe(new Consumer<Object>() {
 						@Override
 						public void accept(Object o) {
-							rxDownload = RxDownload.getInstance();
-							rxDownload.context(PlayLoadActivity.this)
+							RxDownload.getInstance()
+									.context(PlayLoadActivity.this)
 									.maxDownloadNumber(3)
 									.serviceDownload(onlineModel.getVideoUrl(), videoItem.getAppAndroidOffline(), Constants.PATH_DOWNLOAD)
 									.subscribe(new Consumer<Object>() {
 										@Override
 										public void accept(Object o) throws Exception {
 											Toast.makeText(PlayLoadActivity.this, "开始下载", Toast.LENGTH_SHORT).show();
-											Drawable iconDownload = new IconicsDrawable(PlayLoadActivity.this)
-													.icon(FontAwesome.Icon.faw_cloud_download)
-													.color(Color.parseColor("#00CF00"))
-													.sizeDp(53);
-											onlineModel.setIconDownload(iconDownload);
 										}
 									});
-							rxDownload.receiveDownloadStatus(onlineModel.getVideoUrl())
-									.subscribe(new Consumer<DownloadEvent>() {
-										@Override
-										public void accept(DownloadEvent event) throws Exception {
-											int progress = 0;
-											if (event.getDownloadStatus().getTotalSize() != 0)
-												progress = (int) (event.getDownloadStatus().getDownloadSize() * 100f / event.getDownloadStatus().getTotalSize());
-											if (event.getFlag() == DownloadFlag.FAILED) {
-												Throwable throwable = event.getError();
-												Log.w("Error", throwable);
-											}
-											else {
-												onlineModel.setDownloadStatus(event.getFlag());
-												onlineModel.setProgress(progress);
-												videoItem.setProgress(progress);
-												RealmHelper.getInstance().insertVideoItem(videoItem);
-											}
-										}
-									});
+
 						}
 					});
 		}
@@ -109,6 +101,7 @@ public class PlayLoadActivity extends AppCompatActivity {
 
 	private void initData() {
 		videoItem = getIntent().getExtras().getParcelable("videoItem");
+		videoItem = RealmHelper.getInstance().selectVideoItem(videoItem);
 		onlineModel = new OnlineModel(PlayLoadActivity.this);
 		onlineModel.setVideoName(videoItem.getAppAndroidOnline());
 		onlineModel.setImageUrl(Constants.PATH_RESOURCE + videoItem.getFolder() + videoItem.getImage());

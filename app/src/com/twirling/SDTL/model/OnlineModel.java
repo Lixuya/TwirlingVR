@@ -19,7 +19,8 @@ public class OnlineModel extends BaseObservable {
 	//
 	private String videoUrl;
 	private String imageUrl;
-	private Drawable iconDownload;
+	private Drawable iconDownload,
+			iconDownloadGreen;
 	private Drawable iconPlay;
 	private String videoName;
 	private String videoPath;
@@ -34,6 +35,10 @@ public class OnlineModel extends BaseObservable {
 		iconPlay = new IconicsDrawable(context)
 				.icon(FontAwesome.Icon.faw_play_circle_o)
 				.color(Color.parseColor("#000000"))
+				.sizeDp(53);
+		iconDownloadGreen = new IconicsDrawable(context)
+				.icon(FontAwesome.Icon.faw_cloud_download)
+				.color(Color.parseColor("#00CF00"))
 				.sizeDp(53);
 	}
 
@@ -94,6 +99,10 @@ public class OnlineModel extends BaseObservable {
 
 	public void setProgress(int progress) {
 		this.progress = progress;
+		if (progress != 0)
+			setIconDownload(iconDownloadGreen);
+		else
+			setIconDownload(iconDownload);
 		notifyPropertyChanged(BR.progress);
 	}
 

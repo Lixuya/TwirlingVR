@@ -70,12 +70,8 @@ public class RealmHelper extends com.twirling.libtwirling.database.RealmHelper {
 
 	public List<VideoItem> selectVideoList() {
 		RealmResults<VideoItem> puppies = realm.where(VideoItem.class)
-				.notEqualTo("downloadId", (long) 0)
 				.findAll()
 				.sort("downloadTime", Sort.ASCENDING);
-//        for (VideoItem item : puppies) {
-//            Log.i("selectVideoList", item.toString());
-//        }
 		return puppies;
 	}
 
@@ -85,6 +81,17 @@ public class RealmHelper extends com.twirling.libtwirling.database.RealmHelper {
 				.notEqualTo("downloadId", 0)
 				.findFirst();
 		return videoItem;
+	}
+
+	public VideoItem selectVideoItem(VideoItem videoItem) {
+		VideoItem newItem = realm.where(VideoItem.class)
+				.equalTo("AppAndroidOnline", videoItem.getAppAndroidOnline())
+				.notEqualTo("downloadId", 0)
+				.findFirst();
+		if (newItem == null) {
+			return videoItem;
+		}
+		return newItem;
 	}
 
 	public void deleteVideoItem(VideoItem item) {
