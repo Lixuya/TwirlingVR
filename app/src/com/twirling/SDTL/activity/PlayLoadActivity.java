@@ -1,156 +1,117 @@
 package com.twirling.SDTL.activity;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
+import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
-import com.twirling.SDTL.App;
 import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.R;
-import com.twirling.SDTL.data.RealmHelper;
-import com.twirling.SDTL.download.DownloadChangeObserver;
-import com.twirling.SDTL.download.DownloadService;
+import com.twirling.SDTL.databinding.ActivityOnlineBinding;
+import com.twirling.SDTL.model.OnlineModel;
 import com.twirling.SDTL.model.VideoItem;
 import com.twirling.player.activity.VRPlayerActivity;
 
 import java.util.concurrent.TimeUnit;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-
+import zlc.season.rxdownload2.RxDownload;
+import zlc.season.rxdownload2.entity.DownloadEvent;
+import zlc.season.rxdownload2.entity.DownloadFlag;
 
 public class PlayLoadActivity extends AppCompatActivity {
-	@BindView(R.id.iv_download)
-	ImageView iv_download;
-
-	@BindView(R.id.iv_play)
-	ImageView iv_play;
-
-	@BindView(R.id.iv_video_image)
-	ImageView iv_video_image;
-
-	@BindView(R.id.pb_download)
-	ProgressBar mPbLoading;
-
-	private String imageUrl;
-	private Drawable icon_click;
-
-	private CountDownTimer selfTimer = new CountDownTimer(20 * 1000, 1000) {
-		public void onTick(long millSec) {
-			mPbLoading.setProgress((int) ((20 * 1000 - millSec) / 1000));
-		}
-
-		@Override
-		public void onFinish() {
-
-		}
-	};
+	private VideoItem videoItem = null;
+	private OnlineModel onlineModel = null;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.playpanel);
-		ButterKnife.bind(this);
+		ActivityOnlineBinding anb = DataBindingUtil.setContentView(this, R.layout.activity_online);
+		anb.setItem(onlineModel);
+		anb.setPresenter(new Presenter());
 //        StatusBarUtil.setTransparent(PlayLoadActivity.this);
+		initData();
 		//
-		VideoItem videoItem = (VideoItem) getIntent().getExtras().getParcelable("videoItem");
-		Log.e("PlayLoadActivity", videoItem.toString());
-		String videoName = videoItem.getAppAndroidOnline();
-		imageUrl = Constants.PATH_RESOURCE + videoItem.getFolder() + Constants.PAPH_IMAGE + videoItem.getImage();
-		//
-		initView(videoItem);
-		VideoItem itemInDB = RealmHelper.getInstance().selectVideoItem(videoName);
-		if (itemInDB == null) {
-			iv_download.setBackgroundColor(Color.TRANSPARENT);
-			iv_download.setEnabled(true);
-			return;
-		}
-		long downLoadId = itemInDB.getDownloadId();
-		if (downLoadId == 0) {
-			return;
-		} else if (downLoadId == 1) {
-			mPbLoading.setProgress(100);
-			iv_download.setImageDrawable(icon_click);
-			iv_download.setEnabled(false);
-			return;
-		}
-		iv_download.setEnabled(false);
-		iv_download.setImageDrawable(icon_click);
-		DownloadChangeObserver pco = (DownloadChangeObserver) App.observers.get(downLoadId);
-		if (pco == null) {
-			return;
-		}
-		pco.setProgressListener(new DownloadChangeObserver.ProgressListener() {
-			@Override
-			public void invoke(int progress) {
-				mPbLoading.setProgress(progress);
-			}
-		});
+		Disposable disposable = RxDownload.getInstance()
+				.receiveDownloadStatus(onlineModel.getVideoUrl())
+				.subscribe(new Consumer<DownloadEvent>() {
+					@Override
+					public void accept(DownloadEvent event) throws Exception {
+						if (event.getFlag() == DownloadFlag.FAILED) {
+							Throwable throwable = event.getError();
+							Log.w("Error", throwable);
+						} else {
+							onlineModel.setMax(event.getFlag());
+							onlineModel.setMax(event.getDownloadStatus().getTotalSize());
+							onlineModel.setProgress(event.getDownloadStatus().getDownloadSize());
+						}
+					}
+				});
 	}
 
-	public void initView(final VideoItem videoItem) {
-		Glide.with(getBaseContext()).load(imageUrl).into(iv_video_image);
-		icon_click = new IconicsDrawable(getBaseContext())
-				.icon(FontAwesome.Icon.faw_cloud_download)
-				.color(Color.parseColor("#00CF00"))
-				.sizeDp(53);
-		Drawable icon = new IconicsDrawable(getBaseContext())
-				.icon(FontAwesome.Icon.faw_cloud_download)
-				.color(Color.parseColor("#000000"))
-				.sizeDp(53);
-		iv_download.setImageDrawable(icon);
-		RxView.clicks(iv_download)
-				.debounce(300, TimeUnit.MILLISECONDS)
-				.observeOn(AndroidSchedulers.mainThread())
-				.subscribe(new Consumer<Object>() {
-					@Override
-					public void accept(Object o) {
-						iv_download.setImageDrawable(icon_click);
-						//
-						Intent intent = new Intent(App.getInst().getApplicationContext(), DownloadService.class);
-						intent.putExtra("videoItem", videoItem);
-						startService(intent);
-						//
-						if (iv_download.isEnabled() && !App.observers.isEmpty()) {
-							selfTimer.start();
+	public class Presenter {
+		public void onIvDownload(View view) {
+			RxView.clicks(view)
+					.debounce(300, TimeUnit.MILLISECONDS)
+					.observeOn(AndroidSchedulers.mainThread())
+					.subscribe(new Consumer<Object>() {
+						@Override
+						public void accept(Object o) {
+							RxDownload.getInstance()
+									.context(PlayLoadActivity.this)
+									.maxDownloadNumber(3)
+									.serviceDownload(onlineModel.getVideoUrl(), videoItem.getAppAndroidOffline(), Constants.PATH_DOWNLOAD)
+									.subscribe(new Consumer<Object>() {
+										@Override
+										public void accept(Object o) throws Exception {
+											Toast.makeText(PlayLoadActivity.this, "开始下载", Toast.LENGTH_SHORT).show();
+											Drawable iconDownload = new IconicsDrawable(PlayLoadActivity.this)
+													.icon(FontAwesome.Icon.faw_cloud_download)
+													.color(Color.parseColor("#00CF00"))
+													.sizeDp(53);
+											onlineModel.setIconDownload(iconDownload);
+										}
+									});
 						}
-						iv_download.setEnabled(false);
-					}
-				});
-		Drawable icon2 = new IconicsDrawable(getBaseContext())
-				.icon(FontAwesome.Icon.faw_play_circle_o)
-				.color(Color.parseColor("#000000"))
-				.sizeDp(50);
-		iv_play.setImageDrawable(icon2);
-		RxView.clicks(iv_play)
-				.subscribe(new Consumer<Object>() {
-					@Override
-					public void accept(Object o) {
-						Intent intent = new Intent();
-						intent.putExtra("VideoItem", Constants.PATH_RESOURCE + videoItem.getFolder() + Constants.PAPH_VIDEO + videoItem.getAppAndroidOnline());
-						intent.setClass(PlayLoadActivity.this, VRPlayerActivity.class);
-						startActivity(intent);
-					}
-				});
+					});
+		}
+
+		public void onIvPlay(View view) {
+			RxView.clicks(view)
+					.subscribe(new Consumer<Object>() {
+						@Override
+						public void accept(Object o) {
+							Intent intent = new Intent();
+							intent.putExtra("VideoItem", Constants.PATH_RESOURCE + videoItem.getFolder() + videoItem.getAppAndroidOnline());
+							intent.setClass(PlayLoadActivity.this, VRPlayerActivity.class);
+							startActivity(intent);
+						}
+					});
+		}
+	}
+
+	private void initData() {
+		videoItem = getIntent().getExtras().getParcelable("videoItem");
+		onlineModel = new OnlineModel(PlayLoadActivity.this);
+		onlineModel.setVideoName(videoItem.getAppAndroidOnline());
+		onlineModel.setImageUrl(Constants.PATH_RESOURCE + videoItem.getFolder() + videoItem.getImage());
+		onlineModel.setVideoUrl(Constants.PATH_RESOURCE + videoItem.getFolder() + videoItem.getAppAndroidOffline());
+		//
+//		VideoItem itemInDB = RealmHelper.getInstance().selectVideoItem(videoName);
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		selfTimer.cancel();
-		selfTimer = null;
 	}
 
 	@Override

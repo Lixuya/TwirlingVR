@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="com.twirling.SDTL.activity.PlayLoadActivity"/>
+
+        <import type="com.twirling.SDTL.model.OnlineModel"/>
+
+        <variable
+            name="presenter"
+            type="PlayLoadActivity.Presenter"/>
+
+        <variable
+            name="item"
+            type="OnlineModel"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center|top"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dp">
+
+            <ImageView
+                android:id="@+id/iv_stagephoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#C0C0C0"
+                android:contentDescription="@null"
+                android:src="@{item.imageUrl}"
+                android:transitionName="@string/ti"/>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="80dp"
+            android:layout_marginTop="100dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/iv_download"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@null"
+                android:enabled="@{item.downloadStatus == DownloadFlag.NORMAL ? true : false}"
+                android:onClick="@{()->presenter.onIvDownload(v)}"
+                android:src="@{item.iconDownload}"/>
+
+            <ImageView
+                android:id="@+id/iv_play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:contentDescription="@null"
+                android:onClick="@{()->presenter.onIvPlay(v)}"
+                android:src="@{item.iconPlay}"/>
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/pb_download"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="200dp"
+            android:layout_height="10dp"
+            android:layout_marginTop="30dp"
+            android:max="@{item.max}"
+            android:progress="@{item.progress}"
+            android:progressDrawable="@drawable/progressbar_horizontal_bg"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:text="@null"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="@null"/>
+    </LinearLayout>
+</layout>

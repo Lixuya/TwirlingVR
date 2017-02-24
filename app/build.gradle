@@ -154,6 +154,7 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     compile "$LibGvr"
     //
+    compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.1@aar'
 //    compile "com.facebook.react:react-native:+"
 }
 

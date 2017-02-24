@@ -60,4 +60,6 @@ dependencies {
     //
     compile "com.squareup.okhttp3:okhttp:${versions.libOkhttp}"
     compile "com.squareup.okhttp3:logging-interceptor:${versions.libOkhttp}"
+    //
+    compile 'zlc.season:rxdownload2:1.1.1'
 }
