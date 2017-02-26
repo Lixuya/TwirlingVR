@@ -20,7 +20,6 @@ import com.twirling.player.activity.VRPlayerActivity;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import zlc.season.rxdownload2.RxDownload;
 import zlc.season.rxdownload2.entity.DownloadEvent;
@@ -47,6 +46,7 @@ public class PlayLoadActivity extends AppCompatActivity {
 						int progress = 0;
 						if (event.getDownloadStatus().getTotalSize() != 0)
 							progress = (int) (event.getDownloadStatus().getDownloadSize() * 100f / event.getDownloadStatus().getTotalSize());
+
 						if (event.getFlag() == DownloadFlag.FAILED) {
 							Throwable throwable = event.getError();
 							Log.w("Error", throwable);
@@ -65,7 +65,7 @@ public class PlayLoadActivity extends AppCompatActivity {
 	public class Presenter {
 		public void onIvDownload(View view) {
 			RxView.clicks(view)
-					.throttleFirst(1000, TimeUnit.MILLISECONDS)
+					.throttleFirst(5, TimeUnit.SECONDS)
 					.observeOn(AndroidSchedulers.mainThread())
 					.subscribe(new Consumer<Object>() {
 						@Override
@@ -73,14 +73,15 @@ public class PlayLoadActivity extends AppCompatActivity {
 							RxDownload.getInstance()
 									.context(PlayLoadActivity.this)
 									.maxDownloadNumber(3)
-									.serviceDownload(onlineModel.getVideoUrl(), videoItem.getAppAndroidOffline(), Constants.PATH_DOWNLOAD)
+									.serviceDownload(onlineModel.getVideoUrl(),
+											videoItem.getAppAndroidOffline(),
+											Constants.PATH_DOWNLOAD)
 									.subscribe(new Consumer<Object>() {
 										@Override
 										public void accept(Object o) throws Exception {
 											Toast.makeText(PlayLoadActivity.this, "开始下载", Toast.LENGTH_SHORT).show();
 										}
 									});
-
 						}
 					});
 		}

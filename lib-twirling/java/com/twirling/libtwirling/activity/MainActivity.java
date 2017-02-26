@@ -10,7 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.twirling.libtwirling.R;
-import com.twirling.libtwirling.adapter.ViewPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
     //

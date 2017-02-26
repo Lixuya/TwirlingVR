@@ -101,6 +101,7 @@ dependencies {
     compile "com.android.support:cardview-v7:${versions.libSupport}"
     compile "com.android.support:design:${versions.libSupport}"
     compile 'com.android.support:multidex:1.0.1'
+    //
     compile 'com.alibaba:fastjson:1.2.12'
     //
     compile 'com.orhanobut:logger:1.11'
@@ -152,9 +153,11 @@ dependencies {
     compile project(':lib-twirling')
     //
     compile 'org.greenrobot:eventbus:3.0.0'
-    compile "$LibGvr"
     //
     compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.1@aar'
+    //
+    compile 'com.afollestad.material-dialogs:core:0.9.3.0'
+
 //    compile "com.facebook.react:react-native:+"
 }
 
