@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide;
 /**
  * Target: 为databinding补充绑定方法
  */
-public class DataBindingAdapter extends com.twirling.player.databinding.component.DataBindingAdapter {
+public class DataBindingAdapter extends com.twirling.player.adapter.DataBindingAdapter {
 	@BindingAdapter({"imageUrl"})
 	public static void setImageUrl(ImageView view, String url) {
 		Glide.with(view.getContext())

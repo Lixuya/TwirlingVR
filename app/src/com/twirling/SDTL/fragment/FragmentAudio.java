@@ -61,7 +61,7 @@ public class FragmentAudio extends Fragment {
 //        mRecyclerView.addItemDecoration(decoration);
 		mRecyclerView.setLayoutManager(layoutManager);
 		mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
-		mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.Pacman);
+		mRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.Pacman);
 //        mRecyclerView.setArrowImageView(R.mipmap.iconfont_downgrey);
 //        mRecyclerView.setHasFixedSize(true);
 		mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {

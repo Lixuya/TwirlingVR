@@ -57,7 +57,7 @@ public class FragmentOnline extends Fragment {
 //        mRecyclerView.addItemDecoration(new DividerGridItemDecoration(getBaseContext()));
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
-        mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.Pacman);
+        mRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.Pacman);
 //        mRecyclerView.setArrowImageView(R.mipmap.iconfont_downgrey);
 //        mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {

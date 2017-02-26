@@ -17,6 +17,8 @@ import android.view.View;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
+
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -36,6 +38,7 @@ import com.twirling.SDTL.fragment.FragmentAudio;
 import com.twirling.SDTL.fragment.FragmentDownload;
 import com.twirling.SDTL.fragment.FragmentOnline;
 import com.twirling.SDTL.widget.WidgetIcon;
+import com.twirling.lib_cobb.adapter.ViewPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
 	//
