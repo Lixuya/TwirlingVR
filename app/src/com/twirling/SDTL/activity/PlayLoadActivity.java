@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -44,20 +43,12 @@ public class PlayLoadActivity extends AppCompatActivity {
 					@Override
 					public void accept(DownloadEvent event) throws Exception {
 						int progress = 0;
-						if (event.getDownloadStatus().getTotalSize() != 0)
+						if (event.getDownloadStatus().getTotalSize() != 0) {
 							progress = (int) (event.getDownloadStatus().getDownloadSize() * 100f / event.getDownloadStatus().getTotalSize());
-
-						if (event.getFlag() == DownloadFlag.FAILED) {
-							Throwable throwable = event.getError();
-							Log.w("Error", throwable);
-						} else if (event.getFlag() == DownloadFlag.COMPLETED) {
-//							Toast.makeText(PlayLoadActivity.this, "下载完成", Toast.LENGTH_LONG).show();
-						} else {
-							onlineModel.setDownloadStatus(event.getFlag());
-							onlineModel.setProgress(progress);
-							videoItem.setProgress(progress);
-							RealmHelper.getInstance().insertVideoItem(videoItem);
 						}
+						onlineModel.setDownloadStatus(event.getFlag());
+						onlineModel.setProgress(progress);
+						videoItem.setProgress(progress);
 					}
 				});
 	}
@@ -75,7 +66,7 @@ public class PlayLoadActivity extends AppCompatActivity {
 									.maxDownloadNumber(3)
 									.serviceDownload(onlineModel.getVideoUrl(),
 											videoItem.getAppAndroidOffline(),
-											Constants.PATH_DOWNLOAD)
+											Constants.PATH_MOVIES)
 									.subscribe(new Consumer<Object>() {
 										@Override
 										public void accept(Object o) throws Exception {
@@ -88,13 +79,26 @@ public class PlayLoadActivity extends AppCompatActivity {
 
 		public void onIvPlay(View view) {
 			RxView.clicks(view)
+					.throttleFirst(2, TimeUnit.SECONDS)
 					.subscribe(new Consumer<Object>() {
 						@Override
 						public void accept(Object o) {
-							Intent intent = new Intent();
-							intent.putExtra("VideoItem", Constants.PATH_RESOURCE + videoItem.getFolder() + videoItem.getAppAndroidOnline());
-							intent.setClass(PlayLoadActivity.this, VRPlayerActivity.class);
-							startActivity(intent);
+							// 检查下载
+							RxDownload.getInstance()
+									.receiveDownloadStatus(onlineModel.getVideoUrl())
+									.subscribe(new Consumer<DownloadEvent>() {
+										@Override
+										public void accept(DownloadEvent downloadEvent) throws Exception {
+											Intent intent = new Intent();
+											intent.setClass(PlayLoadActivity.this, VRPlayerActivity.class);
+											if (downloadEvent.getFlag() == DownloadFlag.COMPLETED) {
+												intent.putExtra("VideoItem", onlineModel.getVideoPath());
+											} else {
+												intent.putExtra("VideoItem", onlineModel.getVideoUrl());
+											}
+											startActivity(intent);
+										}
+									});
 						}
 					});
 		}
@@ -106,7 +110,9 @@ public class PlayLoadActivity extends AppCompatActivity {
 		onlineModel = new OnlineModel(PlayLoadActivity.this);
 		onlineModel.setVideoName(videoItem.getAppAndroidOnline());
 		onlineModel.setImageUrl(Constants.PATH_RESOURCE + videoItem.getFolder() + videoItem.getImage());
-		onlineModel.setVideoUrl(Constants.PATH_RESOURCE + videoItem.getFolder() + videoItem.getAppAndroidOffline());
+		onlineModel.setVideoUrl(Constants.PATH_RESOURCE + videoItem.getFolder() + videoItem.getAppAndroidOnline());
+		onlineModel.setVideoPath(Constants.PATH_MOVIES + onlineModel.getVideoName());
+		onlineModel.setProgress(videoItem.getProgress());
 	}
 
 	@Override

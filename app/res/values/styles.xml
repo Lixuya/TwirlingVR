@@ -6,15 +6,4 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">5dip</item>
     </style>
-
-    <style name="Theme.AppCompat.MyDesign" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>
-    </style>
-
-    <style name="Theme.AppCompat.MyDesign2" parent="Theme.AppCompat.MyDesign">
-        <item name="android:fitsSystemWindows" tools:targetApi="lollipop">true</item>
-    </style>
-
 </resources>

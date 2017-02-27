@@ -5,7 +5,7 @@ import android.os.Environment;
 /**
  * Target: 常量
  */
-public class Constants {
+public class Constants extends com.twirling.lib_cobb.Constants{
 	// API
 	private static final String API_HOST = "http://yun-dev.twirlingvr.com";
 	public static final String PATH_SERVER_API = API_HOST + "/Admin/";

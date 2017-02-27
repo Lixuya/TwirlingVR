@@ -1,6 +1,7 @@
 package com.twirling.SDTL.activity;
 
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -11,9 +12,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -38,6 +42,7 @@ import com.twirling.SDTL.fragment.FragmentOnline;
 import com.twirling.SDTL.widget.WidgetIcon;
 import com.twirling.lib_cobb.adapter.ViewPagerAdapter;
 import com.twirling.player.fragment.FragmentDownload;
+
 
 public class MainActivity extends AppCompatActivity {
 	//
@@ -76,7 +81,22 @@ public class MainActivity extends AppCompatActivity {
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayShowHomeEnabled(true);
 		//
-
+		Window window = getWindow();
+		window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+				| WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+		window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+				| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+				| View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+		window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+		//获取样式中的属性值
+		TypedValue typedValue = new TypedValue();
+		this.getTheme().resolveAttribute(android.R.attr.colorPrimary, typedValue, true);
+		int[] attribute = new int[] { android.R.attr.colorPrimary };
+		TypedArray array = this.obtainStyledAttributes(typedValue.resourceId, attribute);
+		int color = array.getColor(0, Color.TRANSPARENT);
+		array.recycle();
+		window.setStatusBarColor(color);
+		//
 		viewPager = (ViewPager) findViewById(R.id.viewPager);
 		FragmentManager manager = this.getSupportFragmentManager();
 		ViewPagerAdapter adapter = new ViewPagerAdapter(manager);
@@ -246,6 +266,12 @@ public class MainActivity extends AppCompatActivity {
 	public void onBackPressed() {
 		new MaterialDialog.Builder(this)
 				.theme(Theme.LIGHT)
+				.onPositive(new MaterialDialog.SingleButtonCallback() {
+					@Override
+					public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+						finish();
+					}
+				})
 				.title(R.string.title)
 				.content("确定离开App吗")
 				.positiveText(R.string.agree)

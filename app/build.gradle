@@ -138,8 +138,6 @@ dependencies {
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.tencent.bugly:crashreport:2.3.0'
     //
-    compile 'com.jaeger.statusbaruitl:library:1.0.0'
-    //
     compile('com.mikepenz:materialdrawer:5.8.1@aar') {
         transitive = true
     }
@@ -157,7 +155,8 @@ dependencies {
     compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.1@aar'
     //
     compile 'com.afollestad.material-dialogs:core:0.9.3.0'
-
+    //
+    compile 'com.github.niorgai:StatusBarCompat:2.1.2'
 //    compile "com.facebook.react:react-native:+"
 }
 

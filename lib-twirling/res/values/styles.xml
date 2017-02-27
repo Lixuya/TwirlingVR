@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+<resources
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="ContentText">
         <item name="android:layout_width">wrap_content</item>
@@ -7,14 +8,12 @@
         <item name="android:layout_margin">5dip</item>
     </style>
 
-    <style name="Theme.AppCompat.MyDesign" parent="Theme.AppCompat.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>
+    <style name="Theme.AppCompat.MyDesign" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentTransitions">true</item>
     </style>
 
     <style name="Theme.AppCompat.MyDesign2" parent="Theme.AppCompat.MyDesign">
-        <item name="android:fitsSystemWindows" tools:targetApi="lollipop">true</item>
+        <item name="android:fitsSystemWindows">true</item>
     </style>
-
 </resources>
