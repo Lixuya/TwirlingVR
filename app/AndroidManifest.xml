@@ -18,7 +18,7 @@
         <activity
             android:name=".activity.SplashActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.MyDesign">
+            android:theme="@style/Theme.AppCompat.MyLightDesign">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -30,7 +30,7 @@
             android:name=".activity.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.MyDesign"/>
+            android:theme="@style/Theme.AppCompat.MyLightDesign"/>
         <activity
             android:name=".activity.PlayLoadActivity"
             android:screenOrientation="portrait"
@@ -43,27 +43,26 @@
             android:name=".activity.AudioActivity"
             android:hardwareAccelerated="false"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.MyDesign">
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
             <category android:name="com.google.intent.category.CARDBOARD"/>
         </activity>
         <activity
             android:name=".activity.RTMPActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.MyDesign"/>
+            android:theme="@style/Theme.AppCompat.MyLightDesign"/>
         <activity
             android:name=".activity.LoginActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.MyDesign"/>
+            android:theme="@style/Theme.AppCompat.MyLightDesign"/>
         <activity
             android:name=".activity.WebActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.MyDesign"/>
+            android:theme="@style/Theme.AppCompat.MyLightDesign"/>
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent"/>
-
         <service android:name=".download.DownloadService"/>
         <receiver android:name=".download.DownloadReceiver">
             <intent-filter>

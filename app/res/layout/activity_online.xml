@@ -51,11 +51,11 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="80dp"
             android:layout_marginRight="80dp"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="200dp"
             android:gravity="center"
             android:orientation="horizontal">
 
-            <ImageButton
+            <android.support.design.widget.FloatingActionButton
                 android:id="@+id/iv_download"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
                 android:onClick="@{(v)->presenter.onIvDownload(v)}"
                 android:src="@{item.iconDownload}"/>
 
-            <ImageView
+            <android.support.design.widget.FloatingActionButton
                 android:id="@+id/iv_play"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -83,21 +83,5 @@
             android:layout_marginTop="30dp"
             android:progress="@{item.progress}"
             android:progressDrawable="@drawable/progressbar_horizontal_bg"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="30dp"
-            android:text="@null"
-            android:visibility="gone"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:visibility="gone"
-            android:text="@null"/>
     </LinearLayout>
 </layout>

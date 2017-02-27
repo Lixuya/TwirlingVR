@@ -30,11 +30,11 @@ public class OnlineModel extends BaseObservable {
 	public OnlineModel(Context context) {
 		iconDownload = new IconicsDrawable(context)
 				.icon(FontAwesome.Icon.faw_cloud_download)
-				.color(Color.parseColor("#000000"))
+				.color(Color.parseColor("#FFFFFF"))
 				.sizeDp(53);
 		iconPlay = new IconicsDrawable(context)
-				.icon(FontAwesome.Icon.faw_play_circle_o)
-				.color(Color.parseColor("#000000"))
+				.icon(FontAwesome.Icon.faw_play_circle)
+				.color(Color.parseColor("#FFFFFF"))
 				.sizeDp(53);
 		iconDownloadGreen = new IconicsDrawable(context)
 				.icon(FontAwesome.Icon.faw_cloud_download)

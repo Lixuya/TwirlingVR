@@ -1,7 +1,6 @@
 package com.twirling.SDTL.activity;
 
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -12,12 +11,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -59,43 +55,9 @@ public class MainActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		//
-		signOut = new MaterialDialog.Builder(this)
-				.title(R.string.title)
-				.theme(Theme.LIGHT)
-				.content("确定登出账户吗？")
-				.negativeText(R.string.disagree)
-				.positiveText(R.string.agree)
-				.icon(WidgetIcon.getSignOutIcon(this))
-				.onPositive(new MaterialDialog.SingleButtonCallback() {
-					@Override
-					public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-						Constants.USER_MOBILE = Constants.USER_MOBILE_DEFAULT;
-						Constants.USER_IMAGE = Constants.USER_IMAGE_DEFAULT;
-						Intent intent = new Intent(MainActivity.this, MainActivity.class);
-						startActivity(intent);
-						result.closeDrawer();
-					}
-				});
-		//
 		toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayShowHomeEnabled(true);
-		//
-		Window window = getWindow();
-		window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
-				| WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-		window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-				| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-				| View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-		window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-		//获取样式中的属性值
-		TypedValue typedValue = new TypedValue();
-		this.getTheme().resolveAttribute(android.R.attr.colorPrimary, typedValue, true);
-		int[] attribute = new int[] { android.R.attr.colorPrimary };
-		TypedArray array = this.obtainStyledAttributes(typedValue.resourceId, attribute);
-		int color = array.getColor(0, Color.TRANSPARENT);
-		array.recycle();
-		window.setStatusBarColor(color);
 		//
 		viewPager = (ViewPager) findViewById(R.id.viewPager);
 		FragmentManager manager = this.getSupportFragmentManager();
@@ -155,6 +117,24 @@ public class MainActivity extends AppCompatActivity {
 		IProfile profile = new ProfileDrawerItem()
 				.withName(Constants.USER_MOBILE.equals(Constants.USER_MOBILE_DEFAULT) ? "匿名访客" : Constants.USER_MOBILE)
 				.withIcon(Constants.USER_IMAGE.equals(Constants.USER_IMAGE_DEFAULT) ? Constants.USER_IMAGE_DEFAULT : Constants.USER_IMAGE);
+		//
+		signOut = new MaterialDialog.Builder(this)
+				.title(R.string.title)
+				.theme(Theme.LIGHT)
+				.content("确定登出账户吗？")
+				.negativeText(R.string.disagree)
+				.positiveText(R.string.agree)
+				.icon(WidgetIcon.getSignOutIcon(this))
+				.onPositive(new MaterialDialog.SingleButtonCallback() {
+					@Override
+					public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+						Constants.USER_MOBILE = Constants.USER_MOBILE_DEFAULT;
+						Constants.USER_IMAGE = Constants.USER_IMAGE_DEFAULT;
+						Intent intent = new Intent(MainActivity.this, MainActivity.class);
+						startActivity(intent);
+						result.closeDrawer();
+					}
+				});
 		//
 		headerResult = new AccountHeaderBuilder()
 				.withActivity(this)

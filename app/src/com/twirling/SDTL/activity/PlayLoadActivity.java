@@ -36,21 +36,8 @@ public class PlayLoadActivity extends AppCompatActivity {
 		ActivityOnlineBinding anb = DataBindingUtil.setContentView(this, R.layout.activity_online);
 		anb.setItem(onlineModel);
 		anb.setPresenter(new Presenter());
-//        StatusBarUtil.setTransparent(PlayLoadActivity.this);
-		RxDownload.getInstance()
-				.receiveDownloadStatus(onlineModel.getVideoUrl())
-				.subscribe(new Consumer<DownloadEvent>() {
-					@Override
-					public void accept(DownloadEvent event) throws Exception {
-						int progress = 0;
-						if (event.getDownloadStatus().getTotalSize() != 0) {
-							progress = (int) (event.getDownloadStatus().getDownloadSize() * 100f / event.getDownloadStatus().getTotalSize());
-						}
-						onlineModel.setDownloadStatus(event.getFlag());
-						onlineModel.setProgress(progress);
-						videoItem.setProgress(progress);
-					}
-				});
+		//
+		checkDownload();
 	}
 
 	public class Presenter {
@@ -71,6 +58,7 @@ public class PlayLoadActivity extends AppCompatActivity {
 										@Override
 										public void accept(Object o) throws Exception {
 											Toast.makeText(PlayLoadActivity.this, "开始下载", Toast.LENGTH_SHORT).show();
+											checkDownload();
 										}
 									});
 						}
@@ -113,6 +101,23 @@ public class PlayLoadActivity extends AppCompatActivity {
 		onlineModel.setVideoUrl(Constants.PATH_RESOURCE + videoItem.getFolder() + videoItem.getAppAndroidOnline());
 		onlineModel.setVideoPath(Constants.PATH_MOVIES + onlineModel.getVideoName());
 		onlineModel.setProgress(videoItem.getProgress());
+	}
+
+	private void checkDownload() {
+		RxDownload.getInstance()
+				.receiveDownloadStatus(onlineModel.getVideoUrl())
+				.subscribe(new Consumer<DownloadEvent>() {
+					@Override
+					public void accept(DownloadEvent event) throws Exception {
+						int progress = 0;
+						if (event.getDownloadStatus().getTotalSize() != 0) {
+							progress = (int) (event.getDownloadStatus().getDownloadSize() * 100f / event.getDownloadStatus().getTotalSize());
+						}
+						onlineModel.setDownloadStatus(event.getFlag());
+						onlineModel.setProgress(progress);
+						videoItem.setProgress(progress);
+					}
+				});
 	}
 
 	@Override
