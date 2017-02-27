@@ -42,7 +42,7 @@ public class PlayLoadActivity extends AppCompatActivity {
 					.context(PlayLoadActivity.this)
 					.maxDownloadNumber(5)
 					.serviceDownload(onlineModel.getVideoUrl(),
-							videoItem.getAppAndroidOffline(),
+							videoItem.getName() + ".mp4",
 							Constants.PATH_MOVIES)
 					.subscribe(new Consumer<Object>() {
 						@Override
