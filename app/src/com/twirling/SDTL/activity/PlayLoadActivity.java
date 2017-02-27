@@ -70,10 +70,10 @@ public class PlayLoadActivity extends AppCompatActivity {
 		videoItem = getIntent().getExtras().getParcelable("videoItem");
 		videoItem = RealmHelper.getInstance().selectVideoItem(videoItem);
 		onlineModel = new OnlineModel(PlayLoadActivity.this);
-		onlineModel.setVideoName(videoItem.getAppAndroidOnline());
 		onlineModel.setImageUrl(Constants.PATH_RESOURCE + videoItem.getFolder() + videoItem.getImage());
 		onlineModel.setVideoUrl(Constants.PATH_RESOURCE + videoItem.getFolder() + videoItem.getAppAndroidOnline());
-		onlineModel.setVideoPath(Constants.PATH_MOVIES + onlineModel.getVideoName());
+		onlineModel.setVideoName(videoItem.getName());
+		onlineModel.setVideoPath(Constants.PATH_MOVIES + onlineModel.getVideoName() + ".mp4");
 		onlineModel.setProgress(videoItem.getProgress());
 	}
 
