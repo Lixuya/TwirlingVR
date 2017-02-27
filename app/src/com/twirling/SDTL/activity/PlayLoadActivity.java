@@ -23,7 +23,6 @@ import zlc.season.rxdownload2.entity.DownloadFlag;
 public class PlayLoadActivity extends AppCompatActivity {
 	private VideoItem videoItem = null;
 	private OnlineModel onlineModel = null;
-	private Presenter presenter = null;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -80,13 +79,16 @@ public class PlayLoadActivity extends AppCompatActivity {
 
 	private void checkDownload() {
 		RxDownload.getInstance()
+				.context(PlayLoadActivity.this)
 				.receiveDownloadStatus(onlineModel.getVideoUrl())
 				.subscribe(new Consumer<DownloadEvent>() {
 					@Override
 					public void accept(DownloadEvent event) throws Exception {
-						int progress = 0;
-						if (event.getDownloadStatus().getTotalSize() != 0) {
-							progress = (int) (event.getDownloadStatus().getDownloadSize() * 100f / event.getDownloadStatus().getTotalSize());
+						long downloading = event.getDownloadStatus().getDownloadSize();
+						long total = event.getDownloadStatus().getTotalSize();
+						int progress = onlineModel.getProgress();
+						if (total != 0) {
+							progress = (int) (downloading * 100f / total);
 						}
 						onlineModel.setDownloadStatus(event.getFlag());
 						onlineModel.setProgress(progress);
