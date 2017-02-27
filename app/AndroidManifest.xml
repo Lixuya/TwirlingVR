@@ -43,7 +43,7 @@
             android:name=".activity.AudioActivity"
             android:hardwareAccelerated="false"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+            android:theme="@style/Theme.AppCompat.MyDarkDesign">
             <category android:name="com.google.intent.category.CARDBOARD"/>
         </activity>
         <activity
@@ -63,6 +63,7 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent"/>
+
         <service android:name=".download.DownloadService"/>
         <receiver android:name=".download.DownloadReceiver">
             <intent-filter>

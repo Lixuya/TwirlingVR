@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
-import com.jakewharton.rxbinding2.view.RxView;
 import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.R;
 import com.twirling.SDTL.data.RealmHelper;
@@ -16,9 +15,6 @@ import com.twirling.SDTL.model.OnlineModel;
 import com.twirling.SDTL.model.VideoItem;
 import com.twirling.player.activity.VRPlayerActivity;
 
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import zlc.season.rxdownload2.RxDownload;
 import zlc.season.rxdownload2.entity.DownloadEvent;
@@ -27,6 +23,7 @@ import zlc.season.rxdownload2.entity.DownloadFlag;
 public class PlayLoadActivity extends AppCompatActivity {
 	private VideoItem videoItem = null;
 	private OnlineModel onlineModel = null;
+	private Presenter presenter = null;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,53 +39,31 @@ public class PlayLoadActivity extends AppCompatActivity {
 
 	public class Presenter {
 		public void onIvDownload(View view) {
-			RxView.clicks(view)
-					.throttleFirst(5, TimeUnit.SECONDS)
-					.observeOn(AndroidSchedulers.mainThread())
+			RxDownload.getInstance()
+					.context(PlayLoadActivity.this)
+					.maxDownloadNumber(5)
+					.serviceDownload(onlineModel.getVideoUrl(),
+							videoItem.getAppAndroidOffline(),
+							Constants.PATH_MOVIES)
 					.subscribe(new Consumer<Object>() {
 						@Override
-						public void accept(Object o) {
-							RxDownload.getInstance()
-									.context(PlayLoadActivity.this)
-									.maxDownloadNumber(3)
-									.serviceDownload(onlineModel.getVideoUrl(),
-											videoItem.getAppAndroidOffline(),
-											Constants.PATH_MOVIES)
-									.subscribe(new Consumer<Object>() {
-										@Override
-										public void accept(Object o) throws Exception {
-											Toast.makeText(PlayLoadActivity.this, "开始下载", Toast.LENGTH_SHORT).show();
-											checkDownload();
-										}
-									});
+						public void accept(Object o) throws Exception {
+							Toast.makeText(PlayLoadActivity.this, "开始下载", Toast.LENGTH_SHORT).show();
+							checkDownload();
 						}
 					});
 		}
 
 		public void onIvPlay(View view) {
-			RxView.clicks(view)
-					.throttleFirst(2, TimeUnit.SECONDS)
-					.subscribe(new Consumer<Object>() {
-						@Override
-						public void accept(Object o) {
-							// 检查下载
-							RxDownload.getInstance()
-									.receiveDownloadStatus(onlineModel.getVideoUrl())
-									.subscribe(new Consumer<DownloadEvent>() {
-										@Override
-										public void accept(DownloadEvent downloadEvent) throws Exception {
-											Intent intent = new Intent();
-											intent.setClass(PlayLoadActivity.this, VRPlayerActivity.class);
-											if (downloadEvent.getFlag() == DownloadFlag.COMPLETED) {
-												intent.putExtra("VideoItem", onlineModel.getVideoPath());
-											} else {
-												intent.putExtra("VideoItem", onlineModel.getVideoUrl());
-											}
-											startActivity(intent);
-										}
-									});
-						}
-					});
+			// 跳转
+			Intent intent = new Intent();
+			intent.setClass(PlayLoadActivity.this, VRPlayerActivity.class);
+			if (onlineModel.getDownloadStatus() == DownloadFlag.COMPLETED) {
+				intent.putExtra("VideoItem", onlineModel.getVideoPath());
+			} else {
+				intent.putExtra("VideoItem", onlineModel.getVideoUrl());
+			}
+			startActivity(intent);
 		}
 	}
 
