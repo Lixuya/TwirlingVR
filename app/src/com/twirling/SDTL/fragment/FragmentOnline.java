@@ -14,7 +14,7 @@ import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.R;
-import com.twirling.SDTL.adapter.MainAdapter;
+import com.twirling.SDTL.adapter.OnlineAdapter;
 import com.twirling.SDTL.model.DataArray;
 import com.twirling.SDTL.model.VideoItem;
 import com.twirling.SDTL.retrofit.RetrofitManager;
@@ -33,7 +33,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by 谢秋鹏 on 2016/5/27.
  */
 public class FragmentOnline extends Fragment {
-    private MainAdapter mAdapter = null;
+    private OnlineAdapter mAdapter = null;
     private XRecyclerView mRecyclerView = null;
     private List<VideoItem> datas = new ArrayList<VideoItem>();
 
@@ -75,7 +75,7 @@ public class FragmentOnline extends Fragment {
             }
         });
         loadData(1);
-        mAdapter = new MainAdapter(datas);
+        mAdapter = new OnlineAdapter(datas);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(mAdapter);
     }

@@ -25,25 +25,25 @@ import java.util.List;
 /**
  * Created by 谢秋鹏 on 2016/5/26.
  */
-public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
+public class OnlineAdapter extends RecyclerView.Adapter<OnlineAdapter.ViewHolder> {
     //
     private List<VideoItem> datas = new ArrayList<VideoItem>();
     // true 有删除按钮
     private boolean flag = false;
 
-    public MainAdapter(List<VideoItem> datas) {
+    public OnlineAdapter(List<VideoItem> datas) {
         this.datas = datas;
     }
 
     @Override
-    public MainAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public OnlineAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.ll_item_movie, viewGroup, false);
         ViewHolder vh = new ViewHolder(view);
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(final MainAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final OnlineAdapter.ViewHolder holder, int position) {
         final VideoItem item = datas.get(position);
         String imageName = item.getImage();
         String title = item.getName();
