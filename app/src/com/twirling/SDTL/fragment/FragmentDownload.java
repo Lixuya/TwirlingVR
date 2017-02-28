@@ -14,9 +14,9 @@ import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.twirling.SDTL.R;
+import com.twirling.SDTL.adapter.OffineAdapter;
 import com.twirling.lib_cobb.util.FileUtil;
 import com.twirling.player.Constants;
-import com.twirling.player.adapter.OffineAdapter;
 import com.twirling.player.model.OfflineModel;
 
 import java.util.ArrayList;
@@ -62,8 +62,15 @@ public class FragmentDownload extends Fragment {
 		});
 		adapter = new OffineAdapter(models);
 		recyclerView.setAdapter(adapter);
-		loadData();
 		return rootView;
+	}
+
+	@Override
+	public void setUserVisibleHint(boolean isVisibleToUser) {
+		super.setUserVisibleHint(isVisibleToUser);
+		if (isVisibleToUser) {
+			loadData();
+		}
 	}
 
 	private void loadData() {
@@ -89,7 +96,6 @@ public class FragmentDownload extends Fragment {
 						for (String name : strings) {
 							model = new OfflineModel(getActivity());
 							model.setName(name);
-							model.setPosition(i);
 							model.setAsset(false);
 							model.setVideoPath(Constants.PATH_MOVIES + name);
 							models.add(model);
@@ -99,7 +105,6 @@ public class FragmentDownload extends Fragment {
 						for (String name : strings) {
 							model = new OfflineModel(getActivity());
 							model.setName(name);
-							model.setPosition(i);
 							model.setAsset(true);
 							model.setVideoPath(Constants.PATH_MOVIES + name);
 							models.add(model);

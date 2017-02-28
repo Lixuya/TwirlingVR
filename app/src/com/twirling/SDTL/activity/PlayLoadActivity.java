@@ -39,7 +39,7 @@ public class PlayLoadActivity extends AppCompatActivity {
 		public void onIvDownload(View view) {
 			RxDownload.getInstance()
 					.context(PlayLoadActivity.this)
-					.maxDownloadNumber(5)
+					.maxDownloadNumber(3)
 					.serviceDownload(onlineModel.getVideoUrl(),
 							videoItem.getName() + ".mp4",
 							Constants.PATH_MOVIES)
