@@ -91,6 +91,7 @@ public class PlayLoadActivity extends AppCompatActivity {
 						}
 						onlineModel.setDownloadStatus(event.getFlag());
 						onlineModel.setProgress(progress);
+						onlineModel.setPercent(event.getDownloadStatus().getPercent());
 						videoItem.setProgress(progress);
 //						RealmHelper.getInstance().insertVideoItem(videoItem);
 					}

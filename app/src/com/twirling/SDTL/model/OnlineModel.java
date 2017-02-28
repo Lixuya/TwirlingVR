@@ -25,6 +25,7 @@ public class OnlineModel extends BaseObservable {
 	private String videoName;
 	private String videoPath;
 	private int progress = 0;
+	private String percent = "";
 	private int downloadStatus = DownloadFlag.NORMAL;
 
 	public OnlineModel(Context context) {
@@ -129,5 +130,15 @@ public class OnlineModel extends BaseObservable {
 	public void setDownloadStatus(int downloadStatus) {
 		this.downloadStatus = downloadStatus;
 		notifyPropertyChanged(BR.downloadStatus);
+	}
+
+	@Bindable
+	public String getPercent() {
+		return percent;
+	}
+
+	public void setPercent(String percent) {
+		this.percent = percent;
+		notifyPropertyChanged(BR.percent);
 	}
 }
