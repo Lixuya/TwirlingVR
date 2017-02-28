@@ -34,11 +34,10 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.R;
 import com.twirling.SDTL.fragment.FragmentAudio;
+import com.twirling.SDTL.fragment.FragmentDownload;
 import com.twirling.SDTL.fragment.FragmentOnline;
 import com.twirling.SDTL.widget.WidgetIcon;
 import com.twirling.lib_cobb.adapter.ViewPagerAdapter;
-import com.twirling.player.fragment.FragmentDownload;
-
 
 public class MainActivity extends AppCompatActivity {
 	//

@@ -18,7 +18,7 @@
         <activity
             android:name=".activity.SplashActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.MyLightDesign">
+            android:theme="@style/Theme.Design.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -30,7 +30,7 @@
             android:name=".activity.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.MyLightDesign"/>
+            android:theme="@style/MyDarkDesign"/>
         <activity
             android:name=".activity.PlayLoadActivity"
             android:screenOrientation="portrait"
@@ -43,7 +43,7 @@
             android:name=".activity.AudioActivity"
             android:hardwareAccelerated="false"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.MyDarkDesign">
+            android:theme="@style/Theme.Design.NoActionBar">
             <category android:name="com.google.intent.category.CARDBOARD"/>
         </activity>
         <activity

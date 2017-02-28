@@ -14,7 +14,6 @@
         android:clipToPadding="true"
         android:elevation="4dp"
         android:fitsSystemWindows="true"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark"
         toolbar:title="拓灵VR"/>
     <!--android:background="?attr/colorPrimaryDark"-->
 
