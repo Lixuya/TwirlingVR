@@ -85,15 +85,12 @@ public class PlayLoadActivity extends AppCompatActivity {
 				.subscribe(new Consumer<DownloadEvent>() {
 					@Override
 					public void accept(DownloadEvent event) throws Exception {
-						Log.w("event", event.getFlag() + " " + videoItem.getProgress());
+						Log.w("event", event.getFlag() + " " + onlineModel.getProgress() + " " + videoItem.getProgress());
 						long downloading = event.getDownloadStatus().getDownloadSize();
 						long total = event.getDownloadStatus().getTotalSize();
 						int progress = onlineModel.getProgress();
-						if (total != 0) {
+						if (total != 0 && progress != 0) {
 							progress = (int) (downloading * 100f / total);
-						}
-						if (videoItem.getProgress() == 100) {
-							progress = 100;
 						}
 						onlineModel.setDownloadStatus(event.getFlag());
 						onlineModel.setProgress(progress);
