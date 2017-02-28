@@ -98,9 +98,13 @@ public class OnlineModel extends BaseObservable {
 	}
 
 	public void setProgress(int progress) {
-		this.progress = progress;
 		if (progress != 0) {
 			setIconDownload(iconDownloadGreen);
+			if (progress >= 1) {
+				this.progress = progress;
+			} else {
+				this.progress = 1;
+			}
 		} else {
 			setIconDownload(iconDownload);
 		}

@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:contentDescription="@null"
-                android:enabled="@{item.downloadStatus == 9990 ? true : false}"
+                android:enabled="@{item.downloadStatus != 9992 ? true : false}"
                 android:onClick="@{(v)->presenter.onIvDownload(v)}"
                 android:src="@{item.iconDownload}"/>
 

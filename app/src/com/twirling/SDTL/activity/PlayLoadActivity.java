@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.twirling.SDTL.Constants;
 import com.twirling.SDTL.R;
@@ -48,7 +46,7 @@ public class PlayLoadActivity extends AppCompatActivity {
 					.subscribe(new Consumer<Object>() {
 						@Override
 						public void accept(Object o) throws Exception {
-							Toast.makeText(PlayLoadActivity.this, "开始下载", Toast.LENGTH_SHORT).show();
+							onlineModel.setProgress(1);
 							checkDownload();
 						}
 					});
@@ -85,17 +83,16 @@ public class PlayLoadActivity extends AppCompatActivity {
 				.subscribe(new Consumer<DownloadEvent>() {
 					@Override
 					public void accept(DownloadEvent event) throws Exception {
-						Log.w("event", event.getFlag() + " " + onlineModel.getProgress() + " " + videoItem.getProgress());
 						long downloading = event.getDownloadStatus().getDownloadSize();
 						long total = event.getDownloadStatus().getTotalSize();
 						int progress = onlineModel.getProgress();
-						if (total != 0 && progress != 0) {
+						if (total != 0 && progress != 100) {
 							progress = (int) (downloading * 100f / total);
 						}
 						onlineModel.setDownloadStatus(event.getFlag());
 						onlineModel.setProgress(progress);
 						videoItem.setProgress(progress);
-						RealmHelper.getInstance().insertVideoItem(videoItem);
+//						RealmHelper.getInstance().insertVideoItem(videoItem);
 					}
 				});
 	}

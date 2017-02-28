@@ -33,9 +33,28 @@ public class RealmHelper extends com.twirling.libtwirling.database.RealmHelper {
 	}
 
 	public void insertVideoItem(VideoItem item) {
-		realm.beginTransaction();
-		realm.copyToRealmOrUpdate(item);
-		realm.commitTransaction();
+		if (item.getProgress() == 0) {
+			realm.beginTransaction();
+			realm.copyToRealmOrUpdate(item);
+			realm.commitTransaction();
+		} else if (item.getProgress() != 0) {
+			RealmHelper.getInstance().updateVideoItem(item.getName(), item.getProgress());
+		}
+	}
+
+	public void updateVideoItem(final String videoName, final int progress) {
+		realm.executeTransaction(new Realm.Transaction() {
+			@Override
+			public void execute(Realm realm) {
+				VideoItem videoItem = realm.where(VideoItem.class)
+						.equalTo("Name", videoName.substring(0, videoName.length() - 4))
+						.findFirst();
+				if (videoItem == null) {
+					return;
+				}
+				videoItem.setProgress(progress);
+			}
+		});
 	}
 
 	public void updateDownloadId(final String videoName, final long downloadId) {
@@ -86,7 +105,6 @@ public class RealmHelper extends com.twirling.libtwirling.database.RealmHelper {
 	public VideoItem selectVideoItem(VideoItem videoItem) {
 		VideoItem newItem = realm.where(VideoItem.class)
 				.equalTo("AppAndroidOnline", videoItem.getAppAndroidOnline())
-				.notEqualTo("downloadId", 0)
 				.findFirst();
 		if (newItem == null) {
 			return videoItem;
