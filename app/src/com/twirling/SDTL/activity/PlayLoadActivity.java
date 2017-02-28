@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -84,15 +85,20 @@ public class PlayLoadActivity extends AppCompatActivity {
 				.subscribe(new Consumer<DownloadEvent>() {
 					@Override
 					public void accept(DownloadEvent event) throws Exception {
+						Log.w("event", event.getFlag() + " " + videoItem.getProgress());
 						long downloading = event.getDownloadStatus().getDownloadSize();
 						long total = event.getDownloadStatus().getTotalSize();
 						int progress = onlineModel.getProgress();
 						if (total != 0) {
 							progress = (int) (downloading * 100f / total);
 						}
+						if (videoItem.getProgress() == 100) {
+							progress = 100;
+						}
 						onlineModel.setDownloadStatus(event.getFlag());
 						onlineModel.setProgress(progress);
 						videoItem.setProgress(progress);
+						RealmHelper.getInstance().insertVideoItem(videoItem);
 					}
 				});
 	}
