@@ -4,8 +4,8 @@ ext {
              buildTools: "25.0.2",
              minSdk    : 21,
              targetSdk : 25,
-             vcode     : 14,
-             vname     : "2.7.1"]
+             vcode     : 15,
+             vname     : "2.7.5"]
     versions = [libSupport : "25.1.1",
                 libRxJava  : "2.0.1",
                 libRetrofit: "2.1.0",
@@ -19,7 +19,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.3'
-        classpath "io.realm:realm-gradle-plugin:2.3.1"
+        classpath "io.realm:realm-gradle-plugin:3.0.0"
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.3'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         // NOTE: Do not place your application dependencies here; they belong

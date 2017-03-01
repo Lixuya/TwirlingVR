@@ -3,6 +3,7 @@ package com.twirling.SDTL.fragment;
 import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
@@ -62,6 +63,16 @@ public class FragmentDownload extends Fragment {
 		});
 		adapter = new OffineAdapter(models);
 		recyclerView.setAdapter(adapter);
+		//
+		Snackbar.make(recyclerView,
+				"如需导入本地视频，请放在Movies路径下",
+				Snackbar.LENGTH_LONG)
+				.setAction("我知道了", new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						//
+					}
+				}).show();
 		return rootView;
 	}
 
