@@ -35,7 +35,7 @@ public class FragmentDownload extends Fragment {
 	private XRecyclerView recyclerView;
 	private OffineAdapter adapter = null;
 	private List<OfflineModel> models = new ArrayList<OfflineModel>();
-	private boolean know = false;
+	private static boolean know = false;
 	private Snackbar snackbar = null;
 
 	@Nullable
@@ -67,8 +67,10 @@ public class FragmentDownload extends Fragment {
 		adapter = new OffineAdapter(models);
 		recyclerView.setAdapter(adapter);
 		//
-		snackbar = Snackbar.make(container, 0, 0);
-		snackbar.setActionTextColor(Color.YELLOW)
+		snackbar = Snackbar.make(container,
+				"如需导入本地视频，请放在 Movies 路径下",
+				Snackbar.LENGTH_INDEFINITE)
+				.setActionTextColor(Color.YELLOW)
 				.setDuration(Snackbar.LENGTH_INDEFINITE)
 				.setAction("我知道了", new View.OnClickListener() {
 					@Override
@@ -84,7 +86,7 @@ public class FragmentDownload extends Fragment {
 		super.setUserVisibleHint(isVisibleToUser);
 		if (isVisibleToUser) {
 			loadData();
-			if (know) {
+			if (!know) {
 				snackbar.show();
 			}
 		}
