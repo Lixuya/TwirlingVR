@@ -1,6 +1,7 @@
 package com.twirling.SDTL.fragment;
 
 import android.Manifest;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -34,6 +35,8 @@ public class FragmentDownload extends Fragment {
 	private XRecyclerView recyclerView;
 	private OffineAdapter adapter = null;
 	private List<OfflineModel> models = new ArrayList<OfflineModel>();
+	private boolean know = false;
+	private Snackbar snackbar = null;
 
 	@Nullable
 	@Override
@@ -64,15 +67,15 @@ public class FragmentDownload extends Fragment {
 		adapter = new OffineAdapter(models);
 		recyclerView.setAdapter(adapter);
 		//
-		Snackbar.make(recyclerView,
-				"如需导入本地视频，请放在Movies路径下",
-				Snackbar.LENGTH_LONG)
+		snackbar = Snackbar.make(container, 0, 0);
+		snackbar.setActionTextColor(Color.YELLOW)
+				.setDuration(Snackbar.LENGTH_INDEFINITE)
 				.setAction("我知道了", new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						//
+						know = true;
 					}
-				}).show();
+				});
 		return rootView;
 	}
 
@@ -81,6 +84,9 @@ public class FragmentDownload extends Fragment {
 		super.setUserVisibleHint(isVisibleToUser);
 		if (isVisibleToUser) {
 			loadData();
+			if (know) {
+				snackbar.show();
+			}
 		}
 	}
 
