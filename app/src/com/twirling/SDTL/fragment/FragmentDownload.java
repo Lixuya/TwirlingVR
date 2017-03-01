@@ -82,13 +82,6 @@ public class FragmentDownload extends Fragment {
 	}
 
 	@Override
-	public void onPause() {
-		super.onPause();
-		if (!know)
-			snackbar.dismiss();
-	}
-
-	@Override
 	public void setUserVisibleHint(boolean isVisibleToUser) {
 		super.setUserVisibleHint(isVisibleToUser);
 		if (isVisibleToUser) {
