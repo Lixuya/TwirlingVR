@@ -18,3 +18,5 @@ app/app-x86-release.apk
 sdtl.keystore
 app/app-armv7-release.apk
 *.apk
+freeline/
+freeline_core/

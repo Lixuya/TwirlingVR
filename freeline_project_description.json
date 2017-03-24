@@ -1,0 +1,147 @@
+{
+    "project_type": "gradle",
+    "android_gradle_plugin_version": "2.3.0",
+    "freeline_gradle_plugin_version": "0.8.6",
+    "java_home": "D:\\AndroidStudio\\jre",
+    "freeline_cache_dir": "D:\\TwirlingVR",
+    "auto_dependency": true,
+    "product_flavor": "",
+    "build_script": "gradlew.bat :app:assembleDebug",
+    "build_script_work_directory": "",
+    "root_dir": "D:\\TwirlingVR",
+    "main_project_name": "app",
+    "main_project_dir": "app",
+    "build_directory": "D:\\TwirlingVR\\app\\build",
+    "build_cache_dir": "D:\\TwirlingVR\\app\\build\\freeline",
+    "build_tools_version": "25.0.2",
+    "sdk_directory": "D:\\AndroidSDK",
+    "build_tools_directory": "D:\\AndroidSDK\\build-tools\\25.0.2",
+    "compile_sdk_version": "android-25",
+    "compile_sdk_directory": "D:\\AndroidSDK\\platforms\\android-25",
+    "package": "com.twirling.SDTL",
+    "debug_package": "com.twirling.SDTL",
+    "main_manifest_path": "D:\\TwirlingVR\\app\\AndroidManifest.xml",
+    "launcher": "com.twirling.SDTL.activity.SplashActivity",
+    "apk_path": "D:\\TwirlingVR\\app\\build\\outputs\\apk\\app-debug.apk",
+    "extra_dep_res_paths": [
+        
+    ],
+    "exclude_dep_res_paths": [
+        
+    ],
+    "main_r_path": "D:\\TwirlingVR\\app\\build\\generated\\source\\r\\debug\\R.java",
+    "use_jdk8": true,
+    "ignore_resource_ids": [
+        "avd_hide_password_1",
+        "avd_hide_password_2",
+        "avd_hide_password_3",
+        "avd_show_password_1",
+        "avd_show_password_2",
+        "avd_show_password_3"
+    ],
+    "use_system_gradle": false,
+    "check_sources_md5": [
+        
+    ],
+    "main_src_directory": [
+        "D:\\TwirlingVR\\app\\src\\debug\\java",
+        "D:\\TwirlingVR\\app\\src"
+    ],
+    "main_res_directory": [
+        "D:\\TwirlingVR\\app\\src\\debug\\res",
+        "D:\\TwirlingVR\\app\\res"
+    ],
+    "main_assets_directory": [
+        "D:\\TwirlingVR\\app\\src\\debug\\assets",
+        "D:\\TwirlingVR\\app\\assets"
+    ],
+    "main_jni_directory": [
+        "D:\\TwirlingVR\\app\\src\\debug\\jni"
+    ],
+    "main_jniLibs_directory": [
+        "D:\\TwirlingVR\\app\\src\\debug\\jniLibs",
+        "D:\\TwirlingVR\\app\\libs"
+    ],
+    "project_source_sets": {
+        "app": {
+            "main_src_directory": [
+                "D:\\TwirlingVR\\app\\src\\debug\\java",
+                "D:\\TwirlingVR\\app\\src"
+            ],
+            "main_res_directory": [
+                "D:\\TwirlingVR\\app\\src\\debug\\res",
+                "D:\\TwirlingVR\\app\\res"
+            ],
+            "main_assets_directory": [
+                "D:\\TwirlingVR\\app\\src\\debug\\assets",
+                "D:\\TwirlingVR\\app\\assets"
+            ],
+            "main_jni_directory": [
+                "D:\\TwirlingVR\\app\\src\\debug\\jni"
+            ],
+            "main_jniLibs_directory": [
+                "D:\\TwirlingVR\\app\\src\\debug\\jniLibs",
+                "D:\\TwirlingVR\\app\\libs"
+            ],
+            "main_manifest_path": "D:\\TwirlingVR\\app\\AndroidManifest.xml"
+        },
+        "lib-twirling": {
+            "main_src_directory": [
+                "D:\\TwirlingVR\\lib-twirling\\src\\release\\java",
+                "D:\\TwirlingVR\\lib-twirling\\java"
+            ],
+            "main_res_directory": [
+                "D:\\TwirlingVR\\lib-twirling\\src\\release\\res",
+                "D:\\TwirlingVR\\lib-twirling\\res"
+            ],
+            "main_assets_directory": [
+                "D:\\TwirlingVR\\lib-twirling\\src\\release\\assets",
+                "D:\\TwirlingVR\\lib-twirling\\assets"
+            ],
+            "main_jni_directory": [
+                "D:\\TwirlingVR\\lib-twirling\\src\\release\\jni"
+            ],
+            "main_jniLibs_directory": [
+                "D:\\TwirlingVR\\lib-twirling\\src\\release\\jniLibs",
+                "D:\\TwirlingVR\\lib-twirling\\libs"
+            ],
+            "main_manifest_path": "D:\\TwirlingVR\\lib-twirling\\AndroidManifest.xml"
+        }
+    },
+    "modules": [
+        {
+            "name": "app",
+            "path": "D:\\TwirlingVR\\app"
+        },
+        {
+            "name": "lib-twirling",
+            "path": "D:\\TwirlingVR\\lib-twirling"
+        }
+    ],
+    "module_dependencies": {
+        "app": [
+            "lib-twirling"
+        ],
+        "lib-twirling": [
+            
+        ]
+    },
+    "databinding": [
+        {
+            "name": "app",
+            "isLibrary": false,
+            "minSdkVersion": 21,
+            "packageName": "com.twirling.SDTL"
+        },
+        {
+            "name": "lib-twirling",
+            "isLibrary": true,
+            "minSdkVersion": 21,
+            "packageName": "com.twirling.libtwirling"
+        }
+    ],
+    "databinding_modules": [
+        "app",
+        "lib-twirling"
+    ]
+}

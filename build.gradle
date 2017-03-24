@@ -9,8 +9,8 @@ ext {
     versions = [libSupport : "25.1.1",
                 libRxJava  : "2.0.1",
                 libRetrofit: "2.1.0",
-                libOkhttp : "3.4.1",
-                libDagger : "2.2"]
+                libOkhttp  : "3.4.1",
+                libDagger  : "2.8"]
 }
 
 buildscript {
@@ -24,6 +24,7 @@ buildscript {
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
+        classpath 'com.antfortune.freeline:gradle:0.8.6'
     }
 }
 
