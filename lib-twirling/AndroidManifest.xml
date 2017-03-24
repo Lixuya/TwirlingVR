@@ -10,10 +10,6 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.MyLightDesign"/>
-        <activity
-            android:name=".activity.MainActivity"
-            android:screenOrientation="portrait"
-            android:uiOptions="splitActionBarWhenNarrow"/>
     </application>
 
 </manifest>
